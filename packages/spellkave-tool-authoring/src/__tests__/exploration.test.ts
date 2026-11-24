@@ -851,6 +851,7 @@ describe("WE01–08 admitted exploration engine (not live privacy proof)", () =>
 		expect(out.items.map((x) => x.ref.id)).toEqual(["é", "z", "é", "😀"]);
 	});
 	// keep(K3): pins the production default across budget-tuned test runs with real limit-plus-one rows.
+	// The full production-size fixture can exceed Vitest's default on shared runners.
 	it("reports the actual family bound (limit + 1 rows) and rejects changed query/invalid field continuations", async () => {
 		expect(EXPLORATION_EXAMINED_ROW_LIMIT).toBe(50_000);
 		const { port, snapshot } = await setup({
@@ -882,7 +883,7 @@ describe("WE01–08 admitted exploration engine (not live privacy proof)", () =>
 		expect(
 			(await ex(port, request({ operation: "field", ref: missing, field: "payload_json" }))).reason,
 		).toBe("unsupported_field");
-	});
+	}, 30_000);
 	it.each([
 		"actors",
 		"entities",
