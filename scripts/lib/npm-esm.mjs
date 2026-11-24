@@ -1,25 +1,43 @@
 import { readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { isBuiltin } from "node:module";
 import { dirname, join } from "node:path";
 import ts from "typescript";
 
 // Workspace tooling resolves extensionless TypeScript imports. Node ESM and
 // NodeNext declaration consumers need the emitted file name instead.
-export function prepareEsmDirectory(directory) {
+export function prepareEsmDirectory(directory, manifest) {
+	const declared = new Set([manifest.name, ...Object.keys({
+		...manifest.dependencies,
+		...manifest.optionalDependencies,
+		...manifest.peerDependencies,
+	})]);
+	walk(directory, declared);
+}
+
+function walk(directory, declared) {
 	for (const entry of readdirSync(directory, { withFileTypes: true })) {
 		const path = join(directory, entry.name);
 		if (entry.isDirectory()) {
-			prepareEsmDirectory(path);
+			walk(path, declared);
 		} else if (path.endsWith(".js") || path.endsWith(".d.ts")) {
-			rewriteImports(path);
+			rewriteImports(path, declared);
 		}
 	}
 }
 
-function rewriteImports(path) {
+function rewriteImports(path, declared) {
 	let code = readFileSync(path, "utf8");
 	const imports = ts.preProcessFile(code, true, true).importedFiles;
 	for (const { fileName, pos, end } of imports.reverse()) {
-		if (!/^\.\.?\//.test(fileName)) continue;
+		if (!/^\.\.?\//.test(fileName)) {
+			if (path.endsWith(".js") && !fileName.startsWith("#") && !isBuiltin(fileName)) {
+				const dependency = fileName.split("/").slice(0, fileName.startsWith("@") ? 2 : 1).join("/");
+				if (!declared.has(dependency)) {
+					throw new Error(`Undeclared runtime dependency ${dependency} imported from ${path}`);
+				}
+			}
+			continue;
+		}
 		const directory = dirname(path);
 		if (fileExists(join(directory, fileName))) continue;
 		const stem = fileName.replace(/\.ts$/, "");

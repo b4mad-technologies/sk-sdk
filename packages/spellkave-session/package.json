@@ -1,6 +1,6 @@
 {
 	"name": "@spellkave/session",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"private": true,
 	"description": "Binding-keyed live Spellkave session core + daemon host (#1990) \u2014 one connect/subscribe-on-connect lifecycle shared by the daemon, the Pi extension, and future browser hosts.",
 	"type": "module",
