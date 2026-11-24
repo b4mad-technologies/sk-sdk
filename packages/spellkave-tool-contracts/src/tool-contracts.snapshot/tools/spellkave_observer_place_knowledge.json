@@ -1,0 +1,32 @@
+{
+	"name": "spellkave_observer_place_knowledge",
+	"label": "Spellkave Observer Place Knowledge",
+	"description": "Read the place nodes an observer body has perceived. Body-keyed fog-of-war view.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"observer_id"
+		],
+		"properties": {
+			"observer_id": {
+				"type": "string",
+				"description": "Observer body entity identifier. Returns the place nodes that body has perceived.",
+				"minLength": 1
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"DM"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"publisherRead"
+		]
+	}
+}

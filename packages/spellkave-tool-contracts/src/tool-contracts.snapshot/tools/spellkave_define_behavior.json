@@ -1,0 +1,505 @@
+{
+	"name": "spellkave_define_behavior",
+	"label": "Define Behavior (verb PoC)",
+	"description": "PoC (#1968): author ONE capability→affordance→action→outcome→consequence→frame_write chain (+ an optional cost debit) in a single call, granted to `grant_to`. Drives @spellkave/world-author's `clusterRows` — the SAME behavior-cluster builder the SRD content drivers use (FIX③, #1968 de-fork) — bundle-namespaced via `BehaviorConfig.idNamespace`. `primitive` fields are CLOSED PoC enums — only the real kernel shapes the worked fireball/find_familiar/core-mark examples need are wired; anything else fails loudly naming the PoC boundary. #1968 US9 VERB EXPANSION: `effect.write.primitive` now also accepts 'Spawn' (Brief 26 EffectPrimitive::Spawn — instantiate an entity_def at the actor's own node) and 'Inscribe' (the raw FrameWriteOp::Inscribe trace idiom — a durable typed footprint, no resource delta); both require `offered_when.target: 'self'|'place'` (a target concept beyond 'hit others in a radius') and never combine with `effect.shape`/`effect.per_target_gate`. `target: 'self'` needs a `cost` (else this tool errors BEFORE validation with a hint, MF-VAL-263); `target: 'place'` needs none (self_eligible stays false, so the self-budget check never engages). `effect.write.resource` (ModifyResource) / `effect.write.entity_def` (Spawn) must already be authored (this PoC never auto-creates write-target resources/blueprints — use spellkave_define_resource / spellkave_define_entity_type first); `cost.pool`, if new, IS auto-created with generic bounds. #1968 workspace idempotency: re-authoring the SAME bundle+id REPLACES the whole generated cluster (capability/ outcome/affordance/action/consequence/frame-write/live-wiring rows) rather than duplicating it.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"id",
+			"grant_to",
+			"offered_when",
+			"action_class",
+			"effect"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id stamped on every generated row. Omit to fall back to `context.defaultBundle` (#1968 smart default)."
+			},
+			"id": {
+				"type": "string",
+				"description": "Behavior key stem — derives capability_id '<bundle>/spell/<id>' and action_id '<bundle>/cast_<id>' (+ its outcome/affordance/consequence siblings), unless overridden by `capability_id`."
+			},
+			"capability_id": {
+				"type": "string",
+				"description": "#1968 verb-UX round 2: override the derived '<bundle>/spell/<id>' capability_id — e.g. for a CATALOG spell whose entity_definitions.entity_def_id already exists under a different id shape (mirrors compose.ts's ActorBehavior.capabilityId — for a catalog spell this MUST equal the catalog entity_def_id so the capability IS the catalog identity, #835). `action_id` is never touched by this — only the capability's own id changes."
+			},
+			"action_prefix": {
+				"type": "string",
+				"description": "#1968 srd-migration round: override the derived action id's prefix — the full action id is '<bundle>/<action_prefix><id>' (default 'cast_', e.g. id='fireball' -> '<bundle>/cast_fireball'). Pass '' to derive a BARE '<bundle>/<id>' action id (e.g. the Hex/Bless/Bardic-Inspiration condition-modified-roll family's WRITER/CONSUMER pair, whose action ids are '<bundle>/<key>', not '<bundle>/cast_<key>') — mirrors compose.ts's BehaviorConfig.actionPrefix verbatim; outcome/affordance/success ids all derive from the SAME action id, so this affects all four."
+			},
+			"emit_capability": {
+				"type": "boolean",
+				"description": "#1968 srd-migration round: whether this call authors a capability_definitions row for `capability_id`/the derived id. Default true. Pass false when the capability ALREADY exists (authored by ANOTHER call/fragment, e.g. a feat grant that already created it) and this call should REUSE it — `required_capability`/`actor_capabilities`/the niche all still key on `capability_id` (which then MUST be set — omitting it AND setting false derives an id no prior call could have authored), but no duplicate capability_definitions row is emitted (mirrors compose.ts's ActorBehavior.emitCapability, a required field there, made an optional smart default here since every prior verb caller wanted true)."
+			},
+			"display_name": {
+				"type": "string",
+				"description": "#1968 verb-UX round 2: overrides the derived 'Cast <TitleCase id>' display name stamped onto every generated row that carries one (capability/action/affordance/outcome). Omit for the smart default — naive per-word title-casing mangles a multi-word id containing a preposition (e.g. 'circle_of_death' -> 'Cast Circle Of Death' instead of 'Cast Circle of Death')."
+			},
+			"description": {
+				"type": "string",
+				"description": "Sets the generated capability_definitions row's own `description` column (#1968) — the capability is this behavior's natural authoring-identity anchor, so that is where the description lands (NOT the affordance/action/outcome/consequence/resource rows this verb also generates)."
+			},
+			"observation": {
+				"type": "string",
+				"description": "#1968 B-9: authored PLAYER-facing prose for what a player perceives on a successful manipulate or sensing outcome — distinct from `description` above, which stays operator-only on capability_definitions. Sets the generated outcome_templates row's own `description` column (its actual authoring/read home — see outcome_template.rs's doc comment for why that table, not action_definitions/consequence_templates). May reference ONLY the frozen placeholders `{target_name}`, `{actor_name}`, `{place_name}` (resolved from data the player already sees, never a raw id) — a state-dereferencing value (HP, a resource, a condition) belongs in the DSL outcome expression, not here, and an unknown placeholder or a description over 500 chars is rejected at validation. Omit for the existing default: the tool result carries an honest `observation: null` + `observation_gap`, byte-identical to today."
+			},
+			"tags": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"description": "#1968 verb-UX round 2: the FULL capability_definition_tag AND action_definition_tag row set — when set, REPLACES the single `action_class` tag as the authoritative list for BOTH satellites (include `action_class`'s own value in `tags` too, if wanted — it is not auto-prepended). Omit for the legacy default: `action_class` alone becomes the one action tag, no capability tags — `action_class` itself is REQUIRED either way (no default of its own, #1968 finding A1): this param only controls what ELSE joins it, never whether it is needed."
+			},
+			"communication_speech_act_id": {
+				"type": "string",
+				"description": "#1968 verb-UX round 4 (SPEECH-ACT lens, Searle) — when set, the generated action's outcome_templates row carries this `communication_speech_act_id`, so the affordance SURFACES as a communication speech act while r_manipulate still EXECUTES the gated consequence normally via `manipulation_action_id` (mirrors compose.ts's ActorBehavior.communicationSpeechActId — the Persuasion 'directive' worked example). Omit for the legacy default: no speech-act framing."
+			},
+			"grant_to": {
+				"anyOf": [
+					{
+						"type": "string"
+					},
+					{
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				],
+				"description": "entity_key of the caster (already placed via spellkave_place_actor) granted the capability — or an ARRAY of entity_keys to grant the SAME capability to several actors in one call (#1968 finding B4: 'author once, grant twice' — e.g. two mechanically-identical monsters sharing one scimitar). The capability/action/affordance/outcome/consequence cluster is authored exactly ONCE regardless (keyed off the FIRST entry, which also becomes `defaultCaster` for any `[[actors]]`/entities the shape itself emits, e.g. Spawn's `def_instance`) — every entry gets its OWN `actor_capabilities` grant + `spatial_niche_attachments` row (attached to ITS OWN node, resolved independently per entity_key, exactly like the single-actor case). Each caster needs a nonblank place_node_id, resolved from the workspace before the active target. If a live AUTHOR cannot read the caster's placement, the call fails before writing scratch; supply its known current actor_spatial_locations workspace row. #1968 workspace idempotency: re-authoring the SAME bundle+id REPLACES the WHOLE grant set — an entity_key dropped from the array on a later call has its grant and attachment rows cleared, not left behind (mirrors every other satellite this verb folds)."
+			},
+			"offered_when": {
+				"type": "object",
+				"required": [
+					"reach"
+				],
+				"properties": {
+					"reach": {
+						"anyOf": [
+							{
+								"type": "string",
+								"const": "same_node"
+							}
+						],
+						"description": "Closed PoC enum — only 'same_node' is wired (its own range_m default, see `range_m`)."
+					},
+					"range_m": {
+						"type": "number",
+						"description": "Affordance range_m (metres, ADR-0053 metric embedding) — author via the ft() feet→metric helper (e.g. ft(5) for standard 5-ft melee reach), never a raw metre literal. Omit for the default range_m=0 (touch/same-node only)."
+					},
+					"target": {
+						"anyOf": [
+							{
+								"type": "string",
+								"const": "self"
+							},
+							{
+								"type": "string",
+								"const": "place"
+							}
+						],
+						"description": "#1968 US9 — a target concept beyond 'ForEachActorInRadius hits others in a radius'. Omit for the legacy default (`effect.write.primitive` must be 'ModifyResource', wrapped in `effect.shape`'s ForEachActorInRadius — unaffected by this param). 'self': the acting actor targets ITSELF (action_definitions.self_eligible=true, mirrors srd/cast_find_familiar's self_eligible=true) — MF-VAL-263 then requires SOME ModifyResource in the on_success chain; `effect.write.primitive: 'ModifyResource'` satisfies it on its own, but 'Spawn'/'Inscribe' need an explicit `cost` (else this tool errors BEFORE validation with a hint). 'place': the write lands at the actor's OWN place_node with NO target-actor selection and NO self-targeting at all (self_eligible stays false — MF-VAL-263 never engages, so no `cost` pool is required or accepted); only 'Spawn'/'Inscribe' support 'place' (no fixture idiom modifies a resource with neither an actor nor a self target)."
+					}
+				}
+			},
+			"action_class": {
+				"type": "string",
+				"description": "action_definition_tag applied to the generated action (e.g. 'spell'). REQUIRED — has no default (#1968 finding A1): omitting it throws a named-param error rather than silently authoring a corrupt row. Overridden (not supplemented) by `tags` when that param is set."
+			},
+			"cost": {
+				"type": "object",
+				"required": [
+					"pool",
+					"amount"
+				],
+				"properties": {
+					"pool": {
+						"type": "string",
+						"description": "resource_definition_id debited on cast (e.g. a spell-slot pool)."
+					},
+					"amount": {
+						"type": "number",
+						"description": "How much to debit per cast."
+					}
+				}
+			},
+			"effect": {
+				"type": "object",
+				"required": [
+					"primitive",
+					"write"
+				],
+				"properties": {
+					"primitive": {
+						"anyOf": [
+							{
+								"type": "string",
+								"const": "ForEachActorInRadius"
+							}
+						],
+						"description": "Closed PoC enum — only 'ForEachActorInRadius' is wired."
+					},
+					"shape": {
+						"type": "object",
+						"required": [
+							"id",
+							"radius"
+						],
+						"properties": {
+							"id": {
+								"anyOf": [
+									{
+										"type": "string",
+										"const": "core/area/node_ball"
+									},
+									{
+										"type": "string",
+										"const": "core/area/sphere"
+									}
+								],
+								"description": "Closed PoC enum: 'core/area/node_ball' (topological — radius = ball_radius graph-edge hops, 0 = same node) or 'core/area/sphere' (metric — radius = radius_m). Other area shapes need direct authoring."
+							},
+							"radius": {
+								"type": "number",
+								"description": "node_ball: integer edge-hop radius. sphere: metric radius_m."
+							}
+						}
+					},
+					"per_target_gate": {
+						"type": "string",
+						"description": "Authored Bool DSL expression gating the write, e.g. 'd20 < 13' (a failed save) or 'd20 >= 13' (a hit). Omit for an ungated write. aoe (effect.shape set): gates the body PER SELECTED ACTOR. single-target (effect.shape omitted): gates the AFFORDANCE itself (a miss/failed-check skips the whole consequence — the attack-roll seam). ModifyResource only — MUST be omitted for 'Spawn'/'Inscribe'."
+					},
+					"write": {
+						"type": "object",
+						"required": [
+							"primitive"
+						],
+						"properties": {
+							"primitive": {
+								"anyOf": [
+									{
+										"type": "string",
+										"const": "ModifyResource"
+									},
+									{
+										"type": "string",
+										"const": "Spawn"
+									},
+									{
+										"type": "string",
+										"const": "Inscribe"
+									},
+									{
+										"type": "string",
+										"const": "ApplyStatus"
+									},
+									{
+										"type": "string",
+										"const": "RemoveCondition"
+									},
+									{
+										"type": "string",
+										"const": "EnvState"
+									},
+									{
+										"type": "string",
+										"const": "OutcomeGraph"
+									},
+									{
+										"type": "string",
+										"const": "ScheduledZone"
+									},
+									{
+										"type": "string",
+										"const": "Clock"
+									}
+								],
+								"description": "Closed PoC enum — the REAL kernel primitive names (#1968 US9/srd-migration round, never invented; verified against world-fixtures/srd/base/summon.toml + world-fixtures/core/base/affordances.toml + world-fixtures/srd/base/hold-monster.toml + world-fixtures/srd/base/lesser-restoration.toml + world-fixtures/srd/base/darkness.toml + world-fixtures/srd/base/acid-arrow.toml + world-fixtures/srd/base/moonbeam.toml + world-fixtures/srd/base/death-saves.toml): 'ModifyResource' (a resource/state delta — the original fireball-wired primitive), 'Spawn' (Brief 26 EffectPrimitive::Spawn — instantiate an entity_def at the actor's own node, the find_familiar shape; requires `offered_when.target`), 'Inscribe' (the raw FrameWriteOp::Inscribe trace idiom core/mark/core/pickup/core/drop use — a durable typed footprint, NO ModifyResource delta and NO companion definition row; requires `offered_when.target`), 'ApplyStatus' (lands a condition on the single TargetActor — the B9 Hold-Person/Hold-Monster/Bless-family shape; single-target only, no `offered_when.target`), 'RemoveCondition' (the INVERSE — deletes a matching target_condition row, the Lesser-Restoration cleanse shape; single-target only, no `offered_when.target`), 'EnvState' (#1968 verb-UX round 4 — the Darkness/Silence/Fog AMBIENT-EFFECT shape, compose.ts's 'env-state': the cast's ONLY write is an Inscribe{kind:'spatial_environment_state'} bool marker on the caster's cell (or the target cell — see `env_state_center`); this call auto-creates the backing spatial_state_definitions row, mirroring `cost.pool`'s auto-create; a SEPARATELY-authored consumer affordance reads target.state(env_state_id); single-target only, no `offered_when.target`), 'OutcomeGraph' (#1968 verb-UX round 4 — the branch-on-outcome shape, compose.ts's 'outcome-graph': the action's outcome invokes a graph whose `branches` (see that field) each carry their OWN ModifyResource(TargetActor, srd/hp, ...) consequence, selected by the first true edge guard in array order — unlike a gated single-target write, EVERY branch can apply an effect (a Melf's Acid Arrow miss still deals half damage); single-target only, no `offered_when.target`), 'ScheduledZone' (#1968 verb-UX round 5 — the TRUE LINGERING hazard shape, compose.ts's 'scheduled-zone' (ADR-0054): the cast's ONLY direct write is the SAME Inscribe{kind:'spatial_environment_state'} marker EnvState uses (auto-creates the backing spatial_state_definitions row, `zone_state_id`/`zone_intensity`/ `zone_visibility`/`zone_center` — see those fields); it ALSO schedules a subject-bound ScheduleAutonomyJob (`schedule` — repeats/frequency/liveness/source) that re-fires a SEPARATE, self-contained pulse consequence each round — a node-local ForEachActorInRadius (fixed radius, ball_radius 0) wrapping `effect.write.pulse`, which REUSES this same closed enum's two autonomy-clock-eligible bodies ('ModifyResource' damage/heal via `pulse.delta`, or 'ApplyStatus' condition via `pulse.condition`) rather than inventing a third write vocabulary; `effect.per_target_gate` (if set) gates the PULSE body per occupant (the save-negate seam — Stinking Cloud), not the affordance; single-target-only, no `offered_when.target`), 'Clock' (#1968 finding C2 — the SELF-TARGETED multi-ordinal clock shape, compose.ts's 'clock' (the death-saves death-and-dying pattern): unlike every OTHER primitive above (each writes a TargetActor or a radius-selected OTHER actor), a clock's every write targets the ACTING subject alone. `tallies` (see that field) — N bare ModifyResource(actor='Actor', ...) ordinals, authored first, array order = ordinal order — followed by `thresholds` (see that field) — M ForEachActorInRadius(node_ball, ball_radius 0) ordinals wrapping an ApplyStatus/RemoveCondition on 'Actor', reading the tallies' just-written state; requires `offered_when.target: 'self'` (a clock is inherently self-only — there is no 'hit others' reading of it) and needs no separate `cost` (the tallies themselves satisfy MF-VAL-263's on_success ModifyResource requirement); single-target-topology-only, no `effect.shape`/`effect.per_target_gate` (each threshold carries its OWN `when` instead of one shared per-target gate — `effect.per_target_gate`, if set, becomes the AFFORDANCE's own eligibility gate instead, e.g. \"actor.status('dying') == true && ...\", the same seam single-target's attack-roll gate reuses)). 'Spawn'/'Inscribe' are NOT FrameWriteOp arms nestable inside a ForEachActorInRadius body — they never combine with `effect.shape`/`effect.per_target_gate` (PoC boundary: only 'ModifyResource' selects actors in a radius). 'ApplyStatus'/'RemoveCondition'/'EnvState'/'OutcomeGraph'/'ScheduledZone'/'Clock' are single-target-only too (PoC boundary: no aoe condition/env-state/outcome-graph/scheduled-zone-CAST/clock pulse is wired — the scheduled-zone shape's OWN pulse is always the fixed node_ball-0 radius, never `effect.shape`) — they never combine with `effect.shape` either ('ScheduledZone' reuses `effect.per_target_gate` for its pulse's per-occupant gate instead, 'Clock' reuses it for the affordance's eligibility gate instead, see above)."
+							},
+							"resource": {
+								"type": "string",
+								"description": "ModifyResource only: must already resolve to an authored resource_definitions row (workspace, live, or the active target) — this PoC does not auto-create write-target resources (only `cost.pool` auto-creates, see the tool description). aoe (effect.shape set): the resource every selected actor's body write targets. single-target (effect.shape omitted, #1968 verb-UX round 2): the resource the ONE TargetActor write targets — defaults to 'srd/hp'-shaped combat use but any already-authored resource/state works (e.g. a non-HP disposition state)."
+							},
+							"delta": {
+								"type": "string",
+								"description": "ModifyResource only: authored Int DSL expression evaluated per target, e.g. '-d6'. aoe: applied to every selected actor. single-target: applied once, to the ONE TargetActor. Ignored (may be omitted) when `attacks` is set."
+							},
+							"attacks": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"required": [
+										"delta"
+									],
+									"properties": {
+										"delta": {
+											"type": "string",
+											"description": "This sub-attack's authored Int DSL expression, self-gating its OWN attack roll (e.g. 'cond(d20 >= 11, 0 - (1d8 + 5), 0)') — a miss on THIS roll must resolve to 0, not skip the whole action (unlike the single-attack affordance-gated shape)."
+										},
+										"label": {
+											"type": "string",
+											"description": "Human tag for this sub-attack (e.g. 'Rend'), report-only."
+										}
+									}
+								},
+								"description": "One entry per sub-attack (2+ for an SRD Multiattack, but generalises to any N) — see this field's own top-level description for the full shape."
+							},
+							"entity_def": {
+								"type": "string",
+								"description": "Spawn only: the entity_definitions catalog id to instantiate at the actor's own node (e.g. 'srd/monster/cat', mirroring srd/cast_find_familiar) — must already resolve (workspace or live); this PoC does not auto-create the blueprint."
+							},
+							"trace_kind": {
+								"type": "string",
+								"description": "Inscribe only: the trace's `kind` discriminant (e.g. 'puddle_mark') — an arbitrary authored string; unlike `resource`, this is NEVER ref-checked against a definitions row (core/mark's own 'scrape_marks' has none either — FrameWriteOp::Inscribe's own doc: 'a durable typed footprint without a resource delta')."
+							},
+							"content": {
+								"type": "string",
+								"description": "Inscribe only: the trace's `payload_json` content — a JSON-encodable string describing the mark (e.g. '{\"action\":\"relieve\"}')."
+							},
+							"condition": {
+								"type": "string",
+								"description": "ApplyStatus/RemoveCondition only: the condition_definitions condition_definition_id landed on (ApplyStatus) or deleted from (RemoveCondition) the single TargetActor — must already resolve (workspace, live, or the active target); this PoC does not auto-create the condition (use spellkave_define_condition first)."
+							},
+							"remove_source": {
+								"type": "string",
+								"description": "RemoveCondition only: an exact source key to match (FrameWriteOp::RemoveCondition's `source_match: Exact`). Omit for the default 'Any' — source-agnostic removal (matches ANY target_condition row for `condition`, regardless of what applied it)."
+							},
+							"env_state_id": {
+								"type": "string",
+								"description": "EnvState only: the spatial_state_definitions id this write flips (e.g. 'srd/darkness') — auto-created by this call as a BOOL state def with writer_policy 'world_interaction' (so the apply path may write it at cast time) and a long freshness, mirroring `cost.pool`'s auto-create; this PoC never requires it pre-authored. A separately-authored consumer affordance reads target.state(env_state_id) — this call does not author the consumer."
+							},
+							"env_state_value": {
+								"type": "boolean",
+								"description": "EnvState only: the bool value the marker Inscribe writes. Default true ('on')."
+							},
+							"env_state_center": {
+								"anyOf": [
+									{
+										"type": "string",
+										"const": "actor"
+									},
+									{
+										"type": "string",
+										"const": "target"
+									}
+								],
+								"description": "EnvState only: 'actor' (default) writes the CASTER'S OWN cell (ActorSpatialRef — follows the caster, a Darkness-shaped ambient cast). 'target' anchors on the cast's TARGET cell (TargetSpatialRef) instead."
+							},
+							"branches": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"required": [
+										"node",
+										"guard",
+										"delta"
+									],
+									"properties": {
+										"node": {
+											"type": "string",
+											"description": "This branch's outcome_graph node id (e.g. 'hit'/'miss'; also the outcome/consequence id stem)."
+										},
+										"guard": {
+											"type": "string",
+											"description": "This branch's edge guard predicate, evaluated root→node in array order — the FIRST true guard wins (e.g. 'd20 >= 13'); the LAST branch should carry a '1 == 1' fallthrough so some branch always selects."
+										},
+										"delta": {
+											"type": "string",
+											"description": "This branch's authored Int DSL expression — the ModifyResource delta its terminal node's consequence applies when selected (e.g. '0 - 4d4'), written against `subject`'s `resource`."
+										},
+										"label": {
+											"type": "string",
+											"description": "Human tag for this branch, report-only."
+										},
+										"subject": {
+											"type": "string",
+											"description": "This branch's own write subject — a kernel symbolic actor ref: 'TargetActor' (default, the damage-against-target shape every prior branch authored) or 'Actor' (the CASTER, e.g. a defeat-consequence XP credit back to the attacker — playable-fighter-l1-20 D-1). Omit to keep today's byte-identical shape."
+										},
+										"resource": {
+											"type": "string",
+											"description": "This branch's own write resource — must already resolve to an authored resource_definitions row, same rule as the top-level `resource` field. Defaults to 'srd/hp'. Omit to keep today's byte-identical shape."
+										}
+									}
+								},
+								"description": "OutcomeGraph only: one entry per branch arm (2+ — see this field's own top-level description). Required, and must be non-empty, when effect.write.primitive is 'OutcomeGraph'."
+							},
+							"zone_state_id": {
+								"type": "string",
+								"description": "ScheduledZone only: the spatial_state_definitions id the marker Inscribe (and every pulse) reads/writes (e.g. 'srd/hazard/cloudkill') — auto-created by this call as an INT state def with writer_policy 'world_interaction' and a long freshness, mirroring EnvState's `env_state_id` auto-create (and `cost.pool`'s). Required when effect.write.primitive is 'ScheduledZone'."
+							},
+							"zone_intensity": {
+								"type": "number",
+								"description": "ScheduledZone only: the documentary int value the marker Inscribe stamps (e.g. the spell's damage magnitude — Cloudkill's 5d8 stamps 5). Default 0. Never read by the pulse itself (the pulse's own damage/condition comes from `pulse.delta`/`pulse.condition`) — purely an observable marker value."
+							},
+							"zone_visibility": {
+								"type": "string",
+								"description": "ScheduledZone only: the marker Inscribe's visibility class. Default 'Public'."
+							},
+							"zone_center": {
+								"anyOf": [
+									{
+										"type": "string",
+										"const": "actor"
+									},
+									{
+										"type": "string",
+										"const": "target"
+									}
+								],
+								"description": "ScheduledZone only: 'actor' (default) anchors the marker AND every pulse on the CASTER'S CURRENT cell each fire (ActorSpatialRef — a mobile aura that follows the caster). 'target' anchors on the cast's TARGET cell instead (TargetSpatialRef — the captured anchor_place_node_id stays FIXED even if the caster moves; the faithful 'dropped at range' hazard every shipped scheduled-zone spell today uses — Cloudkill/Moonbeam/Stinking Cloud/the scheduled-damage-zone batch). Mirrors EnvState's `env_state_center` — same two-value anchor concept, kept as its own field because it is scoped to a different write primitive."
+							},
+							"schedule": {
+								"type": "object",
+								"properties": {
+									"repeats": {
+										"type": "number",
+										"description": "How many rounds the pulse re-fires — bounds the duration (a subject-bound actor-reaching autonomy job MUST be bounded, server fence + MF-VAL-249). Default 10 (SRD's common 'concentration up to 1 minute' → 10 one-tick rounds)."
+									},
+									"frequency_ms": {
+										"type": "number",
+										"description": "Fiction-millisecond period between pulses. Default 6000 (fires every round)."
+									},
+									"requires_subject_alive": {
+										"type": "boolean",
+										"description": "Whether the zone dissipates if the caster's entity is removed. Default false (the zone lingers its full duration regardless — the SRD Cloudkill/Moonbeam behaviour). Set true for a concentration-style hazard that ends with its caster."
+									},
+									"source": {
+										"type": "string",
+										"description": "The cancel-by-source/provenance key stamped on the runtime autonomy_job — author with the {Actor}/{ResponsibleSubject}/{tick} placeholders (ADR-0055 D-3), e.g. '<bundle>/<id>/{Actor}/{tick}', so the scheduler interpolates a PER-CAST-UNIQUE job_id at cast time (two concurrent casts never collide on the autonomy_job PK). Omit for the compose.ts legacy default ('srd/<id>', UNqualified by `bundle` — pass this explicitly for any non-'srd' bundle)."
+									}
+								},
+								"description": "ScheduledZone only: the ADR-0054 autonomy-pulse cadence + provenance. Every field optional — omit the whole object for compose.ts's defaults (repeats 10, frequency_ms 6000, requires_subject_alive false, source 'srd/<id>')."
+							},
+							"pulse": {
+								"type": "object",
+								"required": [
+									"primitive"
+								],
+								"properties": {
+									"primitive": {
+										"anyOf": [
+											{
+												"type": "string",
+												"const": "ModifyResource"
+											},
+											{
+												"type": "string",
+												"const": "ApplyStatus"
+											}
+										],
+										"description": "The scheduled pulse's OWN per-round frame_write body (wrapped in a fixed node-local ForEachActorInRadius, ball_radius 0, by clusterRows — never `effect.shape`) — REUSES this tool's two autonomy-clock-eligible write shapes rather than a new vocabulary: 'ModifyResource' (a damage/heal delta on 'srd/hp', the Cloudkill/Moonbeam/scheduled-damage-zone-batch shape) or 'ApplyStatus' (lands a condition on each occupant, the Stinking Cloud save-or-condition shape — #958 admits ApplyStatus to the subject-bound autonomy fence)."
+									},
+									"delta": {
+										"type": "string",
+										"description": "pulse.primitive 'ModifyResource' only: the authored Int DSL expression applied to EVERY occupant's srd/hp each pulse (e.g. 'cond(d20 >= 13, 0 - (5d8 / 2), 0 - 5d8)' for save-for-half — fold the save into the delta the same way single-target/aoe do). Required when pulse.primitive is 'ModifyResource'."
+									},
+									"condition": {
+										"type": "string",
+										"description": "pulse.primitive 'ApplyStatus' only: the condition_definitions id landed on every occupant whose `effect.per_target_gate` passes (e.g. 'srd/poisoned') — must already resolve (workspace, live, or the active target); this PoC does not auto-create it (use spellkave_define_condition first). Required when pulse.primitive is 'ApplyStatus'."
+									}
+								},
+								"description": "ScheduledZone only: the pulse's own write. Required when effect.write.primitive is 'ScheduledZone' — a zone with no pulse body would schedule a job that fires nothing."
+							},
+							"tallies": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"required": [
+										"resource"
+									],
+									"properties": {
+										"resource": {
+											"type": "string",
+											"description": "Clock only: the resource_definitions id this tally ordinal's bare ModifyResource(actor='Actor', ...) reads/writes — must already resolve (workspace, live, or the active target); this PoC does not auto-create tally resources (use spellkave_define_resource first, same posture as effect.write.resource)."
+										},
+										"predicate": {
+											"type": "string",
+											"description": "Clock only: an authored Bool DSL expression — when set, this ordinal's delta_source becomes 'cond(<predicate>, <delta ?? \"1\">, 0)', the increment-on-condition idiom every tally-split ordinal needs (e.g. \"actor.stat('death_save_last_roll') >= 10\" to tally a success). Omit for a raw (non-conditional) `delta` expression instead — the scratch-cell-capture idiom a clock's FIRST ordinal often needs (e.g. \"d20 - actor.stat('death_save_last_roll')\", a set-via-delta that lands exactly on a fresh roll). Exactly one of `predicate`/`delta` must convey the real expression: set `predicate` alone for a plain +1-on-condition tally, `delta` alone for a raw capture, or both when the increment amount is not 1."
+										},
+										"delta": {
+											"type": "string",
+											"description": "Clock only: with `predicate` set, the increment amount (default '1') — the expression becomes 'cond(<predicate>, <delta>, 0)'. With `predicate` OMITTED, this is the WHOLE raw delta_source expression verbatim (the scratch-cell-capture idiom — see `predicate`'s own doc). Required when `predicate` is omitted."
+										}
+									}
+								},
+								"description": "Clock only: one entry per self-targeted tally ordinal, authored FIRST (array order = ordinal order, before every `thresholds` entry) — see this field's own top-level description. Required, non-empty, when effect.write.primitive is 'Clock'."
+							},
+							"thresholds": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"required": [
+										"when"
+									],
+									"properties": {
+										"when": {
+											"type": "string",
+											"description": "Clock only: this threshold ordinal's own ForEachActorInRadius(node_ball, ball_radius 0) predicate_source, evaluated against the POST-tally state (this ordinal runs after every `tallies` entry) — e.g. \"actor.stat('death_save_failures') >= 3\", or an OR-branched short-circuit like a nat-20 immediate-stabilize check. A bare ApplyStatus/RemoveCondition carries no delta/predicate of its own to fold a `cond(...)` into, so this wrapper's own predicate_source is the only way to gate one — safe here specifically because every `tallies` ordinal already wrote 'Actor' alone (never a co-located bystander)."
+										},
+										"apply_status": {
+											"type": "string",
+											"description": "Clock only: the condition_definitions id this threshold lands on 'Actor' when `when` is true — must already resolve (workspace, live, or the active target); this PoC does not auto-create it (use spellkave_define_condition first). Exactly one of `apply_status`/`remove_condition` must be set per threshold entry."
+										},
+										"remove_condition": {
+											"type": "string",
+											"description": "Clock only: the condition_definitions id this threshold REMOVES from 'Actor' when `when` is true (the inverse of `apply_status`) — must already resolve. Exactly one of `apply_status`/`remove_condition` must be set per threshold entry."
+										},
+										"remove_condition_source": {
+											"type": "string",
+											"description": "Clock + `remove_condition` only: an exact source key to match (RemoveCondition's `source_match: Exact`). Omit for the default 'Any' — source-agnostic removal."
+										}
+									}
+								},
+								"description": "Clock only: one entry per self-targeted threshold ordinal, authored AFTER every `tallies` entry (array order = ordinal order) — see this field's own top-level description. Required, non-empty, when effect.write.primitive is 'Clock'."
+							}
+						}
+					}
+				}
+			},
+			"bind_to_definition": {
+				"type": "string",
+				"description": "An already-authored entity_definitions catalog id (workspace, live, or the active target — same 3-way resolution as the placement tools' `entity_def`) that inherits this call's capability at instance birth via entity_definition_initial_capability. This PoC does not auto-create the definition (use spellkave_define_entity_type first)."
+			},
+			"def_instance": {
+				"type": "object",
+				"required": [
+					"entity_key",
+					"name"
+				],
+				"properties": {
+					"entity_key": {
+						"type": "string",
+						"description": "The proof instance's fully-qualified entity_key, e.g. 'srd/actor/polar-bear-def'."
+					},
+					"name": {
+						"type": "string",
+						"description": "entities.name / actors.name for the proof instance."
+					},
+					"node": {
+						"type": "string",
+						"description": "An already-authored place_node id the proof instance is placed at. Omit to default to the resolved caster node (`grant_to`'s own node) — the niche this behavior's capability attaches is already anchored there."
+					}
+				}
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

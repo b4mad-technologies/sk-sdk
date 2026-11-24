@@ -1,0 +1,59 @@
+{
+	"name": "spellkave_return_npc_control",
+	"label": "Return NPC Control",
+	"description": "Surrender your recorded NPC hold using the observed generation. The recorded holder may return even after losing steering authority.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"actor_id",
+			"world_instance_id",
+			"expected_generation",
+			"request_id",
+			"reason"
+		],
+		"properties": {
+			"actor_id": {
+				"type": "string",
+				"pattern": "^[0-9]+$"
+			},
+			"world_instance_id": {
+				"type": "string",
+				"minLength": 1
+			},
+			"expected_generation": {
+				"type": "string",
+				"pattern": "^[0-9]+$"
+			},
+			"request_id": {
+				"type": "string",
+				"minLength": 1,
+				"maxLength": 128
+			},
+			"reason": {
+				"type": "string",
+				"minLength": 1,
+				"maxLength": 1024
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"DM"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.impersonate"
+				]
+			}
+		],
+		"ports": [
+			"control"
+		],
+		"argumentGates": [
+			"Caller ownership, destination extent, current hold generation and server consent."
+		]
+	}
+}

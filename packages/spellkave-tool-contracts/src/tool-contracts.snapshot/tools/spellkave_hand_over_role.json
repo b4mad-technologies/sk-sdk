@@ -1,0 +1,89 @@
+{
+	"name": "spellkave_hand_over_role",
+	"label": "Hand over role",
+	"description": "Commit one reviewed subject replacement through guarded apply as the caller. Preserve binding, presence, extent and expiry. Personal consent and NPC holds never transfer. Completion requires a server receipt; reuse the same request UUID to reconcile a lost response.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"binding_id",
+			"subject",
+			"expected_digest",
+			"expected_merged_role_digest",
+			"expected_incarnation",
+			"expected_revision",
+			"request_id",
+			"reason"
+		],
+		"properties": {
+			"binding_id": {
+				"type": "string"
+			},
+			"subject": {
+				"type": "string"
+			},
+			"expected_digest": {
+				"type": "string",
+				"pattern": "^[a-f0-9]{64}$"
+			},
+			"expected_merged_role_digest": {
+				"type": "string",
+				"pattern": "^[a-f0-9]{64}$"
+			},
+			"expected_incarnation": {
+				"type": "string",
+				"minLength": 1,
+				"maxLength": 256
+			},
+			"expected_revision": {
+				"type": "string",
+				"pattern": "^[0-9]+$"
+			},
+			"request_id": {
+				"type": "string",
+				"format": "uuid"
+			},
+			"reason": {
+				"type": "string",
+				"minLength": 1,
+				"maxLength": 1024
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"cli": {
+		"positionals": [
+			"binding_id",
+			"subject"
+		]
+	},
+	"roles": [
+		"AUTHOR"
+	],
+	"authority": {
+		"kind": "role-binding",
+		"readSubject": true
+	},
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "publisher"
+			},
+			{
+				"kind": "prefix",
+				"prefix": "frontier.bind."
+			},
+			{
+				"kind": "role-capabilities"
+			}
+		],
+		"ports": [
+			"grants"
+		],
+		"argumentGates": [
+			"The server checks old/new D-6 coverage for this binding; the commit also checks reviewed digests, incarnation/revision, expiry and the one-row subject-only envelope."
+		],
+		"limitations": [
+			"Discovery is a conservative capability superset and cannot authorize a transfer or reveal an unauthorized briefing."
+		]
+	}
+}

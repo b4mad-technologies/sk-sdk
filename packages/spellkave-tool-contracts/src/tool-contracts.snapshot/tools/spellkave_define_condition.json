@@ -1,0 +1,244 @@
+{
+	"name": "spellkave_define_condition",
+	"label": "Define Condition (verb)",
+	"description": "Author ONE condition_definitions row (+ condition_definition_tag satellites) in a single call, optionally ALSO authoring the condition_remove_policy_definitions/stacking_discipline_definitions vocabulary rows it references (shared cross-condition vocabulary — upserted by their OWN id, never duplicated, mirroring the server's own upsert-in-place discipline for these two kinds, ADR-0085) and any modifier_templates (+ modifier_template_tag) it needs (also upserted by their own modifier_template_id). DSL-bearing fields (gate_predicate_source, hooks[]._source, remove_predicate_source, *_outcome_source, predicate_source, modifier_expression_source) are passed through as free text verbatim — single-parse discipline is the server's job. Self-scaffolds the [[bundles]] header if `bundle` has none yet. #1968 workspace idempotency: re-authoring the SAME bundle+id REPLACES the condition row + its tag satellites wholesale (fewer tags on a re-run means the stale ones are gone, not left behind).",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"id"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id stamped on every generated row. Omit to fall back to `context.defaultBundle` (#1968 smart default)."
+			},
+			"id": {
+				"type": "string",
+				"description": "Local condition_definition_id stem; full id '<bundle>/<id>'."
+			},
+			"display_name": {
+				"type": "string",
+				"description": "condition_definitions.display_name. Omit to derive a title-cased `id` (#1968 smart default)."
+			},
+			"description": {
+				"type": "string",
+				"description": "condition_definitions.description (#1968 first-class column)."
+			},
+			"tags": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"description": "One condition_definition_tag row per tag."
+			},
+			"gate_predicate_source": {
+				"type": "string",
+				"description": "DSL Bool expression gating condition-triggered modifier application (default '')."
+			},
+			"observable": {
+				"type": "boolean",
+				"description": "condition_definitions.observable (default true)."
+			},
+			"grants_capability_while_active": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"description": "Capability ids GRANTED to the bearer while this condition is active (default []). Enforced in capability_ids_for_actor; use this rather than a status when the thing granted is an ability to act, because affordance_template.capability_id is a structural gate a status cannot reproduce."
+			},
+			"suppresses_capability_while_active": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"description": "Capability ids SUPPRESSED on the bearer AS AN ACTOR while this condition is active (default []). Suppression beats a grant of the same id. Applies to the bearer's own attempts to act only — it never makes the bearer an illegal TARGET, so a spell like Speak with Dead stays authorable against a corpse that cannot itself speak."
+			},
+			"implies": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"description": "condition_definitions.implies — cascade edges (each id is ALSO applied when this condition is applied)."
+			},
+			"hooks": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"required": [
+						"event_kind"
+					],
+					"properties": {
+						"event_kind": {
+							"type": "string",
+							"description": "condition_definitions.hooks[].event_kind, e.g. 'Layer2.ApplyConsequence'."
+						},
+						"detail_filter_source": {
+							"type": "string",
+							"description": "Inline-DSL Bool sub-expression gating which event instances this hook fires for. Passed through verbatim (single-parse discipline is the server's job, not this verb's)."
+						},
+						"expression_source": {
+							"type": "string",
+							"description": "Inline-DSL Int sub-expression evaluated when the hook fires. Passed through verbatim."
+						}
+					}
+				},
+				"description": "condition_definitions.hooks[]."
+			},
+			"remove_time_policy": {
+				"type": "string",
+				"description": "condition_definitions.remove_time_policy — REFERENCE an existing policy id (default 'core/remove_policy/independent_lifetime'). Pass `remove_policy` instead to ALSO author the row."
+			},
+			"remove_policy": {
+				"type": "object",
+				"required": [
+					"id",
+					"remove_predicate_source"
+				],
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "The FULL condition_remove_policy_definitions policy_id (cross-bundle vocabulary — e.g. 'core/remove_policy/independent_lifetime'; NOT bundle-prefixed by this verb, unlike `id`)."
+					},
+					"display_name": {
+						"type": "string",
+						"description": "condition_remove_policy_definitions.display_name. Omit to derive a title-cased `id` (#1968 smart default)."
+					},
+					"remove_predicate_source": {
+						"type": "string",
+						"description": "DSL Bool expression; the removal path evaluates this instead of branching on the policy id."
+					}
+				}
+			},
+			"stacking_rule": {
+				"type": "string",
+				"description": "condition_definitions.stacking_rule — REFERENCE an existing discipline id (default 'core/stacking/single'). Pass `stacking` instead to ALSO author the row."
+			},
+			"stacking": {
+				"type": "object",
+				"required": [
+					"id",
+					"stack_count_outcome_source",
+					"expires_at_tick_outcome_source"
+				],
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "The FULL stacking_discipline_definitions discipline_id (cross-bundle vocabulary — e.g. 'core/stacking/single'; NOT bundle-prefixed by this verb, unlike `id`)."
+					},
+					"display_name": {
+						"type": "string",
+						"description": "stacking_discipline_definitions.display_name. Omit to derive a title-cased `id` (#1968 smart default)."
+					},
+					"stack_count_outcome_source": {
+						"type": "string",
+						"description": "Int-valued DSL expression over the existing row state (facts: stack_count, expires_at_tick, world_tick)."
+					},
+					"expires_at_tick_outcome_source": {
+						"type": "string",
+						"description": "Int-valued DSL expression; -1 means 'leave the existing expiry unchanged'."
+					}
+				}
+			},
+			"modifier_template_id": {
+				"type": "string",
+				"description": "condition_definitions.modifier_template_id — REFERENCE an existing modifier (default ''). Omit when `modifiers` has EXACTLY one entry (auto-wired to it); REQUIRED when `modifiers` has more than one entry (which one is the FK, otherwise ambiguous)."
+			},
+			"modifiers": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"required": [
+						"id",
+						"applies_to",
+						"modifier_expression_source"
+					],
+					"properties": {
+						"id": {
+							"type": "string",
+							"description": "Local modifier_templates id stem; full id '<bundle>/<id>'."
+						},
+						"display_name": {
+							"type": "string",
+							"description": "modifier_templates.display_name. Omit to derive a title-cased `id` (#1968 smart default)."
+						},
+						"applies_to": {
+							"type": "string",
+							"description": "modifier_templates.applies_to — the composition-axis vocabulary id (an authored modifier_target_definitions row, e.g. 'ResolutionCheck'; open string)."
+						},
+						"modifier_expression_source": {
+							"type": "string",
+							"description": "DSL expression producing the modifier's magnitude."
+						},
+						"predicate_source": {
+							"type": "string",
+							"description": "DSL Bool gate; '' (default) means always-active."
+						},
+						"priority": {
+							"type": "number",
+							"description": "modifier_templates.priority (default 0)."
+						},
+						"delta_kind": {
+							"anyOf": [
+								{
+									"type": "string",
+									"const": "Advantage"
+								},
+								{
+									"type": "string",
+									"const": "Disadvantage"
+								},
+								{
+									"type": "string",
+									"const": "Plus"
+								},
+								{
+									"type": "string",
+									"const": "Times"
+								},
+								{
+									"type": "string",
+									"const": "FlatSet"
+								},
+								{
+									"type": "string",
+									"const": "Replace"
+								}
+							],
+							"description": "modifier_templates.delta_kind (default 'Plus') — the validator's OWN closed vocabulary (MF-VAL-243), not a PoC-narrower enum."
+						},
+						"replace_template_id": {
+							"type": "string",
+							"description": "Required (by the validator) when delta_kind='Replace' — the modifier_template id this one replaces."
+						},
+						"tags": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							},
+							"description": "One modifier_template_tag row per tag, for THIS modifier."
+						}
+					}
+				},
+				"description": "modifier_templates rows (+ their modifier_template_tag satellites) authored in this call."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

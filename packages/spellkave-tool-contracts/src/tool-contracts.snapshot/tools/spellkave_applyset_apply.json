@@ -1,0 +1,131 @@
+{
+	"name": "spellkave_applyset_apply",
+	"label": "Apply Applyset",
+	"description": "Apply an applyset root to the world like kubectl apply: compute the same difference as spellkave_applyset_diff, send only the create and configure rows (and, with prune, retractions for rows the files no longer name) in one r_apply_bundle call with the changed part lists and the memory generation it read, and wait for the seal. Refuses before sending when a changed row cannot be updated by a delta or the validator rejects the built root plus retractions. A concurrent apply (stale generation), another root path owning the name (without force) or a world without apply authority is refused by the world. Scoped ordinary writes need a fresh complete comparable observation and a known baseline, or complete authorized Bundle absence for a new row. Force overrides known conflicts only; it cannot supply missing read coverage. Scoped entity-prune and whole-world export require publisher closure. Binding-only deltas retain their separate authority lane; mixed unchecked rows refuse. Comparison remains optimistic against later world changes. Requires a live connection.",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"dir": {
+				"type": "string",
+				"description": "The applyset root: a directory holding manifest.toml, or the root manifest file itself. Its includes are read too; only the root's own rows are compared and sent."
+			},
+			"source": {
+				"type": "object",
+				"required": [
+					"root_path",
+					"root_toml",
+					"fragments"
+				],
+				"properties": {
+					"root_path": {
+						"type": "string",
+						"description": "Stable logical relative root name recorded in applyset provenance; never a server file path."
+					},
+					"root_toml": {
+						"type": "string"
+					},
+					"fragments": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"required": [
+								"path",
+								"toml"
+							],
+							"properties": {
+								"path": {
+									"type": "string"
+								},
+								"toml": {
+									"type": "string"
+								}
+							},
+							"additionalProperties": false
+						}
+					}
+				},
+				"additionalProperties": false
+			},
+			"dep": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"description": "Repeatable dependency root manifests (or their directories), loaded for validation only and never sent."
+			},
+			"prune": {
+				"type": "boolean",
+				"description": "Also retract rows the applyset applied before and the files no longer name. Retracting an entity covers its authored containment, state, resource bound, equipment (the wearer side), actor, position, identity, and capability rows (those kinds cannot be removed alone); tag rows stay. Pruning an equipped item together with its slot row while the wearer stays is refused. A containment row the files replace with another containment for the same contained entity needs no retraction. Retracting an entity on which the world holds rows beyond what the files put there, or any entity prune when those rows cannot be read, is refused unless --force. Off by default."
+			},
+			"dry_run": {
+				"type": "boolean",
+				"description": "Compute and report the difference; send nothing (same as diff)."
+			},
+			"force": {
+				"type": "boolean",
+				"description": "Let the files win over observed world changes, let this root take over an applyset name recorded under another root path, and retract an entity with world-added rows or unreadable prune contents. The answer reports the meanings used as a force_used list containing world_changed, root_takeover, and/or world_added_rows."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"promptSnippet": "Apply only the difference between an applyset root and the world",
+	"promptGuidelines": [
+		"spellkave_applyset_apply: pass dir= the applyset root; it sends only changed rows and waits for the seal.",
+		"spellkave_applyset_apply: rows the files dropped stay on the world unless prune=true; run spellkave_applyset_diff first to see them.",
+		"spellkave_applyset_apply: a stale-generation refusal (MF-APPLY-030) means another apply landed first: diff again, then apply."
+	],
+	"cli": {
+		"positionals": [
+			"dir"
+		],
+		"examples": [
+			{
+				"command": "sk apply -k ./rules/manifest.toml",
+				"description": "send the changed rows of the SRD root to the current context's world"
+			}
+		]
+	},
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			},
+			{
+				"kind": "prefix",
+				"prefix": "frontier.bind."
+			},
+			{
+				"kind": "role-capabilities"
+			},
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.escalate"
+				]
+			}
+		],
+		"ports": [
+			"applyset"
+		],
+		"inputModes": [
+			"source",
+			"local dir"
+		],
+		"limitations": [
+			"Scoped prospective writes require complete comparison; entity prune requires publisher closure."
+		],
+		"argumentGates": [
+			"Binding-only payloads retain D-6 server admission; mixed writes require readable prospective state.",
+			"Role widening still checks all-contained capabilities or frontier.escalate on the server; unsupported comparison kinds refuse."
+		]
+	}
+}

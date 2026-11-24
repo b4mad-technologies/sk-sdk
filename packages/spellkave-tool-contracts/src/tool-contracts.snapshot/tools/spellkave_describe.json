@@ -1,0 +1,73 @@
+{
+	"name": "spellkave_describe",
+	"label": "Describe",
+	"description": "Read one admitted authored entity, its place or containment chain and admitted containment, ownership and equipment. Publisher closure and caller-scoped reads use separate sources. Scoped relationships require both endpoints; an outside endpoint is marked outside_scope without its identity or label. Answers carry source and coverage information.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"kind",
+			"key"
+		],
+		"properties": {
+			"kind": {
+				"type": "string",
+				"description": "Must be entities."
+			},
+			"key": {
+				"type": "string",
+				"description": "Authored entity_key or numeric id of an authored entity."
+			},
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id when the key is not unique."
+			},
+			"limit": {
+				"type": "integer",
+				"minimum": 0,
+				"description": "Belonging-list cap (default 50)."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"promptSnippet": "Describe one placed authored entity and what belongs to it",
+	"cli": {
+		"positionals": [
+			"kind",
+			"key"
+		],
+		"examples": [
+			{
+				"command": "sk describe entities elven_mini/adventure/item/loft_chest_1",
+				"description": "describe the loft chest and its contents"
+			}
+		]
+	},
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.read_hidden"
+				]
+			},
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.read_internal"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"readInstance"
+		],
+		"limitations": [
+			"Only scoped comparable instance kinds; explicit incomplete coverage."
+		]
+	}
+}

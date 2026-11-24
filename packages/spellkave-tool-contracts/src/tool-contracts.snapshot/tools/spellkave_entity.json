@@ -1,0 +1,32 @@
+{
+	"name": "spellkave_entity",
+	"label": "Spellkave Entity",
+	"description": "Read an entity's identity row by entity_id (numeric id, 'entity:N', or a manifest key) — entity_def_id, name, kind, and stack quantity — or null if it does not resolve. General-purpose quantity surface outside the PLAYER inventory flow (e.g. verifying a coin stack shrank by a purchase price, or a purchased ware landed with the right count); spellkave_inventory and spellkave_item_detail also carry quantity, while spellkave_entity_container exposes containment only, never quantity.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"entity_id"
+		],
+		"properties": {
+			"entity_id": {
+				"type": "string",
+				"description": "Entity identifier (numeric id, 'entity:N', or a manifest key). Returns its identity row — entity_def_id, name, kind, and stack quantity — or null if it does not resolve. General-purpose quantity surface outside the PLAYER inventory flow (spellkave_inventory and spellkave_item_detail also carry quantity); spellkave_entity_container returns containment only, never quantity.",
+				"minLength": 1
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"DM"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"publisherRead"
+		]
+	}
+}

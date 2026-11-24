@@ -1,0 +1,39 @@
+{
+	"name": "spellkave_remove_entity",
+	"label": "Remove Entity",
+	"description": "Remove a placed entity and its dependent instance rows from the active local root file, and clean matching staged scratch rows so a later flush cannot recreate it. Requires a local target; live targets are refused. Root headers, definitions and unrelated rows remain. Include-owned rows and surviving containment/ownership references are refused with recovery guidance before writes. Reports removed row counts. Does not change the running world: use diff/apply with prune separately.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"entity_key"
+		],
+		"properties": {
+			"entity_key": {
+				"type": "string",
+				"minLength": 1,
+				"description": "Exact authored key of the placed entity to remove from the local root and staged scratch, e.g. my_adventure/torch. This edits files only; preview and apply world pruning separately."
+			}
+		},
+		"additionalProperties": false
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"node"
+		]
+	}
+}

@@ -1,0 +1,33 @@
+{
+	"name": "spellkave_declare_inexpressible",
+	"label": "Declare Inexpressible",
+	"description": "Declare that no documented row kind / DSL form can express this intent within the validator's surface — a runtime/schema gap surfaced through authoring. A well-justified 'I cannot express this' is a SUCCESSFUL finding, not a failure.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"reason"
+		],
+		"properties": {
+			"reason": {
+				"type": "string",
+				"description": "Precisely why no documented row kind / DSL form can express this intent within the validator's surface."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "prefix",
+				"prefix": "frontier."
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

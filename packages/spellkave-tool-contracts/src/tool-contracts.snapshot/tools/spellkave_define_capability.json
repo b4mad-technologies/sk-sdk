@@ -1,0 +1,64 @@
+{
+	"name": "spellkave_define_capability",
+	"label": "Define Capability (verb)",
+	"description": "Author ONE capability_definitions row (+ capability_definition_tag satellites) in a single call — the #1968 verb-UX round's named missing bare-vocabulary verb. Self-scaffolds the [[bundles]] header if `bundle` has none yet. capability_definitions is referenced from MANY affordance_templates/action_definitions rows (not satellite-owned by a single parent) — those stay on spellkave_write_rows/spellkave_define_behavior, whichever fits the calling context. #1968 workspace idempotency: re-authoring the SAME bundle+id REPLACES the row + its tag satellite wholesale (fewer tags on a re-run means the stale ones are gone, not left behind).",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"id",
+			"actor_kind",
+			"description"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id stamped on every generated row. Omit to fall back to `context.defaultBundle` (#1968 smart default)."
+			},
+			"id": {
+				"type": "string",
+				"description": "Local capability_id stem; the full id is '<bundle>/<id>' (e.g. bundle='core', id='walk' -> 'core/walk'). A handful of corpus capability ids are DELIBERATELY cross-namespace (e.g. 'frontier.apply_manifest' under bundle_id='core') — this verb always derives '<bundle>/<id>', so a cross-namespace id stays on spellkave_write_rows (mirrors spellkave_define_entity_type's own cross-namespace carve-out)."
+			},
+			"actor_kind": {
+				"type": "string",
+				"description": "capability_definitions.actor_kind — an open string (the corpus already uses more than one value, e.g. 'entity', 'operator'); no closed PoC enum."
+			},
+			"display_name": {
+				"type": "string",
+				"description": "capability_definitions.display_name. Omit to derive a title-cased `id` (#1968 smart default)."
+			},
+			"description": {
+				"type": "string",
+				"description": "capability_definitions.description — REQUIRED (unlike every OTHER verb's optional `description?`): CapabilityDefinitionRow kept its own PRE-EXISTING required description column through the #1968 description-column decision (no `#[serde(default)]` in the schema); omitting it would author an invalid row, not merely a less-documented one (same carve-out as spellkave_define_niche's own required `description`)."
+			},
+			"default_visibility": {
+				"type": "string",
+				"description": "capability_definitions.default_visibility — the ADR-0120 read-visibility default concrete grants inherit unless overridden. Omit to default 'Public' (#1968 smart default — matches the schema's own `default_public()` serde default)."
+			},
+			"tags": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"description": "One capability_definition_tag row per tag."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

@@ -1,0 +1,19 @@
+{
+	"name": "@spellkave/session-node-tests",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"description": "Offline Node transport and daemon proofs, isolated from Session's product dependents.",
+	"exports": {},
+	"scripts": {
+		"test": "vitest run"
+	},
+	"devDependencies": {
+		"@spellkave/agent-observability": "workspace:*",
+		"@spellkave/session": "workspace:*",
+		"@types/node": "^24.12.4",
+		"typebox": "1.1.38",
+		"vitest": "^3.2.6"
+	},
+	"license": "PolyForm-Shield-1.0.0"
+}

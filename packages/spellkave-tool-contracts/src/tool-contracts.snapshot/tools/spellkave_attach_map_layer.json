@@ -1,0 +1,114 @@
+{
+	"name": "spellkave_attach_map_layer",
+	"label": "Attach Map Layer",
+	"description": "Author a [[map_layers]] backdrop pointer for a place_graph (Phandelver parity). Does NOT vendor the image — asset_path resolves at map_graph time via CCC3_MAPS_ROOT or FVTT_DATA_ROOT. Optionally stamps provenance metadata on the graph. When the file is present, image_width/height are filled from PNG IHDR if unset.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"place_graph_id",
+			"asset_path"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string"
+			},
+			"place_graph_id": {
+				"type": "string",
+				"description": "place_graph this backdrop belongs to."
+			},
+			"asset_path": {
+				"type": "string",
+				"description": "Relative path under asset root, e.g. \"maps/306 Fortified Hamlet.jpg\" for ccc3-maps."
+			},
+			"asset_module": {
+				"type": "string",
+				"description": "Asset root module id (default \"ccc3-maps\"). Also resolves FVTT_DATA_ROOT/<module>."
+			},
+			"display_name": {
+				"type": "string"
+			},
+			"map_layer_id": {
+				"type": "string",
+				"description": "Defaults to <place_graph_id>/backdrop."
+			},
+			"posture": {
+				"type": "string",
+				"description": "License posture stamp (default \"cc-by-4.0\" for ccc3)."
+			},
+			"source_kind": {
+				"type": "string",
+				"description": "Default \"elven-tower-ccc\"."
+			},
+			"grid_size_px": {
+				"type": "number"
+			},
+			"grid_distance_m": {
+				"type": "number"
+			},
+			"image_width_px": {
+				"type": "number"
+			},
+			"image_height_px": {
+				"type": "number"
+			},
+			"local_width_cells": {
+				"type": "number"
+			},
+			"local_height_cells": {
+				"type": "number"
+			},
+			"image_origin_x": {
+				"type": "number"
+			},
+			"image_origin_y": {
+				"type": "number"
+			},
+			"rotation_deg": {
+				"type": "number"
+			},
+			"state": {
+				"type": "string",
+				"description": "aligned | provisional | unmatched | template (default \"template\")."
+			},
+			"provenance": {
+				"type": "boolean"
+			},
+			"map_id": {
+				"type": "string",
+				"description": "Catalog map id for provenance payload."
+			},
+			"license_url": {
+				"type": "string"
+			},
+			"source_url": {
+				"type": "string"
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"promptSnippet": "Attach an out-of-repo map image layer to a place_graph",
+	"promptGuidelines": [
+		"Use after author_place. asset_module ccc3-maps + asset_path maps/<file>.",
+		"Images never go in git; map_graph overlays them when CCC3_MAPS_ROOT resolves.",
+		"just map-font-check is unrelated — this is bitmap backdrops, not terminal fonts."
+	],
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"node"
+		]
+	}
+}

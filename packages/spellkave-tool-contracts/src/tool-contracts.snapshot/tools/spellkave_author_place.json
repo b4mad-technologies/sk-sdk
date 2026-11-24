@@ -1,0 +1,132 @@
+{
+	"name": "spellkave_author_place",
+	"label": "Author Place (verb PoC)",
+	"description": "PoC (#1968): author ONE place_graph + its place_nodes (+ optional place_edges) in a single call, wrapping the existing patchManifest place ops. Self-scaffolds the `[[bundles]]` header if `bundle` has none yet (FIX②b). Nodes get metric positions (explicit x/y or auto circle/line) and optional elevation. substrate defaults to outdoor; pass substrate:'indoor' for buildings. PoC boundary: one place_graph per call. map_graph draws outdoor world-compose by default; pass graph=<id> to draw an indoor plan. Top-level `description` sets the GRAPH's own description; each `nodes[].description` sets that ONE node's own arrival prose instead (T5 follow-up) — author both when a node deserves its own sensory detail beyond the graph-level blurb.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"nodes",
+			"edges"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id stamped on every generated row. Omit to fall back to `context.defaultBundle` (#1968 smart default)."
+			},
+			"substrate": {
+				"type": "string",
+				"description": "substrate_id for the graph and every node (core: outdoor | indoor | tactical). Default 'outdoor'. Houses/interiors should use 'indoor'."
+			},
+			"parent_graph_id": {
+				"type": "string",
+				"description": "Composition parent place_graph_id (ADR-0029 / Item 25). Empty/omit = root. Nested outdoor graphs project into the parent frame on the world map."
+			},
+			"origin_cell_res10": {
+				"type": "string",
+				"description": "Root outdoor H3 res10 anchor as decimal u64 string. Only composition roots should set this; res7/res4 parents are derived. Nested graphs omit (origin stays 0)."
+			},
+			"bearing": {
+				"type": "number",
+				"description": "Clockwise rotation degrees relative to parent/world frame (ADR-0029). Default 0."
+			},
+			"metres_per_unit": {
+				"type": "number",
+				"description": "Graph unit → metres (ADR-0029). Default 1. Outdoor world maps often use >1."
+			},
+			"display_name": {
+				"type": "string",
+				"description": "place_graph display_name; default title-cased graph local id."
+			},
+			"nodes": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"required": [
+						"id"
+					],
+					"properties": {
+						"id": {
+							"type": "string",
+							"description": "Fully-qualified place-node id '<place_graph_id>/<local_id>' (e.g. 'aoe_blast/arena/center'). PoC boundary: bare local ids are not supported."
+						},
+						"name": {
+							"type": "string",
+							"description": "display_name; defaults to a title-cased local id."
+						},
+						"x": {
+							"type": "number",
+							"description": "Optional metric graph-local pos_x (integer graph units). When any node omits x/y, author_place auto-layouts all nodes on a circle (n>=3) or a line (n=1..2)."
+						},
+						"y": {
+							"type": "number",
+							"description": "Optional metric graph-local pos_y (integer graph units). See `x`."
+						},
+						"elevation": {
+							"type": "number",
+							"description": "Optional graph-local pose_elevation (metres-ish via graph metres_per_unit). Use for floors/cellars (e.g. 0 ground, -3 cellar). Omit for 0 with pose_elevation_present=true."
+						},
+						"cell_res10": {
+							"type": "string",
+							"description": "Optional outdoor H3 res10 cell as decimal u64 string (parents res7/res4 derived via h3-js). Prefer strings so values above MAX_SAFE_INTEGER stay exact."
+						},
+						"description": {
+							"type": "string",
+							"description": "Sets THIS node's own `place_nodes.description` column (T5 follow-up, #1968 pattern: a first-class field, never a metadata_attachments detour — same shape as the top-level `description` param below, which sets the GRAPH's own description instead). Read by movement-observation tools (e.g. spellkave_move) as the arrival prose for THIS node; falls back to the graph's own description only on a graph-crossing move when omitted."
+						},
+						"extent_shape_id": {
+							"type": "string",
+							"description": "place_nodes.extent_shape_id (place-node-extent D-2, sk-71u): an explicit spatial extent for THIS node — one of the KNOWN_AREA_SHAPE_IDS kernel shapes (e.g. 'core/area/sphere', 'core/area/cube'). Overrides the bundle's own default_extent_shape_id (spellkave_define_bundle) for this node only. Pair with `extent_params_json`; omit both to fall back to the bundle default."
+						},
+						"extent_params_json": {
+							"type": "string",
+							"description": "place_nodes.extent_params_json — the params_json paired with `extent_shape_id` (e.g. '{\"radius_m\": 2.5}' for core/area/sphere). Only meaningful alongside `extent_shape_id`."
+						}
+					}
+				},
+				"description": "One or more place nodes. Every id must share ONE common parent path (one place_graph per call — a PoC boundary); the FIRST node becomes the place_graph's anchor_node_id."
+			},
+			"edges": {
+				"type": "array",
+				"items": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"minItems": 2,
+					"maxItems": 2
+				},
+				"description": "[from_node_id, to_node_id] pairs; both ends must be in `nodes`. Pass [] for disconnected nodes (e.g. two same-radius cells with no traversal edge between them, as the worked example does)."
+			},
+			"description": {
+				"type": "string",
+				"description": "Sets the generated place_graph's own `description` column (#1968 — a first-class, never load-bearing authoring field, not a metadata_attachments row)."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"promptSnippet": "Author one place_graph with nodes and edges (outdoor or indoor)",
+	"promptGuidelines": [
+		"Use spellkave_author_place for topology (nodes+edges); pass nodes[].x/y for layout or omit for auto circle; nodes[].elevation for floors.",
+		"Houses/interiors: substrate:'indoor'. Outdoor regions: omit or substrate:'outdoor'.",
+		"Author nodes[].description for a node's own 1-2 sentence arrival prose; it wins over the graph-level description on that node's own moves.",
+		"After authoring, spellkave_map_graph shows the picture (pass graph= for indoor); for live worlds call spellkave_apply_manifest_delta with no args to commit the scratch.",
+		"Deeper spatial playbook: spellkave_docs doc=place-graph-occupancy (read path) or spatial-minimal-cell (row shape)."
+	],
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

@@ -1,0 +1,104 @@
+{
+	"name": "spellkave_docs",
+	"label": "Modding Docs",
+	"description": "Orient on the packaged authoring corpus (DOCS-ONLY). Index (`shape: \"index\"`): id/title/kind/summary/has_example. Query (`shape: \"hits\"`): ranked summary+excerpt only (not full bodies). Doc (`shape: \"doc\"`): one id — oversized docs default to outline (headings); pass `section` for one heading or `full` for the entire body. Narrow hits with `doc_paths`; `limit` default 3. Reads ONLY the packaged corpus.",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"query": {
+				"type": "string",
+				"description": "Free-text question about how to author something, e.g. 'how do I express object decay over time'. Matched (keyword/heading) against the packaged authoring corpus. Omit to list the bounded corpus index instead of querying it."
+			},
+			"doc": {
+				"type": "string",
+				"description": "Exact corpus id (a `rel` from the index or a hit, e.g. 'dm-oversight') — returns that ONE doc whole: its prose body, the worked-example walkthrough when the id has both halves, and the complete example manifest TOML when `has_example` is true. This is how you get something copyable rather than only readable. Mutually exclusive with `query`; takes precedence if both are set."
+			},
+			"section": {
+				"type": "string",
+				"description": "Optional heading text or anchor within `doc` — returns only that section's markdown instead of the full body. Unknown section fails (does not silently return the whole doc). Ignored without `doc`."
+			},
+			"outline": {
+				"type": "boolean",
+				"description": "With `doc`, return title + summary + heading list only (no full body). Default for oversized docs when neither `section` nor `full` is set."
+			},
+			"full": {
+				"type": "boolean",
+				"description": "With `doc`, force the complete body even when oversized (tool-reference, long references). Prefer `section` instead. Default false."
+			},
+			"doc_paths": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"description": "Optional corpus-id filter (substring match) restricting the search to specific packaged docs. Only applies with `query` set; can only narrow the corpus, never widen it."
+			},
+			"limit": {
+				"type": "number",
+				"description": "Max number of doc slices to return when `query` is set (default 3)."
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"promptSnippet": "Query the packaged Spellkave authoring corpus or list its bounded index",
+	"promptGuidelines": [
+		"Use spellkave_docs to pull the smallest relevant authoring-doc slice before guessing a manifest row or DSL form.",
+		"spellkave_docs: index = summaries; query hits = summary+short excerpt only — never assume hit.body is the full doc.",
+		"spellkave_docs: tool-reference defaults to a verb index; open one tool with sk docs tool-reference <name>. Other large docs default to outline + --section.",
+		"spellkave_docs: start at onramp for AUTHOR + PLAYER tools."
+	],
+	"cli": {
+		"positionals": [
+			"doc",
+			"section"
+		],
+		"examples": [
+			{
+				"command": "sk docs onramp",
+				"description": "open the start-here guide"
+			},
+			{
+				"command": "sk docs --query \"how do I author a spell?\"",
+				"description": "search by authoring question"
+			},
+			{
+				"command": "sk docs manifest-format",
+				"description": "open one exact reference"
+			},
+			{
+				"command": "sk docs --doc onramp --section \"AUTHOR path\"",
+				"description": "open one section of a doc"
+			},
+			{
+				"command": "sk docs --query has_item",
+				"description": "find a troubleshooting repair by symptom"
+			},
+			{
+				"command": "sk docs tool-reference",
+				"description": "AUTHOR verb index (name + label + summary)"
+			},
+			{
+				"command": "sk docs tool-reference spellkave_define_session",
+				"description": "one verb's full parameter reference"
+			},
+			{
+				"command": "sk docs --doc tool-reference --full",
+				"description": "force the complete tool-reference body"
+			}
+		]
+	},
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "prefix",
+				"prefix": "frontier."
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

@@ -1,0 +1,30 @@
+{
+	"name": "spellkave_events",
+	"label": "Spellkave Events",
+	"description": "Read recent Spellkave world events from the SDK snapshot. The `spellkave_events` tool no longer lists another session's session lifecycle, in-session frame, turn-boundary, or action-economy header rows for unrelated plain players; participants and callers with an extent grant that covers a participant still see those rows.",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"limit": {
+				"type": "number",
+				"description": "Maximum number of recent events to read.",
+				"minimum": 1,
+				"maximum": 100
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"DM"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"publisherRead"
+		]
+	}
+}

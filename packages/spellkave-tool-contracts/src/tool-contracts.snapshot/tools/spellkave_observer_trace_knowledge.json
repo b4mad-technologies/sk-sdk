@@ -1,0 +1,32 @@
+{
+	"name": "spellkave_observer_trace_knowledge",
+	"label": "Spellkave Observer Trace Knowledge",
+	"description": "Read the inscribed traces an observer body has perceived (seam A inscription-time + seam B arrival scan — ADR-0040). Body-keyed fog-of-war view.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"observer_id"
+		],
+		"properties": {
+			"observer_id": {
+				"type": "string",
+				"description": "Observer body entity identifier. Returns the inscribed-trace knowledge that body has perceived (seam A + seam B — ADR-0040).",
+				"minLength": 1
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"DM"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"publisherRead"
+		]
+	}
+}

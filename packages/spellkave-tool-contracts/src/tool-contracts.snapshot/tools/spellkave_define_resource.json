@@ -1,0 +1,93 @@
+{
+	"name": "spellkave_define_resource",
+	"label": "Define Resource (verb PoC)",
+	"description": "PoC (#1968 FIX②): author ONE resource_definitions row (a spell-slot/HP/charge-style pool) + its resource_definition_tag satellites (#1968 verb-UX round 2) in a single call — the scaffolding step placement-tool `resources` seeds and spellkave_define_behavior's `effect.write.resource`/`cost.pool` both need to already resolve against (neither verb fabricates bounds for a pool it didn't create). Self-scaffolds the `[[bundles]]` header if `bundle` has none yet. #1968 workspace idempotency: re-authoring the SAME bundle+id REPLACES the row + EVERY tag satellite wholesale (fewer tags on a re-run means the stale ones are gone, not left behind).",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"id",
+			"min_value",
+			"max_value"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id stamped on the generated row. Omit to fall back to `context.defaultBundle` (#1968 smart default)."
+			},
+			"id": {
+				"type": "string",
+				"description": "Local resource stem; the full resource_definition_id is '<bundle>/<id>' (e.g. bundle='aoe_blast', id='hp' -> 'aoe_blast/hp')."
+			},
+			"display_name": {
+				"type": "string",
+				"description": "resource_definitions.display_name. Omit to derive a title-cased `id` (#1968 smart default)."
+			},
+			"min_value": {
+				"type": "number",
+				"description": "resource_definitions.min_value."
+			},
+			"max_value": {
+				"type": "number",
+				"description": "resource_definitions.max_value."
+			},
+			"initial_value": {
+				"type": "number",
+				"description": "resource_definitions.initial_value — the object_state seed for an un-instantiated pool. Omit to fall back to min_value at runtime (a charges/gold-shaped pool); set e.g. to max_value for an HP-shaped pool that must start full."
+			},
+			"recovery_rule": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "none"
+					},
+					{
+						"type": "string",
+						"const": "persistent"
+					},
+					{
+						"type": "string",
+						"const": "long_rest"
+					},
+					{
+						"type": "string",
+						"const": "short_rest_partial_long_rest_full"
+					}
+				],
+				"description": "resource_definitions.recovery_rule (default 'none'). Closed PoC enum over the corpus's own observed vocabulary — the field itself is open-string at the schema level (ADR-0018)."
+			},
+			"value_kind": {
+				"type": "string",
+				"description": "resource_definitions.value_kind (default 'int' — the only value observed corpus-wide)."
+			},
+			"description": {
+				"type": "string",
+				"description": "Sets the generated resource_definitions row's own `description` column (#1968)."
+			},
+			"tags": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"description": "One resource_definition_tag row per tag (#1968 verb-UX round 2 — mirrors spellkave_define_entity_type/_condition/_niche's own `tags` fold instead of a separate spellkave_write_rows call)."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

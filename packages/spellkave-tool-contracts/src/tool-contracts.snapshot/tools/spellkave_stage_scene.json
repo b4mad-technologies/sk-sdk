@@ -1,0 +1,55 @@
+{
+	"name": "spellkave_stage_scene",
+	"label": "Stage scene",
+	"description": "Explicitly stage an unmodified connected scene preview as the same caller in the expected world instance. Existing apply admission guards graph expansion and population; each phase reports committed, refused or unknown. Never retries an unknown result, resets a reused name or grants controller/deletion authority. Inspect the world before recovery; graph Despawn ejects occupants and leaves cleanup residuals.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"plan",
+			"expected_world_instance_id"
+		],
+		"properties": {
+			"plan": {
+				"type": "object",
+				"patternProperties": {
+					"^.*$": {}
+				},
+				"description": "Unmodified plan from a connected render_scene preview."
+			},
+			"expected_world_instance_id": {
+				"type": "string",
+				"minLength": 1
+			}
+		},
+		"additionalProperties": false
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"scenes"
+		],
+		"inputModes": [
+			"resolved scene plan payload"
+		],
+		"limitations": [
+			"Complete Internal source read and destination write authority required; cleanup coverage remains unknown."
+		],
+		"argumentGates": [
+			"Strict graph-only source guard and every phase world-instance guard recheck on the server."
+		]
+	}
+}

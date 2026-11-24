@@ -1,0 +1,37 @@
+{
+	"name": "spellkave_item_detail",
+	"label": "Spellkave Item Detail",
+	"description": "Inspect one item selected by its OWN rev+handle from spellkave_inventory (copy both verbatim from that item's own row — not the listing envelope's top-level `rev`). The handle is the item's stable identity: the SAME item keeps the SAME handle across re-reads, for as long as it exists, regardless of tree position or what else in the inventory changed. Returns authorized identity, quantity, containment/equipment role, and owned state in one call; arbitrary item ids are not accepted. Two addressing modes: {handle, rev} copied from the listing (freshness-gated), or target_id — the same typed id spellkave_manipulate takes (entity:156, item:157, actor:7) — which reads the current row and returns its rev.",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"rev": {
+				"type": "string",
+				"minLength": 1,
+				"description": "With handle: the item's OWN rev, copied verbatim from its row in spellkave_inventory — not the listing envelope's top-level rev (stable per-item handles, freshness gated per item). Omit when addressing by target_id."
+			},
+			"handle": {
+				"type": "string",
+				"minLength": 2,
+				"description": "Stable inventory item handle, e.g. i:42 — copied from spellkave_inventory. Pass with rev, or pass target_id instead."
+			},
+			"target_id": {
+				"type": "string",
+				"minLength": 3,
+				"description": "Alternative addressing, the same typed id spellkave_manipulate takes (item:157 or entity:157): the current inventory row for that item is read without a rev, and its rev is returned. One of {handle, rev} or target_id."
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			}
+		],
+		"ports": []
+	}
+}

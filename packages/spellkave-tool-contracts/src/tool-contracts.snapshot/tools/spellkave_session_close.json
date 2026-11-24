@@ -1,0 +1,71 @@
+{
+	"name": "spellkave_session_close",
+	"label": "Spellkave Session Close",
+	"description": "Close an interaction session for the active actor via the approved r_session_close path. Success is state-observed.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"session_id",
+			"outcome"
+		],
+		"properties": {
+			"control_tokens": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"required": [
+						"world_instance_id",
+						"generation",
+						"actor_id",
+						"body_entity_id"
+					],
+					"properties": {
+						"world_instance_id": {
+							"type": "string",
+							"minLength": 1
+						},
+						"generation": {
+							"type": "string",
+							"pattern": "^[0-9]+$"
+						},
+						"actor_id": {
+							"type": "string",
+							"pattern": "^[0-9]+$"
+						},
+						"body_entity_id": {
+							"type": "string",
+							"pattern": "^[0-9]+$"
+						}
+					}
+				},
+				"minItems": 1,
+				"maxItems": 64,
+				"description": "Original control observations for every Service participant you directly drive. Copy the observations from the decision snapshot; stale, missing or held observations refuse the whole close before any effects."
+			},
+			"session_id": {
+				"type": "number",
+				"description": "Session id to close.",
+				"minimum": 0
+			},
+			"outcome": {
+				"type": "string",
+				"description": "Terminal session outcome: completed, abandoned, or failed.",
+				"minLength": 1
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"DM"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"publisherRead"
+		]
+	}
+}

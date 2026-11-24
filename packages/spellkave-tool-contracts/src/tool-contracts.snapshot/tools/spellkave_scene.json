@@ -1,0 +1,74 @@
+{
+	"name": "spellkave_scene",
+	"label": "Spellkave Scene",
+	"description": "Orient on the connected actor's authorized current scene (location implicit). Unfiltered and under the bound, returns EVERY authorized target (`listing: \"complete\"`) alongside authored node prose (`node_description`, `graph_description`, `pose_elevation`) and occupant/entity/exit/trace `counts`. `graph_description` is carried only the first time this session sees the current region, or again after a call returns to a DIFFERENT region than the previous scene read — repeated reads within the same region carry `graph_description: null` instead of repeating the identical blurb. Add a `kind` filter, exceed the bound, or pass a `cursor` and it falls back to a flat, revision-bound paged list (`listing: \"paginated\"`) carrying the SAME handles and the SAME node prose/counts. Each `exit` row carries its destination as `to` (shortened when it stays in the same region — full path only across a region switch), so spellkave_scene_detail is only needed for an exit's extra detail, not to learn where it leads. Each item carries its OWN stable `handle`+`rev`: the SAME actor/entity/exit/trace keeps the SAME handle across scene re-reads and ticks, for as long as it exists, even while unrelated targets in the same scene change; `rev` gates freshness of that ONE target only. Follow up on any handle with spellkave_scene_detail or spellkave_move (rev+handle mode) by copying that item's OWN `rev`+`handle` verbatim — never the envelope's top-level `rev` — and the same stale_handle rejection applies at either: the loop closes at act, not at this observe call, and other actors may move between the two. While you are on a journey the answer is still the place you left and carries journey {status, arrives_in_ticks, arrives_at_tick}; pass wait_for_arrival_ms to wait for the arrival in one call instead of polling.",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"kind": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "actor"
+					},
+					{
+						"type": "string",
+						"const": "entity"
+					},
+					{
+						"type": "string",
+						"const": "exit"
+					},
+					{
+						"type": "string",
+						"const": "trace"
+					}
+				],
+				"description": "Optional scene target kind filter."
+			},
+			"limit": {
+				"type": "number",
+				"minimum": 1,
+				"maximum": 100,
+				"description": "Rows per page."
+			},
+			"cursor": {
+				"type": "string",
+				"description": "Opaque next_cursor from the prior page."
+			},
+			"wait_for_arrival_ms": {
+				"type": "number",
+				"minimum": 0,
+				"maximum": 30000,
+				"description": "Optional. While you are on a journey (a move that takes several ticks), wait up to this many milliseconds for it to end, then answer with the scene as it is then. Returns at once when you are not travelling; the host may cap the wait, and journey_wait says how it ended. Use this instead of re-reading the scene or the session status until you arrive."
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"cli": {
+		"examples": [
+			{
+				"command": "sk --profile PLAYER_PROFILE scene",
+				"description": "replace PLAYER_PROFILE to start or reuse a session and orient in the scene"
+			}
+		]
+	},
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			},
+			{
+				"kind": "prefix",
+				"prefix": "frontier."
+			}
+		],
+		"ports": [],
+		"argumentGates": [
+			"Caller-owned acting context only; presence is nonspatial and conveys no NPC consent."
+		]
+	}
+}

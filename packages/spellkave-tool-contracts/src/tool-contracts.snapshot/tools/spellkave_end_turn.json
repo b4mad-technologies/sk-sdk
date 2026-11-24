@@ -1,0 +1,21 @@
+{
+	"name": "spellkave_end_turn",
+	"label": "Spellkave End Turn",
+	"description": "End the connected actor's current turn in the in-world turn/scene (not the MCP connection), without supplying a session id. The world resolves active participation and rejects no-session/off-turn calls (`no_session` still allows exploration; or it is not your turn). NOTE: advancing the turn does NOT refresh the new current actor's available actions — only turn-gated (action-economy) rows are recomputed on a turn boundary; other available actions stay whatever they were. Movement is unaffected either way: spellkave_scene's exits are always current, so they are never stale from a missed refresh. On dispatch, the result carries `receipt` (what the world did) and a sibling `observation` (a fixed 'Your turn ends.' line on success, or 'Nothing happens.' on rejection). On a successful advance, the receipt also carries the NEW in-world `session` block (`in_session`/`current_actor`/`my_turn`) — whose turn it is next in that scene, not the MCP connection.",
+	"parameters": {
+		"type": "object",
+		"properties": {}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			}
+		],
+		"ports": []
+	}
+}

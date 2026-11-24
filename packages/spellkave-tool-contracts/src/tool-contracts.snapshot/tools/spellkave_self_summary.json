@@ -1,0 +1,21 @@
+{
+	"name": "spellkave_self_summary",
+	"label": "Spellkave Self Summary",
+	"description": "Compact directly-controlled character summary — the RECURRING glance you re-fetch often (vitals/quest/conditions/capabilities), not a one-time sheet. Identity is the connected actor; no actor id is accepted. `conditions`, `vitals`, `quest`, and `capabilities` are each a bounded-collection envelope: `listing` is \"complete\" when `items` holds the whole authorized collection, or \"examples\" when it is a bounded slice with a machine-readable `continuation` {tool, args} for the rest. `vitals` and `quest` are world-driven: which states appear (and in what order) depends on the character; a character with no quest-tracking states correctly shows an empty `quest` bucket. Call spellkave_self_states with kind=state for the full authorized state set. `capabilities` holds the actor's own trained/granted capabilities; call spellkave_self_states with kind=capability for the full authorized set. Recent evaluation history (own rolls and check outcomes) is not part of this summary — call spellkave_self_states with kind=evaluation for it; act-tool results already carry the roll from the action that produced it. Identity (species/class/background/…) is not part of this summary either — it is static character data, not something that changes turn to turn, so it lives at spellkave_self_states with kind=identity: fetch that ONCE at session start for the detailed \"who am I\", and rely on this summary for everything that actually changes.",
+	"parameters": {
+		"type": "object",
+		"properties": {}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			}
+		],
+		"ports": []
+	}
+}

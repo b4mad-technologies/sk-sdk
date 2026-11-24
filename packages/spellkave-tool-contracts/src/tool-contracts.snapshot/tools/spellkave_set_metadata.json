@@ -1,0 +1,205 @@
+{
+	"name": "spellkave_set_metadata",
+	"label": "Set Metadata",
+	"description": "Set open metadata with one flat target/key/value update or an explicit atomic updates batch. target 'manifest' replaces one root metadata key, target 'namespace' registers one namespace, and target {kind, ref} upserts one object annotation. Attachment identity follows live admission: target_kind + target_ref + namespace + bundle_id; source and payload are replaced on a repeat call. The shared validator owns namespace payload semantics and admitted target kinds.",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "Owning bundle for namespace and attachment updates. Omit to use context.defaultBundle; manifest updates need none."
+			},
+			"target": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "manifest"
+					},
+					{
+						"type": "string",
+						"const": "namespace"
+					},
+					{
+						"type": "object",
+						"required": [
+							"kind",
+							"ref"
+						],
+						"properties": {
+							"kind": {
+								"type": "string",
+								"description": "An admitted metadata target kind. The shared manifest validator owns the current vocabulary; unsupported values fail at commit."
+							},
+							"ref": {
+								"type": "string",
+								"description": "The admitted target's stable id/ref."
+							}
+						},
+						"additionalProperties": false
+					}
+				],
+				"description": "Singleton form: 'manifest' for a top-level [metadata] key, 'namespace' to register a namespace, or {kind, ref} to attach metadata to an admitted target. Omit when passing updates[]."
+			},
+			"key": {
+				"type": "string",
+				"description": "Singleton form: the top-level [metadata] key, or the metadata namespace for a registration or attachment."
+			},
+			"value": {
+				"description": "Singleton form: a JSON-compatible scalar, array, or object for target 'manifest'; {audience, description?} for target 'namespace'; an open metadata object for an attachment target."
+			},
+			"source": {
+				"type": "string",
+				"description": "Attachment source for the singleton attachment form; defaults to 'manifest'."
+			},
+			"audience": {
+				"type": "string",
+				"description": "Singleton attachment form: registers an absent namespace in this atomic call; never defaults."
+			},
+			"description": {
+				"type": "string",
+				"description": "Singleton attachment form: optional description when this call registers the namespace."
+			},
+			"updates": {
+				"type": "array",
+				"items": {
+					"anyOf": [
+						{
+							"type": "object",
+							"required": [
+								"target",
+								"key",
+								"value"
+							],
+							"properties": {
+								"target": {
+									"type": "string",
+									"const": "manifest"
+								},
+								"key": {
+									"type": "string",
+									"description": "Top-level [metadata] key to replace."
+								},
+								"value": {
+									"description": "A JSON-compatible scalar, array, or object. Open metadata has no shared docs/UI schema."
+								}
+							},
+							"additionalProperties": false
+						},
+						{
+							"type": "object",
+							"required": [
+								"target",
+								"key",
+								"value"
+							],
+							"properties": {
+								"target": {
+									"type": "string",
+									"const": "namespace"
+								},
+								"key": {
+									"type": "string",
+									"description": "Namespace to register, e.g. 'mymod.hints'."
+								},
+								"value": {
+									"type": "object",
+									"required": [
+										"audience"
+									],
+									"properties": {
+										"audience": {
+											"type": "string",
+											"description": "Explicit namespace audience; no implicit default."
+										},
+										"description": {
+											"type": "string"
+										},
+										"on_demand": {
+											"type": "boolean",
+											"description": "ADR-0130: reference content (rules text, creation data, docs) delivered only to a client that subscribes public_reference_metadata, never to a play session on connect. Defaults to false (kernel default) when omitted."
+										}
+									},
+									"additionalProperties": false
+								}
+							},
+							"additionalProperties": false
+						},
+						{
+							"type": "object",
+							"required": [
+								"target",
+								"key",
+								"value"
+							],
+							"properties": {
+								"target": {
+									"type": "object",
+									"required": [
+										"kind",
+										"ref"
+									],
+									"properties": {
+										"kind": {
+											"type": "string",
+											"description": "An admitted metadata target kind. The shared manifest validator owns the current vocabulary; unsupported values fail at commit."
+										},
+										"ref": {
+											"type": "string",
+											"description": "The admitted target's stable id/ref."
+										}
+									},
+									"additionalProperties": false
+								},
+								"key": {
+									"type": "string",
+									"description": "Registered metadata namespace for this annotation."
+								},
+								"value": {
+									"type": "object",
+									"patternProperties": {
+										"^.*$": {}
+									},
+									"description": "An open JSON-compatible metadata object. Values are authored unchanged: this shared tool does not reserve a docs, UI, or ruleset schema."
+								},
+								"source": {
+									"type": "string",
+									"description": "Attachment source; defaults to 'manifest'."
+								},
+								"audience": {
+									"type": "string",
+									"description": "Registers an absent namespace in this atomic call; never defaults."
+								},
+								"description": {
+									"type": "string",
+									"description": "Optional description when this call registers the namespace."
+								}
+							},
+							"additionalProperties": false
+						}
+					]
+				},
+				"minItems": 1,
+				"description": "Explicit atomic batch. Do not combine with singleton target/key/value fields; every update is validated before anything persists."
+			}
+		},
+		"additionalProperties": false
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

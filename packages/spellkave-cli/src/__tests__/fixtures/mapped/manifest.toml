@@ -1,0 +1,48 @@
+#:schema https://spellkave.dev/schema/world-manifest-1.0.0.json
+schema_version = "1.0.0"
+applyset = "mapped"
+
+[[bundles]]
+bundle_id = "mapped"
+display_name = "SDK test map"
+author = "Spellkave"
+version = "1.0.0"
+depends_on = ["demo"]
+
+[[place_graphs]]
+bundle_id = "mapped"
+display_name = "Hub"
+place_graph_id = "mapped/hub"
+substrate_id = "outdoor"
+anchor_node_id = "mapped/hub/entrance"
+metres_per_unit = 1.0
+
+[[place_nodes]]
+bundle_id = "mapped"
+display_name = "Entrance"
+local_id = "entrance"
+node_id = "mapped/hub/entrance"
+place_graph_id = "mapped/hub"
+substrate_id = "outdoor"
+pos_present = true
+pos_x = 0
+pos_y = 0
+
+[[place_graphs]]
+bundle_id = "mapped"
+display_name = "Yard"
+place_graph_id = "mapped/yard"
+substrate_id = "outdoor"
+anchor_node_id = "mapped/yard/gate"
+metres_per_unit = 1.0
+
+[[place_nodes]]
+bundle_id = "mapped"
+display_name = "Yard Gate"
+local_id = "gate"
+node_id = "mapped/yard/gate"
+place_graph_id = "mapped/yard"
+substrate_id = "outdoor"
+pos_present = true
+pos_x = 10
+pos_y = 0

@@ -1,0 +1,40 @@
+{
+	"name": "spellkave_inventory",
+	"label": "Spellkave Inventory",
+	"description": "Orient on the connected actor's authorized carried inventory. Unfiltered and under the bound, returns a grouped tree of top-level possessions with nested `contents` and `equipped_slot` markers. Add a kind/name_prefix filter, exceed the bound, or pass a cursor and it falls back to a flat, revision-bound paged list carrying the SAME handles the tree uses. Every response self-describes via `listing` ('complete' for the tree, 'paginated' for the flat fallback). Each item carries its OWN stable `handle`+`rev`: the SAME item keeps the SAME handle across re-reads, for as long as it exists, regardless of tree position or what else in the inventory changed. Follow up on any handle with spellkave_item_detail by copying that item's OWN `rev`+`handle` verbatim — never the envelope's top-level `rev`.",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"kind": {
+				"type": "string",
+				"description": "Optional exact authored entity kind filter. Forces the flat paged list."
+			},
+			"name_prefix": {
+				"type": "string",
+				"description": "Optional case-insensitive item-name prefix filter. Forces the flat paged list."
+			},
+			"limit": {
+				"type": "number",
+				"minimum": 1,
+				"maximum": 100,
+				"description": "Maximum items per page, and the unfiltered grouped-tree threshold. Defaults to 50."
+			},
+			"cursor": {
+				"type": "string",
+				"description": "Opaque next_cursor from a prior paged response. Forces the flat paged list."
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			}
+		],
+		"ports": []
+	}
+}

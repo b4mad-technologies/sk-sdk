@@ -1,0 +1,124 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`tool runtime > binds realistic PLAYER, DM, and AUTHOR exported structural ports in a browser host 1`] = `
+{
+  "host": "browser",
+  "kind": "self_summary",
+  "self": {
+    "actorId": "actor:player-1",
+    "location": "Neverwinter Wood",
+  },
+  "toolCallId": "PLAYER-browser",
+}
+`;
+
+exports[`tool runtime > binds realistic PLAYER, DM, and AUTHOR exported structural ports in a browser host 2`] = `
+{
+  "host": "browser",
+  "kind": "world_status",
+  "status": {
+    "phase": "exploration",
+    "tick": 42,
+  },
+  "toolCallId": "DM-browser",
+}
+`;
+
+exports[`tool runtime > binds realistic PLAYER, DM, and AUTHOR exported structural ports in a browser host 3`] = `
+{
+  "docs": {
+    "document": "manifest-format",
+    "excerpt": "docs for manifest",
+  },
+  "host": "browser",
+  "kind": "author_docs",
+  "toolCallId": "AUTHOR-browser",
+}
+`;
+
+exports[`tool runtime > binds realistic PLAYER, DM, and AUTHOR exported structural ports in a node host 1`] = `
+{
+  "host": "node",
+  "kind": "self_summary",
+  "self": {
+    "actorId": "actor:player-1",
+    "location": "Neverwinter Wood",
+  },
+  "toolCallId": "PLAYER-node",
+}
+`;
+
+exports[`tool runtime > binds realistic PLAYER, DM, and AUTHOR exported structural ports in a node host 2`] = `
+{
+  "host": "node",
+  "kind": "world_status",
+  "status": {
+    "phase": "exploration",
+    "tick": 42,
+  },
+  "toolCallId": "DM-node",
+}
+`;
+
+exports[`tool runtime > binds realistic PLAYER, DM, and AUTHOR exported structural ports in a node host 3`] = `
+{
+  "docs": {
+    "document": "manifest-format",
+    "excerpt": "docs for manifest",
+  },
+  "host": "node",
+  "kind": "author_docs",
+  "toolCallId": "AUTHOR-node",
+}
+`;
+
+exports[`tool runtime > coordinates a projected delta source and appends without rewriting primary content 1`] = `
+{
+  "content": [
+    "primary",
+    "{"world_deltas":{"affordance":{"added":["Bandage → Goblin"],"removed":[],"more":0}}}",
+  ],
+  "details": {
+    "receipt": {
+      "status": "success",
+    },
+    "world_deltas": {
+      "affordance": {
+        "added": [
+          "Bandage → Goblin",
+        ],
+        "more": 0,
+        "removed": [],
+      },
+    },
+  },
+}
+`;
+
+exports[`tool runtime > serially shapes a result with only consequences caused by the caller 1`] = `
+{
+  "consequences": [
+    {
+      "amount": 7,
+      "attacker_id": "actor:player-1",
+      "kind": "dealt_hit",
+      "observed_at_tick": 42,
+      "target_name": "Goblin",
+    },
+  ],
+  "host": "node",
+  "kind": "self_summary",
+  "self": {
+    "actorId": "actor:player-1",
+    "location": "Neverwinter Wood",
+  },
+  "toolCallId": "event",
+}
+`;
+
+exports[`tool runtime > serially shapes a result with only consequences caused by the caller 2`] = `
+{
+  "consequences": [],
+  "receipt": "next",
+}
+`;

@@ -1,0 +1,65 @@
+{
+	"name": "spellkave_define_consequence",
+	"label": "Define Consequence (verb)",
+	"description": "Author ONE consequence_templates row (+ its consequence_frame_writes satellites, in authored order) in a single call, with NO actor grant (contrast spellkave_define_behavior, which always binds its generated consequence to a `grant_to` caster's action cluster). Self-scaffolds the [[bundles]] header if `bundle` has none yet. #1968 workspace idempotency: re-authoring the SAME bundle+id REPLACES the row + every consequence_frame_writes row wholesale (fewer frame_writes on a re-run means the stale ones are gone, not left behind).",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"id"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id stamped on the consequence_templates row. Omit to fall back to `context.defaultBundle` (#1968 smart default)."
+			},
+			"id": {
+				"type": "string",
+				"description": "Local consequence_template_id stem; the full id is '<bundle>/<id>' (e.g. bundle='core', id='pickup/success' -> 'core/pickup/success')."
+			},
+			"effect_ref": {
+				"type": "string",
+				"description": "consequence_templates.effect_refs_csv — an already-authored effect_definitions id this consequence invokes (e.g. a scheduled-zone/summon effect). The corpus never joins more than one id here despite the column's '_csv' name — a single ref, not a real CSV list. Omit for a consequence with no effect_definitions reference."
+			},
+			"description": {
+				"type": "string",
+				"description": "consequence_templates.description (#1968 first-class column)."
+			},
+			"frame_writes": {
+				"type": "array",
+				"items": {
+					"anyOf": [
+						{
+							"type": "object",
+							"patternProperties": {
+								"^.*$": {}
+							}
+						},
+						{
+							"type": "string",
+							"const": "BreakPlaceSeal"
+						}
+					]
+				},
+				"description": "consequence_frame_writes rows, in AUTHORED order — each a raw FrameWriteOp body object or the unit string BreakPlaceSeal (e.g. {Inscribe: {...}}, {ModifyResource: {...}}, {PickupTargetItem: {...}}), mirroring spellkave_write_rows' own untyped row shape (the closed Rust FrameWriteOp enum is never modeled in TypeBox here). `ordinal` (0-based) is derived from array position — never hand-specified."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

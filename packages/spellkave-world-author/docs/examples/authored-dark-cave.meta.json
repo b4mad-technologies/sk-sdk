@@ -1,0 +1,5 @@
+{
+	"title": "Author a dark cave passage",
+	"intent": "Seed ambient spatial state from TOML and make authored traversal and manipulation predicates read it.",
+	"tags": ["spatial", "environment-state", "movement", "manipulation", "predicate", "cave"]
+}

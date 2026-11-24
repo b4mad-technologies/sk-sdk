@@ -1,0 +1,12 @@
+#:schema https://spellkave.dev/schema/world-manifest-1.0.0.json
+schema_version = "1.0.0"
+applyset = "demo"
+
+[[bundles]]
+bundle_id = "demo"
+display_name = "SDK test catalogue"
+author = "Spellkave"
+version = "1.0.0"
+
+[[include]]
+path = "rows.toml"

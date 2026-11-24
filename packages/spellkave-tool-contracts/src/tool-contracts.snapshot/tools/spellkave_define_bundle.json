@@ -1,0 +1,67 @@
+{
+	"name": "spellkave_define_bundle",
+	"label": "Define Bundle (deliberate [[bundles]] header)",
+	"description": "Author (or upsert) the workspace's own `[[bundles]]` header row DELIBERATELY — the first-class alternative to every other write verb's silent `depends_on: [\"core\"]` auto-scaffold, named by srd-cc executable finding #8 (ledger/findings.md). `depends_on` is REQUIRED and explicit (pass [] for a foundational bundle) — there is no default, unlike the casual auto-scaffold. #1968 workspace idempotency: re-authoring the SAME `bundle_id` REPLACES the header row (changed params land; an unchanged re-run is a no-op). Does NOT touch `context.defaultBundle` — combine this verb with a host-side `context.defaultBundle` set to the same id so later calls omit `bundle`. The generic spellkave_write_rows escape hatch (kind: \"bundles\") remains available for raw row access.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"bundle_id",
+			"depends_on"
+		],
+		"properties": {
+			"bundle_id": {
+				"type": "string",
+				"description": "bundles.bundle_id — the bundle's own id (e.g. 'srd', 'core'). This verb authors the [[bundles]] header row itself, so there is no separate `bundle` scoping param the way other define_* verbs have: the row being defined IS the bundle."
+			},
+			"depends_on": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"description": "bundles.depends_on — REQUIRED and explicit on purpose (srd-cc executable finding #8): deliberateness is the whole point of this verb over the auto-scaffold every other write verb falls back to (which silently defaults to ['core']). Pass [] for a foundational, drop-in-identity bundle (mirroring core's own depends_on = []), or the real dependency list otherwise."
+			},
+			"display_name": {
+				"type": "string",
+				"description": "bundles.display_name. Omit to derive a title-cased `bundle_id` (#1968 smart default)."
+			},
+			"version": {
+				"type": "string",
+				"description": "bundles.version (default '1.0.0')."
+			},
+			"author": {
+				"type": "string",
+				"description": "bundles.author (default 'spellkave-verb-tools')."
+			},
+			"description": {
+				"type": "string",
+				"description": "Sets the generated bundles row's own `description` column."
+			},
+			"default_extent_shape_id": {
+				"type": "string",
+				"description": "bundles.default_extent_shape_id (place-node-extent D-2): the shape a place_node in this bundle resolves its extent from when it authors none of its own (an area_shape_definition.shape_id reference, e.g. 'core/area/cube'). Omit to leave the bundle without a default — every place_node then MUST author its own explicit extent or fail admission."
+			},
+			"default_extent_params_json": {
+				"type": "string",
+				"description": "bundles.default_extent_params_json — the params_json paired with default_extent_shape_id (e.g. '{\"extent_m\": 9}' for core/area/cube). Only meaningful alongside default_extent_shape_id."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

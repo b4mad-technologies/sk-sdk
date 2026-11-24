@@ -1,0 +1,47 @@
+{
+	"name": "spellkave_react_option",
+	"label": "Spellkave React Option",
+	"description": "Execute one current handle for the connected actor — either a multi-actor reaction seat from spellkave_reaction_options, or a post-roll intervention window from spellkave_intervention_windows. For an intervention-window handle, omit selected_draw_index to decline (keep the original result, spend nothing) or pass the index of one of that window's listed faces to accept (spends its fuel resource and replaces exactly that face; the new roll must then be used). The handle only selects; the world independently revalidates sender, eligibility, and the window. On dispatch, the result carries `receipt` (what the world did) and a sibling `observation` (prose of what the actor perceived, or null + observation_gap when no authorized source backs this outcome). On a SUCCESSFUL dispatch with a host world-event builder wired, the result also carries `consequences`: same-tick, same-transaction WorldEvents THIS reaction deterministically caused — a THIRD register, distinct from `receipt`/`observation` (the reducer's own outcome) and from a LATER `pushes` drain off the same builder (world news, e.g. another agent's subsequent move). Omitted entirely when no builder is wired; `[]` when wired but nothing was caused.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"rev",
+			"handle",
+			"response_intent"
+		],
+		"properties": {
+			"rev": {
+				"type": "string",
+				"minLength": 1,
+				"description": "Current reaction-window or intervention-window revision (matches the handle's domain)."
+			},
+			"handle": {
+				"type": "string",
+				"minLength": 2,
+				"description": "A handle from spellkave_reaction_options (e.g. r2) or spellkave_intervention_windows (e.g. w0)."
+			},
+			"response_intent": {
+				"type": "string",
+				"minLength": 1,
+				"description": "Authored or free-text response intent passed to the typed reaction reducer."
+			},
+			"selected_draw_index": {
+				"type": "number",
+				"minimum": 0,
+				"description": "Intervention windows only: the index (into that window's `faces`) of the already-drawn face to replace. Omit to decline — the original result stands and nothing is spent. Providing an index accepts: it spends the window's fuel resource and replaces exactly that one face; the new roll must then be used. Ignored (and should be omitted) for a plain spellkave_reaction_options seat."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			}
+		],
+		"ports": []
+	}
+}

@@ -1,0 +1,80 @@
+{
+	"name": "spellkave_grant_role",
+	"label": "Grant role",
+	"description": "Delegate a role through a binding-only manifest delta as the caller. Exact covering frontier.bind.<role> OR all nonempty merged role ids admit the request; no apply or prune privilege is required. Whole-world extent * requires complete inventory and never covers later roots or bundles.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"role",
+			"subject",
+			"extent_kind",
+			"extent"
+		],
+		"properties": {
+			"role": {
+				"type": "string"
+			},
+			"subject": {
+				"type": "string"
+			},
+			"extent_kind": {
+				"type": "string",
+				"default": "place_graph"
+			},
+			"extent": {
+				"type": "string"
+			},
+			"expires_at_tick": {
+				"type": "string",
+				"pattern": "^[0-9]+$"
+			},
+			"description": {
+				"type": "string"
+			},
+			"bundle": {
+				"type": "string"
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"cli": {
+		"positionals": [
+			"role",
+			"subject",
+			"extent"
+		],
+		"examples": [
+			{
+				"command": "sk grant",
+				"description": "Grant role"
+			}
+		]
+	},
+	"roles": [
+		"AUTHOR"
+	],
+	"authority": {
+		"kind": "role-binding",
+		"readSubject": false
+	},
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "publisher"
+			},
+			{
+				"kind": "prefix",
+				"prefix": "frontier.bind."
+			},
+			{
+				"kind": "role-capabilities"
+			}
+		],
+		"ports": [
+			"grants"
+		],
+		"argumentGates": [
+			"Actual role, old/new binding coverage, batch bounds and destination-instance guards are checked by D-6 on the server."
+		]
+	}
+}

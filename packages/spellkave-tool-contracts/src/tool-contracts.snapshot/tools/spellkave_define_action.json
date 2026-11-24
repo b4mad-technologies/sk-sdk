@@ -1,0 +1,133 @@
+{
+	"name": "spellkave_define_action",
+	"label": "Define Action (verb)",
+	"description": "Author ONE action_definitions row (+ action_definition_tag satellites) in a single call, with NO actor grant (contrast spellkave_define_behavior, which always binds its generated action to a `grant_to` caster). `required_capability` must already resolve (workspace, live, or the active target) — this verb never auto-creates it (use spellkave_define_capability first). Self-scaffolds the [[bundles]] header if `bundle` has none yet. #1968 workspace idempotency: re-authoring the SAME bundle+id REPLACES the row + its tag satellite wholesale.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"id",
+			"required_capability",
+			"on_success"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id stamped on the action_definitions row. Omit to fall back to `context.defaultBundle` (#1968 smart default)."
+			},
+			"id": {
+				"type": "string",
+				"description": "Local action_id stem; the full id is '<bundle>/<id>' (e.g. bundle='core', id='pickup' -> 'core/pickup')."
+			},
+			"required_capability": {
+				"type": "string",
+				"description": "action_definitions.required_capability — an ALREADY-authored capability_definitions id (workspace, live, or the active target, e.g. via spellkave_define_capability) this call never creates."
+			},
+			"on_success": {
+				"type": "string",
+				"description": "action_definitions.on_success — the consequence_templates id (e.g. via spellkave_define_consequence) applied when this action resolves successfully."
+			},
+			"on_failure": {
+				"type": "string",
+				"description": "action_definitions.on_failure — the consequence_templates id applied on failure. Omit for none (schema default: empty string)."
+			},
+			"display_name": {
+				"type": "string",
+				"description": "action_definitions.display_name. Omit to derive a title-cased `id` (#1968 smart default)."
+			},
+			"cost_time_ms": {
+				"type": "number",
+				"description": "action_definitions.cost_time_ms in fiction milliseconds. With spends_channel, omit or set 0 to spend one full channel pool; without a channel, 0 is unmetered."
+			},
+			"resolution_mode": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "Deterministic"
+					},
+					{
+						"type": "string",
+						"const": "Stochastic"
+					},
+					{
+						"type": "string",
+						"const": "Deferred"
+					}
+				],
+				"description": "action_definitions.resolution_mode. Omit for the schema default ('Deterministic')."
+			},
+			"resolution_predicate_source": {
+				"type": "string",
+				"description": "action_definitions.resolution_predicate_source — authored boolean DSL for Stochastic resolution. Omit for empty (Deterministic/Deferred)."
+			},
+			"resolution_scope": {
+				"type": "string",
+				"description": "action_definitions.resolution_scope — open authored id selecting scoped actor-side roll modifiers. Omit for no narrow scope."
+			},
+			"non_steering": {
+				"type": "boolean",
+				"description": "Explicit author assertion that target effects are cooperative/non-steering and need no target claim. Omit/false for conservative automatic classification; marking a hostile effect true is a content bug."
+			},
+			"session_def_id": {
+				"type": "string",
+				"description": "action_definitions.session_def_id. Omit for the schema default (empty string)."
+			},
+			"resumable": {
+				"type": "boolean",
+				"description": "action_definitions.resumable (#2022) — interrupted long-running progress is credited on the next matching promotion (same actor, action, target). Omit for the schema default (false)."
+			},
+			"self_eligible": {
+				"type": "boolean",
+				"description": "action_definitions.self_eligible. Omit for the schema default (false)."
+			},
+			"self_only": {
+				"type": "boolean",
+				"description": "action_definitions.self_only (ADR-0075). Omit for the schema default (false)."
+			},
+			"spends_channel": {
+				"type": "string",
+				"description": "action_definitions.spends_channel — an open FK into economy_channel_definitions.id (action-economy budgeting). Omit for unmetered (schema default: absent)."
+			},
+			"reaction_eligibility": {
+				"type": "string",
+				"description": "action_definitions.reaction_eligibility — a DSL predicate over a candidate reactor (§8.4 WHO axis). Omit for not-a-reaction-candidate (schema default: absent)."
+			},
+			"reaction_window_ms": {
+				"type": "number",
+				"description": "action_definitions.reaction_window_ms. Omit for an implementation default when `reaction_eligibility` is set."
+			},
+			"reaction_trigger": {
+				"type": "string",
+				"description": "action_definitions.reaction_trigger — a DSL predicate over the triggering event (§8.4 WHAT axis). Omit to provoke on every co-located trigger (schema default: absent)."
+			},
+			"description": {
+				"type": "string",
+				"description": "action_definitions.description (#1968 first-class column)."
+			},
+			"tags": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"description": "One action_definition_tag row per tag."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

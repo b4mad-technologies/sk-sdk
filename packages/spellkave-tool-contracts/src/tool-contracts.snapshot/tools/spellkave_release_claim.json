@@ -1,0 +1,32 @@
+{
+	"name": "spellkave_release_claim",
+	"label": "Spellkave Release Claim",
+	"description": "Release a claim/lock the active actor holds on a target (multiplayer contention) via the approved r_release_claim path. Success is provenance-observed.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"target_id"
+		],
+		"properties": {
+			"target_id": {
+				"type": "string",
+				"description": "Target entity identifier whose claim/lock this actor releases (multiplayer contention).",
+				"minLength": 1
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"DM"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"publisherRead"
+		]
+	}
+}

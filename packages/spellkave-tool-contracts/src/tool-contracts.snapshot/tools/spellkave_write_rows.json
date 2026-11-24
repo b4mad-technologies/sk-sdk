@@ -1,0 +1,62 @@
+{
+	"name": "spellkave_write_rows",
+	"label": "Write Rows (generic escape hatch)",
+	"description": "The generic long-tail authoring verb (#1968): write one or more rows of ANY Manifest row kind not covered by the narrower verbs — kernel/substrate content (extent kinds, conditions, modifiers, niches, roll tables, action-economy scheduling, metadata namespaces, ...) has no narrative-authoring shape a spell/place/spawn verb was ever meant to fit. `kind` is validated against the ACTUAL schema surface at call time (never a hand-maintained list) — an unsupported kind fails loudly naming the valid set. Rows are merged into the scratch bundle and re-validated whole (merge → validate → persist-only-if-clean, the SAME safety net every other write verb uses) — never a partial/poisoned write. #1968 workspace idempotency: when `kind` has its OWN single-column natural key (`ROW_KIND_NATURAL_KEY` — the same table `commit.rs`'s ADR-0085 upsert/collision discipline is keyed against, e.g. entity_def_id/action_id/capability_id/roll_table_id/...), a row whose key already exists in the workspace REPLACES it instead of duplicating (closing MF-VAL-272 on a re-run). ADR-0146 (sk-jay0.7.174.30) extended the same upsert discipline to kinds with a WIDER ordered composite identity (`ROW_KIND_STORAGE_KEY` — junction/satellite rows such as `*_tag`, `entity_definition_initial_*`, `roll_table_entry_tag`, `spatial_niche_attachments`, `actor_capabilities`, `object_state`, `entity_containment`, `metadata_attachments`, and more): a row whose FULL key tuple already matches an existing row REPLACES it; a row that omits any of that kind's key fields can only ever append, never accidentally collide with an unrelated row that also omits the same field. The one kind absent from BOTH key tables is `consequence_frame_writes` — a Class-β 'set-level' kind (design.md D3) whose identity is the WHOLE ordered list per `template_id`, not a per-row key — so it stays APPEND-ONLY through THIS verb; author it via spellkave_define_behavior/spellkave_define_action_verb's own consequence-authoring path instead, which replaces the set wholesale. For a WHOLESALE reseed of a satellite set (not just avoiding a duplicate), the parent folding verb remains the better tool even though the composite-key upsert now prevents duplicates here too: DEFINITION-level `*_tag` (e.g. entity_definition_tag, resource_definition_tag, condition_definition_tag) via spellkave_define_entity_type/_resource/_condition/_niche/_capability's own `tags` param; INSTANCE-level entity_tag AND object_state via spellkave_place_entity/spellkave_place_actor's own `tags`/`resources` params (sk-9ll.7 — the parent verb here IS the placement verb, not a `define_*` verb). `turn_scheduler` and `combat_grid_blueprints` are DOCUMENTED-INTENTIONAL raw kinds (sk-9ll.4): each is a narrow one-off definition row with its own natural key (upserted here like any other kind), and spellkave_define_session's own FK columns (`turn_scheduler_id`, `combat_grid_blueprint_id`) deliberately never create or ref-check them — that verb's cross-row validation happens at validate/apply, not at authoring time — so this escape hatch is the sole author-facing path for either row kind today; no narrower verb is planned.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"kind",
+			"rows"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id stamped on the scaffolded `[[bundles]]` header (self-scaffolds if new) and defaulted onto every row that doesn't already set its own `bundle_id` (only when the target kind's schema has that column). Omit to fall back to `context.defaultBundle` (#1968 smart default) — an error names `bundle` when neither is set."
+			},
+			"kind": {
+				"type": "string",
+				"description": "The exact Manifest row-kind name — a `[[kind]]` TOML table, e.g. 'extent_kind_definitions' or 'roll_table_entries'. The generic escape hatch for any row kind the other verbs (author_place/spawn/define_resource/define_behavior) don't cover — validated at call time against @spellkave/world-author's live schema surface (describeManifestSchema()), never a fixed list here; an unsupported kind fails loudly naming the current valid set. See spellkave_docs (manifest-format) for the full row/field reference."
+			},
+			"rows": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"patternProperties": {
+						"^.*$": {}
+					}
+				},
+				"description": "One or more row objects in this kind's own field shape (see the manifest-format reference doc). Each row is merged as-is into the scratch bundle and re-validated with everything else already authored — nothing is persisted unless the WHOLE merged manifest is clean."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			},
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.escalate"
+				]
+			},
+			{
+				"kind": "role-capabilities"
+			}
+		],
+		"ports": [],
+		"argumentGates": [
+			"Role widening still checks all-contained capabilities or frontier.escalate on the server; unsupported comparison kinds refuse."
+		]
+	}
+}

@@ -1,0 +1,36 @@
+{
+	"name": "@spellkave/tool-runtime",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Browser-safe transport-neutral binding, validation, dispatch, result shaping, and capability-port coordination for Spellkave tool contracts.",
+	"type": "module",
+	"main": "./src/index.ts",
+	"types": "./src/index.ts",
+	"exports": {
+		".": {
+			"types": "./src/index.ts",
+			"default": "./src/index.ts"
+		}
+	},
+	"files": [
+		"src"
+	],
+	"scripts": {
+		"clean": "rm -rf dist",
+		"build": "tsc",
+		"dev": "tsc --watch",
+		"test": "vitest run",
+		"test:browser-gate": "node scripts/check-browser-resolution.mjs",
+		"test:forbidden-imports": "vitest run src/__tests__/forbidden-imports.test.ts"
+	},
+	"dependencies": {
+		"@spellkave/tool-contracts": "workspace:*",
+		"@spellkave/world-events": "workspace:*",
+		"typebox": "1.1.38"
+	},
+	"devDependencies": {
+		"esbuild": "0.28.1",
+		"vitest": "^3.2.6"
+	},
+	"license": "PolyForm-Shield-1.0.0"
+}

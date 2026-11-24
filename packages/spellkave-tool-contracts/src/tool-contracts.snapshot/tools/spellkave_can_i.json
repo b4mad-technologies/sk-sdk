@@ -1,0 +1,123 @@
+{
+	"name": "spellkave_can_i",
+	"label": "Can I",
+	"description": "Ask a running world whether one body may perform one action on one target now, and which admission check decides. Calls the world's probe. Does not evaluate a predicate, select a template, or perform the act. admitted and disclosed are reported side by side.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"action",
+			"as",
+			"target"
+		],
+		"properties": {
+			"action": {
+				"type": "string",
+				"description": "The action id."
+			},
+			"as": {
+				"type": "string",
+				"description": "The body the question is about, as its authored entity key or its entity id."
+			},
+			"target": {
+				"anyOf": [
+					{
+						"type": "string",
+						"description": "An authored entity key, entity id, or world."
+					},
+					{
+						"type": "object",
+						"required": [
+							"kind"
+						],
+						"properties": {
+							"kind": {
+								"anyOf": [
+									{
+										"type": "string",
+										"const": "entity"
+									},
+									{
+										"type": "string",
+										"const": "place_node"
+									},
+									{
+										"type": "string",
+										"const": "place_edge"
+									},
+									{
+										"type": "string",
+										"const": "location"
+									},
+									{
+										"type": "string",
+										"const": "world"
+									}
+								]
+							},
+							"id": {
+								"type": "string"
+							}
+						}
+					}
+				],
+				"description": "The target of the attempt, as an authored key, entity id, or target reference."
+			},
+			"args": {
+				"type": "object",
+				"patternProperties": {
+					"^.*$": {}
+				},
+				"description": "Literal manipulation arguments for the probe. Supply the same selected items and either fresh expected_participants or participant_context as the intended dispatch; can-i does not compose a participant context."
+			},
+			"expect": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "admitted"
+					},
+					{
+						"type": "string",
+						"const": "refused"
+					}
+				],
+				"description": "Closed-door expectation. A differing answer is a rejection."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"promptSnippet": "Ask the world whether this actor may perform this action, and which check decides",
+	"cli": {
+		"positionals": [
+			"action",
+			"as",
+			"target"
+		],
+		"examples": [
+			{
+				"command": "sk can-i core/cast_mark --as core/hero --target core/mark",
+				"description": "ask whether the hero may cast mark"
+			},
+			{
+				"command": "sk can-i core/cast_mark --as core/bystander --target core/mark --expect refused",
+				"description": "closed-door: expect a refusal"
+			}
+		]
+	},
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "prefix",
+				"prefix": "frontier."
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"canI"
+		]
+	}
+}

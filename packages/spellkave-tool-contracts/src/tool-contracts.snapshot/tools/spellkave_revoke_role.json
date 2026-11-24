@@ -1,0 +1,55 @@
+{
+	"name": "spellkave_revoke_role",
+	"label": "Revoke role",
+	"description": "Retract a manageable binding through the same D-6-checked apply lane as the caller. No apply or prune privilege is required.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"binding_id"
+		],
+		"properties": {
+			"binding_id": {
+				"type": "string"
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"cli": {
+		"positionals": [
+			"binding_id"
+		],
+		"examples": [
+			{
+				"command": "sk revoke",
+				"description": "Revoke role"
+			}
+		]
+	},
+	"roles": [
+		"AUTHOR"
+	],
+	"authority": {
+		"kind": "role-binding",
+		"readSubject": false
+	},
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "publisher"
+			},
+			{
+				"kind": "prefix",
+				"prefix": "frontier.bind."
+			},
+			{
+				"kind": "role-capabilities"
+			}
+		],
+		"ports": [
+			"grants"
+		],
+		"argumentGates": [
+			"Actual role, old/new binding coverage, batch bounds and destination-instance guards are checked by D-6 on the server."
+		]
+	}
+}

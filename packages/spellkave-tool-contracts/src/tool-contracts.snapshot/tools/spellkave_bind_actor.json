@@ -1,0 +1,79 @@
+{
+	"name": "spellkave_bind_actor",
+	"label": "Bind Actor (verb)",
+	"description": "#1968 verb-UX round 6: bind an already-placed actor's identity (actor_identities, upsert-by-entity_key) and, optionally, grant it one or more capabilities (actor_capabilities) in a single call — folds the genesis-window self-grant idiom (an identity bind + a `frontier.apply_manifest` grant, the `srd/regdar`/`phandelver/hero` pattern every ad-hoc live-authored actor bundle needs post-core/player-retirement) from 2 spellkave_write_rows calls into 1. `entity_key` must already carry an actor_spatial_locations row (workspace, live, or the active target) — place it first via spellkave_place_actor (mirrors spellkave_define_behavior's own `grant_to` precondition). #1968 workspace idempotency: re-authoring the SAME entity_key's identity bind REPLACES it (never duplicates — the server itself upserts on (actor_id, identity), and every corpus fixture binds one entity_key to exactly one identity); each capabilities[] grant upserts by (actor_entity_key, capability_id, source), mirroring add-capability-grant.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"entity_key"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id stamped on every generated row. Omit to fall back to `context.defaultBundle` (#1968 smart default)."
+			},
+			"entity_key": {
+				"type": "string",
+				"description": "entity_key of an already-placed actor (e.g. via spellkave_place_actor) — must already carry an actor_spatial_locations row (workspace, live, or the active target); this call does not place one."
+			},
+			"identity": {
+				"type": "string",
+				"description": "actor_identities.identity. Default '$sender' resolves to whoever submits the applying delta. Pass a concrete identity hex string only when binding to a KNOWN, fixed identity instead."
+			},
+			"role": {
+				"type": "string",
+				"description": "actor_identities.role. Default 'primary' (the corpus-dominant value; 'dm' is the one observed override). NOT a cosmetic label: r_claim_actor refuses every value but 'primary', so authoring 'dm' deliberately makes the seat un-self-claimable — right for a human DM anchor handed over by the operator, wrong for a programmatic seat that wants the self-claim path. It never affects visibility or write authority, which come from the capability grant alone."
+			},
+			"capabilities": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"required": [
+						"capability_id"
+					],
+					"properties": {
+						"capability_id": {
+							"type": "string",
+							"description": "actor_capabilities.capability_id — must already resolve to an authored capability_definitions row (workspace, live, or the active target); this call does not auto-create it. Privileged frontier.* ids use spellkave_grant_role with an explicit role and extent."
+						},
+						"source": {
+							"type": "string",
+							"description": "actor_capabilities.source. Omit for the schema default 'manifest' (mirrors `add-capability-grant`'s own default). This is grant provenance, not authority over a role or extent."
+						},
+						"visibility": {
+							"type": "string",
+							"description": "actor_capabilities.visibility (ADR-0120 read-visibility override)."
+						},
+						"extent_ref": {
+							"type": "string",
+							"description": "actor_capabilities.extent_ref (ADR-0007 D-4 see-as scope)."
+						},
+						"extent_kind_ref": {
+							"type": "string",
+							"description": "actor_capabilities.extent_kind_ref."
+						}
+					}
+				},
+				"description": "actor_capabilities grants issued to the SAME entity_key, alongside the identity bind. Default `[]` (identity-only bind — no grant). Ordinary capability rows are supported; frontier.* capability requests are refused with a pointer to spellkave_grant_role."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

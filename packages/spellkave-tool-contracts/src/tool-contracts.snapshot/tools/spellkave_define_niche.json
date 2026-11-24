@@ -1,0 +1,88 @@
+{
+	"name": "spellkave_define_niche",
+	"label": "Define Niche (verb)",
+	"description": "Author ONE niche_definitions row (+ niche_definition_tag satellites, + spatial_niche_attachments binding it to place nodes/edges) in a single call. Self-scaffolds the [[bundles]] header if `bundle` has none yet. NOTE: an attachment referencing a BOOTSTRAP-seeded niche (one with no niche_definitions row of its own in any bundle, e.g. core's 'core/passable_portal') cannot be authored through THIS verb (it always emits a niche_definitions parent row) — use spellkave_write_rows for a standalone spatial_niche_attachments row in that case. #1968 workspace idempotency: re-authoring the SAME bundle+id REPLACES the row + EVERY satellite wholesale (fewer tags/attachments on a re-run means the stale ones are gone, not left behind).",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"id",
+			"description"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id stamped on every generated row. Omit to fall back to `context.defaultBundle` (#1968 smart default)."
+			},
+			"id": {
+				"type": "string",
+				"description": "Local niche_id stem; full id '<bundle>/<id>'."
+			},
+			"display_name": {
+				"type": "string",
+				"description": "niche_definitions.display_name. Omit to derive a title-cased `id` (#1968 smart default)."
+			},
+			"description": {
+				"type": "string",
+				"description": "niche_definitions.description — REQUIRED (unlike every OTHER verb's optional `description?`): NicheDefinitionRow kept its own PRE-EXISTING required description column through the #1968 description-column decision (no `#[serde(default)]` in the schema); omitting it would author an invalid row, not merely a less-documented one."
+			},
+			"tags": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"description": "One niche_definition_tag row per tag."
+			},
+			"predicate_source": {
+				"type": "string",
+				"description": "DSL Bool predicate (default '' = trivially-true, matches any candidate target)."
+			},
+			"attachments": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"properties": {
+						"node": {
+							"type": "string",
+							"description": "spatial_niche_attachments.place_node_id — an authored place_node id. EXACTLY ONE of `node`/`edge` must be set per attachment (the two authored attachment shapes the corpus actually uses)."
+						},
+						"edge": {
+							"type": "number",
+							"description": "spatial_niche_attachments.place_edge_id — a place_edge numeric id (0 is the SpacetimeDB 'every edge' wildcard convention, e.g. a global passable-portal gate). EXACTLY ONE of `node`/`edge`."
+						},
+						"visibility": {
+							"type": "string",
+							"description": "spatial_niche_attachments.visibility (default 'Public')."
+						},
+						"condition_bool": {
+							"type": "boolean",
+							"description": "spatial_niche_attachments.condition_bool (default true)."
+						},
+						"ecological_invariant": {
+							"type": "boolean",
+							"description": "spatial_niche_attachments.ecological_invariant (default false)."
+						}
+					}
+				},
+				"description": "spatial_niche_attachments rows binding this niche to place nodes/edges."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

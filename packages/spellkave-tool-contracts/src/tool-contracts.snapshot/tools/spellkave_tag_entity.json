@@ -1,0 +1,61 @@
+{
+	"name": "spellkave_tag_entity",
+	"label": "Tag Entity (verb)",
+	"description": "sk-ntz.2: retag an already-placed entity's INSTANCE-level entity_tag rows from a call/file OTHER than the one that placed it (e.g. crypt-fight.ts tagging a hero placed by hero.ts) — the narrow post-placement counterpart to spellkave_place_entity/spellkave_place_actor's own `tags` param, for exactly the case those verbs cannot cover: an entity_key placed elsewhere. `entity_key` must already carry an entities row (workspace or the active target) — place it first via spellkave_place_entity/spellkave_place_actor (mirrors spellkave_bind_actor's own precondition). Default `mode: 'add'` upserts the listed tags and leaves every OTHER tag on the entity untouched (idempotent); `mode: 'replace'` clears every existing entity_tag row for `entity_key` first, then reseeds exactly `tags` — use `replace` only when THIS call owns the entity's complete tag set, since it WOULD clobber tags authored by the entity's own placement call otherwise. Tag-grammar membership (MF-VAL-300) is enforced by the shared validator at commit, not re-validated here; when a tag carries an authored tag_capability_grant, the result's `tag_capability_grants` reports the capability it live-grants (informational, never blocking).",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"entity_key",
+			"tags"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id stamped on every generated entity_tag row. Omit to fall back to `context.defaultBundle` (#1968 smart default). NOTE: this is the bundle OWNING the new tag row(s), not necessarily the bundle that placed `entity_key` — a cross-bundle caller stamps ITS own bundle_id here (the elven-mini idiom this verb replaces: crypt-fight.ts/dm-npc.ts tag the hero placed in hero.ts, all three sharing one bundle in that fixture, but nothing requires it)."
+			},
+			"entity_key": {
+				"type": "string",
+				"description": "entity_key of an already-placed entity (e.g. via spellkave_place_entity/spellkave_place_actor, in THIS bundle or another) — must already carry an entities row (workspace or the active target); this call does not place one. Use this verb instead of re-invoking the placement tool when the entity's placement call lives in a DIFFERENT file/call than the one adding this tag."
+			},
+			"tags": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"minItems": 1,
+				"description": "One INSTANCE-level entity_tag row per tag, mirroring spellkave_place_entity/spellkave_place_actor's own `tags` param exactly (same row shape, same MF-VAL-300 grammar, same tag_capability_grant diagnostic) — the difference is WHEN: this verb runs AFTER the entity already exists, against an entity_key placed by a DIFFERENT call/file."
+			},
+			"mode": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "add"
+					},
+					{
+						"type": "string",
+						"const": "replace"
+					}
+				],
+				"description": "Default 'add': upsert the listed tags, leaving every OTHER tag already on this entity_key untouched (idempotent — re-listing an already-present tag is a no-op) — the safe default for a cross-file caller that does not own the entity's full tag set (this verb's whole reason to exist: REPLACING would clobber tags the entity's OWN placement call already authored elsewhere). Set 'replace' only when THIS call owns the entity's complete tag set: it clears EVERY existing entity_tag row for `entity_key` first, then reseeds exactly `tags` (a re-run with fewer tags drops the stale ones, mirroring spellkave_place_entity/spellkave_place_actor's own clear-and-reseed)."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

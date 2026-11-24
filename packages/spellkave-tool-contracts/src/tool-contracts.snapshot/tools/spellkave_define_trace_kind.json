@@ -1,0 +1,71 @@
+{
+	"name": "spellkave_define_trace_kind",
+	"label": "Define Trace Kind (verb)",
+	"description": "Author ONE trace_kind_definitions row (+ optional place_node_traces satellites placing that kind at already-authored place nodes as standing, ambient traces) in a single call. Self-scaffolds the [[bundles]] header if `bundle` has none yet. #1968 workspace idempotency: re-authoring the SAME bundle+id REPLACES the parent row + every `places[]` satellite wholesale (fewer places on a re-run means the stale ones are gone, not left behind). Both `node_id` and `trace_kind_id` are validated at commit (sk-9ll.8): an unknown place_node or an unregistered trace kind now fails the commit instead of silently defaulting.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"id"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id stamped on every generated row. Omit to fall back to `context.defaultBundle` (#1968 smart default)."
+			},
+			"id": {
+				"type": "string",
+				"description": "Local trace-kind id stem; full id '<bundle>/<id>'."
+			},
+			"location_kinds": {
+				"type": "string",
+				"description": "trace_kind_definitions.location_kinds — comma-joined registered scopes this kind can attach to (e.g. \"place_node\", or \"place_node,location_definition\"). Default 'place_node' — the scope every corpus trace kind uses today, and the only scope `places[]` (below) can target."
+			},
+			"description": {
+				"type": "string",
+				"description": "trace_kind_definitions.description — human-readable, for authors and operator tooling. Default ''."
+			},
+			"schema_json": {
+				"type": "string",
+				"description": "trace_kind_definitions.schema_json — canonical JSON schema for the trace payload (flat object mapping a required key to its type name, '?' suffix marks it optional, e.g. '{\"text\":\"string\",\"addressee\":\"integer?\"}'). Default '' (no contract — most trace kinds carry no structured payload)."
+			},
+			"perceptible_for_ticks": {
+				"type": "number",
+				"description": "trace_kind_definitions.perceptible_for_ticks — how many ticks after inscription this kind stays admissible to an ARRIVING observer (ADR-0040 seam B). Omit for unbounded (a standing mark — footprints, a slime trail, a scorch); 0 = perceptible only at the moment of inscription (an EVENT, not a mark — bead sk-n16)."
+			},
+			"places": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"required": [
+						"node"
+					],
+					"properties": {
+						"node": {
+							"type": "string",
+							"description": "place_node_traces.node_id — an already-authored place_node id (workspace, live, or the active target) this call never creates. Rejected at commit if it does not resolve to a place_node (sk-9ll.8: no more silent fallback to bundle 'core')."
+						}
+					}
+				},
+				"description": "place_node_traces rows binding this trace kind to already-authored place nodes as a standing, ambient trace. Omit to author only the vocabulary."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

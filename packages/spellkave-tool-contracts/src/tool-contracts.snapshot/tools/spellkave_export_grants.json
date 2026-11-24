@@ -1,0 +1,50 @@
+{
+	"name": "spellkave_export_grants",
+	"label": "Export grants",
+	"description": "Return an artifact of authorized world-owned runtime bindings with source world instance, tick, endpoint, original expiry, digest and complete or scoped coverage. Only a complete publisher export is a reset backup. Optional out uses a host filesystem; hosted delivery returns the artifact.",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"out": {
+				"type": "string"
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"cli": {
+		"positionals": [],
+		"examples": [
+			{
+				"command": "sk grants export",
+				"description": "Export grants"
+			}
+		]
+	},
+	"roles": [
+		"AUTHOR"
+	],
+	"authority": {
+		"kind": "role-binding",
+		"readSubject": true
+	},
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "publisher"
+			},
+			{
+				"kind": "prefix",
+				"prefix": "frontier.bind."
+			},
+			{
+				"kind": "role-capabilities"
+			}
+		],
+		"ports": [
+			"grants"
+		],
+		"argumentGates": [
+			"Actual role, old/new binding coverage, batch bounds and destination-instance guards are checked by D-6 on the server."
+		]
+	}
+}

@@ -1,0 +1,72 @@
+{
+	"name": "@spellkave/behaviour",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Black-box behaviour suites that document a package: Gherkin narration into results, a CLI runner that records transcripts, shared contract steps, and the generators that turn a run into a guide, evidence and a README.",
+	"type": "module",
+	"bin": {
+		"behaviour-docs": "./bin/behaviour-docs.js"
+	},
+	"exports": {
+		"./endpoint": {
+			"types": "./src/endpoint.ts",
+			"default": "./src/endpoint.ts"
+		},
+		"./cli": {
+			"types": "./src/cli.ts",
+			"default": "./src/cli.ts"
+		},
+		"./narrate": {
+			"types": "./src/narrate.ts",
+			"default": "./src/narrate.ts"
+		},
+		"./steps": {
+			"types": "./src/contract-steps.ts",
+			"default": "./src/contract-steps.ts"
+		},
+		"./setup": {
+			"types": "./src/setup.ts",
+			"default": "./src/setup.ts"
+		},
+		"./vitest": {
+			"types": "./src/vitest.ts",
+			"default": "./src/vitest.ts"
+		},
+		"./docs": {
+			"types": "./src/docs/index.ts",
+			"default": "./src/docs/index.ts"
+		},
+		"./world": {
+			"types": "./src/world-pooled.ts",
+			"default": "./src/world-pooled.ts"
+		},
+		"./git-env": "./src/git-env.ts"
+	},
+	"files": [
+		"bin",
+		"src"
+	],
+	"scripts": {
+		"test": "vitest run",
+		"readme": "tsx src/docs/main.ts readme"
+	},
+	"dependencies": {
+		"allure": "3.20.1",
+		"esbuild": "0.28.1",
+		"tsx": "^4.19.2"
+	},
+	"peerDependencies": {
+		"allure-js-commons": "3.13.0",
+		"allure-vitest": "3.13.0",
+		"quickpickle": "1.11.2",
+		"vitest": "^3.2.6"
+	},
+	"devDependencies": {
+		"@types/node": "^24.12.4",
+		"allure-js-commons": "3.13.0",
+		"allure-vitest": "3.13.0",
+		"quickpickle": "1.11.2",
+		"vitest": "^3.2.6"
+	},
+	"license": "PolyForm-Shield-1.0.0"
+}

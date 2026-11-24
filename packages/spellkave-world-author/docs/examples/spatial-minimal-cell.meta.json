@@ -1,0 +1,5 @@
+{
+	"title": "Minimal spatial cell",
+	"intent": "Add the smallest valid spatial cell with one graph and one node.",
+	"tags": ["spatial", "place_graph", "place_node"]
+}

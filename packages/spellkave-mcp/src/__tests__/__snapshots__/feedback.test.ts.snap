@@ -1,0 +1,46 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`spellkave_feedback memory sink > receives message + must-gather bundle and returns a local reference 1`] = `
+{
+  "player_feedback": {
+    "actor_id": "hero_42",
+    "data": {
+      "bundle_sha256_len": 64,
+      "category": "bug",
+      "message_chars": 54,
+      "reference": "local-feedback-test-1",
+      "world_slug": "elven-mini",
+    },
+    "run_id": "mcp-corr-fb",
+    "type": "player_feedback",
+  },
+  "result": {
+    "category": "bug",
+    "include_report": true,
+    "ok": true,
+    "reference": "local-feedback-test-1",
+  },
+  "submission": {
+    "bundle": {
+      "run_events_count": 2,
+      "seat": {
+        "actor_id": "hero_42",
+        "role": "PLAYER",
+      },
+      "v": "spellkave-must-gather/v1",
+      "versions_gateway": "0.0.0",
+      "world": {
+        "db": "elven-mini",
+        "slug": "elven-mini",
+      },
+    },
+    "category": "bug",
+    "message": "The exit to the crypt looked walkable but move failed.",
+    "seat": {
+      "actor_id": "hero_42",
+      "world_slug": "elven-mini",
+    },
+    "submitted_at": "2026-08-22T16:00:00.000Z",
+  },
+}
+`;

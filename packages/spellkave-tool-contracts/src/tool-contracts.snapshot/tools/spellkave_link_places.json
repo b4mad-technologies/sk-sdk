@@ -1,0 +1,84 @@
+{
+	"name": "spellkave_link_places",
+	"label": "Link Places",
+	"description": "Author a portal between two existing place_nodes (same graph or cross-graph). Writes place_edges with place_graph_id \"\" when graphs differ (Stonehill pattern), sets substrate_crossing automatically for outdoor↔indoor. Does NOT attach a place_edge_affordance by default (ADR-0101): an ordinary edge just inherits the bundle/graph movement_default (spellkave_set_movement_default) via place_edges.inherit_movement_default, which defaults to true — zero per-edge rows for ordinary walking. Pass portal:true (+ affordance_template_id / bindings_json) only for a special affordance you want attached to THIS edge at creation time; spellkave_bind_edge_affordance is the preferred (FK-validated) path for that, including after the edge already exists. Use after spellkave_author_place on both sides.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"from",
+			"to"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id stamped on generated edges. Omit to fall back to `context.defaultBundle`."
+			},
+			"from": {
+				"type": "string",
+				"description": "Fully-qualified place_node id (must already exist in workspace/target)."
+			},
+			"to": {
+				"type": "string",
+				"description": "Fully-qualified place_node id (must already exist in workspace/target)."
+			},
+			"bidirectional": {
+				"type": "boolean",
+				"description": "Author reverse edge too (default true)."
+			},
+			"substrate_crossing": {
+				"type": "boolean",
+				"description": "Force substrate_crossing. Omit to auto: true when the two nodes' substrates differ, or when they belong to different place_graphs (cross-graph portal)."
+			},
+			"portal": {
+				"type": "boolean",
+				"description": "Attach a place_edge_affordance on each edge (default FALSE, ADR-0101 — ordinary edges inherit the bundle/graph movement_default instead, no per-edge row needed). Pass true only to attach a special affordance right at creation time; template defaults to core/affordance/traverse_open_portal unless affordance_template_id is set."
+			},
+			"affordance_template_id": {
+				"type": "string",
+				"description": "place_edge_affordance.affordance_template_id when portal is true (portal defaults to false — see that field). Default \"core/affordance/traverse_open_portal\" when portal is true and this is omitted. Self-sufficient packs pass e.g. \"srd/affordance/step\"."
+			},
+			"bindings_json": {
+				"type": "string",
+				"description": "place_edge_affordance.bindings_json when portal is true (default \"\"). e.g. '{\"movement_reach_resource\":\"srd/speed-walk\",\"long_running_move_session\":\"srd/long_running_move\"}' for srd Step."
+			},
+			"door": {
+				"type": "boolean",
+				"description": "If true, attach metadata namespace place.door on each edge_key (inert; locks later)."
+			},
+			"description": {
+				"type": "string",
+				"description": "Optional edge description."
+			},
+			"cell_anchor": {
+				"type": "string",
+				"description": "H3 res10 cell anchor as decimal u64 string for substrate_crossing edges (MF-VAL-102). Omit to use dummy 1 (legacy); outdoor portals should pass a real cell."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"promptSnippet": "Link two place nodes with a walkable portal (cross-graph OK)",
+	"promptGuidelines": [
+		"Both from/to node ids must already exist (author_place first).",
+		"Cross-graph links leave place_graph_id empty; outdoor↔indoor sets substrate_crossing=true.",
+		"door:true only stamps metadata — no lock/secret mechanics yet (E prep).",
+		"ADR-0101: ordinary walking needs NO affordance row here — author one spellkave_set_movement_default per bundle/graph instead, once.",
+		"portal:true is the exception path — a special per-edge affordance right at creation time (e.g. a template that differs from the bundle default). For an edge that already exists, prefer spellkave_bind_edge_affordance (FK-validated)."
+	],
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

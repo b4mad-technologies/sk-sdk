@@ -1,0 +1,32 @@
+{
+	"name": "spellkave_entity_container",
+	"label": "Spellkave Entity Container",
+	"description": "Read the container that holds a given entity, or null if it is not contained.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"entity_id"
+		],
+		"properties": {
+			"entity_id": {
+				"type": "string",
+				"description": "Contained entity identifier. Returns the container that holds it, or null if it is not contained.",
+				"minLength": 1
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"DM"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"publisherRead"
+		]
+	}
+}

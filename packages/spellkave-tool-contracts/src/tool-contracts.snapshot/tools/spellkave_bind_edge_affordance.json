@@ -1,0 +1,69 @@
+{
+	"name": "spellkave_bind_edge_affordance",
+	"label": "Bind Edge Affordance",
+	"description": "Attach a place_edge_affordance to an edge that ALREADY exists (author it first via spellkave_link_places / spellkave_author_place) — closes the write_rows-only gap where a raw place_edge_affordance write validated nothing against edge_key (sk-9ll.2). Derives edge_key(s) exactly as spellkave_link_places does (from->to), validates the edge AND the affordance_template_id both already resolve (workspace, live, or the active target), then upserts by (edge_key, affordance_template_id, mode_id) — re-authoring the SAME triple REPLACES bindings_json rather than duplicating (mirrors the Rust add-place-edge-affordance patch op; ADR-0101 widened the key with mode_id). Optionally also REPLACES the edge's own inherit_movement_default flag (requires the edge already authored in THIS workspace).",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"from",
+			"to",
+			"affordance_template_id"
+		],
+		"properties": {
+			"from": {
+				"type": "string",
+				"description": "place_edges.from_node_id of an edge that ALREADY exists (workspace, live, or the active target) — this call never creates one. Author it first via spellkave_link_places / spellkave_author_place."
+			},
+			"to": {
+				"type": "string",
+				"description": "place_edges.to_node_id of the same already-existing edge."
+			},
+			"affordance_template_id": {
+				"type": "string",
+				"description": "place_edge_affordance.affordance_template_id — must already resolve to an authored affordance_templates row (workspace, live, or the active target); this call does not auto-create it."
+			},
+			"bindings_json": {
+				"type": "string",
+				"description": "place_edge_affordance.bindings_json (default \"\"). e.g. '{\"movement_reach_resource\":\"srd/speed-walk\"}' for srd Step."
+			},
+			"mode_id": {
+				"type": "string",
+				"description": "place_edge_affordance.mode_id (ADR-0101 D-1, default \"\" — the implicit default mode). An open author-chosen id (e.g. \"fly\", \"swim\") — rows sharing one (edge_key, mode_id) AND-join (all must pass); distinct mode_ids on the SAME edge OR (the cheapest passing mode charges and supplies the long-running-move session). Upserts by (edge_key, affordance_template_id, mode_id) — the SAME template under two different mode_ids on one edge is a sibling row, not a replace."
+			},
+			"bidirectional": {
+				"type": "boolean",
+				"description": "Attach to both from->to and to->from edges (default true) — mirrors spellkave_link_places' own default. Both edges must already exist when true. Pass false to bind only the from->to direction."
+			},
+			"inherit_movement_default": {
+				"type": "boolean",
+				"description": "place_edges.inherit_movement_default (ADR-0101 D-1, schema default true) — REPLACES the flag on every already-existing edge this call targets (from->to, and to->from too when bidirectional). false means the edge owns its FULL mode set from its own place_edge_affordance rows alone (the fly-only-chasm idiom); true (or omitting this param) leaves/restores the resolved bundle/graph movement_default in play. Requires the edge to already be an authored [[place_edges]] row IN THIS WORKSPACE (not just live/target) — this is a whole-row re-author under the hood, so it needs the edge's other columns already in hand to avoid silently dropping them."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"promptSnippet": "Attach a place_edge_affordance to an existing edge (edge + template both FK-validated)",
+	"promptGuidelines": [
+		"from/to must already form an edge (author_place / link_places first) — this call never creates one.",
+		"bidirectional:true (default) attaches to both from->to and to->from; pass false for a one-way gate.",
+		"Idempotent: re-calling with the same (from, to, affordance_template_id, mode_id) replaces bindings_json in place.",
+		"mode_id groups AND-joined rows on one edge; a distinct mode_id on the same edge is an alternative (OR) the kernel picks the cheapest passing one from.",
+		"inherit_movement_default:false detaches the edge from the bundle/graph movement_default — pair it with an explicit mode_id-tagged row (e.g. a fly-only chasm)."
+	],
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

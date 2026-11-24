@@ -1,0 +1,32 @@
+{
+	"name": "spellkave_suggest_next_action",
+	"label": "Spellkave Suggest Next Action",
+	"description": "Read a deterministic Spellkave suggestion or affordance summary from SDK state. Does not submit reducers.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"entity_ref"
+		],
+		"properties": {
+			"entity_ref": {
+				"type": "string",
+				"description": "EntityRef of the perceiver body to suggest for — not `Actor.actor_id` (the steering principal). Accepts a bare numeric entity id (`42`), `entity:42`, `item:42` (an item is still an entity row; same numeric id), or a manifest key suffix (`core/player`).",
+				"minLength": 1
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"DM"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"publisherRead"
+		]
+	}
+}

@@ -1,0 +1,59 @@
+{
+	"name": "spellkave_pace_time",
+	"label": "Spellkave Pace Time",
+	"description": "Pause, resume, step or change the shared clock interval as the caller. Requires a live frontier.pace_time grant and the caller world-connection port; publisher connections are refused. Step accepts ticks (default 1); interval requires seconds within publisher-configured bounds. Returns correlated event id and clock state. Hosted capability routing is supplied by authority-tools-over-mcp.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"op"
+		],
+		"properties": {
+			"op": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "pause"
+					},
+					{
+						"type": "string",
+						"const": "resume"
+					},
+					{
+						"type": "string",
+						"const": "step"
+					},
+					{
+						"type": "string",
+						"const": "interval"
+					}
+				]
+			},
+			"ticks": {
+				"type": "integer",
+				"minimum": 1,
+				"maximum": 10000
+			},
+			"seconds": {
+				"type": "integer",
+				"minimum": 1,
+				"maximum": 9007199254740991
+			}
+		},
+		"additionalProperties": false
+	},
+	"executionMode": "sequential",
+	"roles": [],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.pace_time"
+				]
+			}
+		],
+		"ports": [
+			"paceTime"
+		]
+	}
+}

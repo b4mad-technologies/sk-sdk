@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.local/
+*.tsbuildinfo
+allure-results/
+allure-report/
+packages/spellkave-world-author/src/corpus.generated.ts
+packages/spellkave-cli/runtime/

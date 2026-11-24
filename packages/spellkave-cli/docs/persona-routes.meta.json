@@ -1,0 +1,5 @@
+{
+	"title": "Choose guidance for your task and access",
+	"intent": "Route author, DM, player, observer and operator tasks to package-owned guidance using the available access surface, without inferring authority.",
+	"tags": ["persona", "workflow", "cli", "mcp", "discovery"]
+}

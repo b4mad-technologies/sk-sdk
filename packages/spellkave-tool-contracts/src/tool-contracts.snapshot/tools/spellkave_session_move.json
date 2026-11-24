@@ -1,0 +1,38 @@
+{
+	"name": "spellkave_session_move",
+	"label": "Spellkave Session Move",
+	"description": "Submit a move within an interaction session for the active actor via the approved r_session_move path. Success is state-observed.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"session_id",
+			"move_template_id"
+		],
+		"properties": {
+			"session_id": {
+				"type": "number",
+				"description": "Session id to advance.",
+				"minimum": 0
+			},
+			"move_template_id": {
+				"type": "string",
+				"description": "Move template identifier to submit.",
+				"minLength": 1
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"DM"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"publisherRead"
+		]
+	}
+}

@@ -1,0 +1,13 @@
+{
+	"title": "Statblock stats & innate capability on a definition",
+	"intent": "Give a creature definition its own HP and innate Multiattack so every spawned instance inherits them; also covers the definition-level containment/equipment seeds that spawn a fresh carried/equipped child instance.",
+	"tags": [
+		"entity-definition",
+		"object_state",
+		"capability",
+		"statblock",
+		"seed",
+		"containment",
+		"equipment"
+	]
+}

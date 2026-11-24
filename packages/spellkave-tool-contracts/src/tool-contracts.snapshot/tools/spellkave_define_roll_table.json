@@ -1,0 +1,87 @@
+{
+	"name": "spellkave_define_roll_table",
+	"label": "Define Roll Table (verb)",
+	"description": "Author ONE roll_tables row + its ordered roll_table_entries (+ roll_table_tag/roll_table_entry_tag satellites) in a single call. Self-scaffolds the [[bundles]] header if `bundle` has none yet. #1968 workspace idempotency: re-authoring the SAME bundle+id REPLACES the row + EVERY satellite wholesale (fewer/reordered entries on a re-run means the stale ones are gone, not left behind).",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"id",
+			"result_kind",
+			"entries"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id stamped on every generated row (roll_table_entries excepted — that row kind carries no bundle_id column). Omit to fall back to `context.defaultBundle` (#1968 smart default)."
+			},
+			"id": {
+				"type": "string",
+				"description": "Local roll_table_id stem; the full id is '<bundle>/<id>' (e.g. bundle='core', id='d20' -> 'core/d20')."
+			},
+			"display_name": {
+				"type": "string",
+				"description": "roll_tables.display_name. Omit to derive a title-cased `id` (#1968 smart default)."
+			},
+			"result_kind": {
+				"type": "string",
+				"description": "roll_tables.result_kind — an open string (the corpus already uses more than one value, e.g. 'int', 'outcome_graph'); no closed PoC enum."
+			},
+			"description": {
+				"type": "string",
+				"description": "roll_tables.description (#1968 first-class column)."
+			},
+			"tags": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"description": "One roll_table_tag row per tag."
+			},
+			"entries": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"required": [
+						"result_ref"
+					],
+					"properties": {
+						"result_ref": {
+							"type": "string",
+							"description": "roll_table_entries.result_ref — the drawn value/reference text for this entry."
+						},
+						"weight": {
+							"type": "number",
+							"description": "roll_table_entries.weight (default 1)."
+						},
+						"tags": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							},
+							"description": "One roll_table_entry_tag row per tag, for THIS entry."
+						}
+					}
+				},
+				"description": "One row per entry, in AUTHORED order. `authored_order` (1-based) and `roll_table_entry_id` ('<roll_table_id>:<authored_order>') are BOTH derived from array position + the parent id, matching the corpus convention verbatim — never hand-specified."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

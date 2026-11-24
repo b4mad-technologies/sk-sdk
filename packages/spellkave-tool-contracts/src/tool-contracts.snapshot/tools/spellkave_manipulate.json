@@ -1,0 +1,84 @@
+{
+	"name": "spellkave_manipulate",
+	"label": "Spellkave Manipulate",
+	"description": "Attempt one authored action against one typed target. Prefer action_id and target_id from spellkave_manipulation_context when it is ready; those facts support composition but never promise success. Direct typed attempts remain allowed and the world authoritatively validates fresh state. Args pass 1:1 and success is provenance-observed. For a prompt-bound dialog answer (a prompts[] row, dm/dialog/choice/N) or any free-text creation field use spellkave_communicate instead: it carries the utterance and returns the next open prompt row on its receipt; this tool does not. A field whose input.fields[].channel is \"utterance\" cannot be sent here: the attempt is refused as utterance_required and names the spellkave_communicate speech act to use.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"target_id",
+			"action_id"
+		],
+		"properties": {
+			"as_body_id": {
+				"type": "string",
+				"minLength": 1,
+				"description": "Observed non-presence body to act as using frontier.impersonate; the server checks scope and consent."
+			},
+			"control_token": {
+				"type": "object",
+				"required": [
+					"world_instance_id",
+					"generation",
+					"actor_id",
+					"body_entity_id"
+				],
+				"properties": {
+					"world_instance_id": {
+						"type": "string",
+						"minLength": 1
+					},
+					"generation": {
+						"type": "string",
+						"pattern": "^[0-9]+$"
+					},
+					"actor_id": {
+						"type": "string",
+						"pattern": "^[0-9]+$"
+					},
+					"body_entity_id": {
+						"type": "string",
+						"pattern": "^[0-9]+$"
+					}
+				}
+			},
+			"target_id": {
+				"type": "string",
+				"description": "Typed target reference to manipulate — prefer target_ref from spellkave_manipulation_context when it is ready (e.g. 'entity:42', 'item:7'). Direct typed attempts remain allowed; the world authoritatively validates them. A bare numeric id is ambiguous (defaults to entity) and will misresolve a contained item's location, e.g. rejecting a self-targeted item use as out_of_range (#1838). A carried item is an item: target; the inventory handle 'i:7' is read as 'item:7'.",
+				"minLength": 1
+			},
+			"action_id": {
+				"type": "string",
+				"description": "Open authored action identifier to attempt against the target — prefer action_id from spellkave_manipulation_context when it is ready; it is discovery data, not an eligibility guarantee.",
+				"minLength": 1
+			},
+			"args_json": {
+				"type": "string",
+				"description": "Optional JSON argument blob, passed 1:1 to the world. Defaults to '{}'. For an authored session opener, participant_entity_ids is a nonempty list of up to 64 distinct runtime body ids; the session definition and grid remain authored, and older modules refuse this argument before dispatch. For an action that creates an entity, definition_ref names an allowed definition; the world checks the choice against the action's authored limits. May include participant_context (an mpc:<id> token from spellkave_manipulation_context.participants) when the action has more than one disclosed participant binding. A prompt-bound action (an action_id listed in a prompts[] row's responseActionIds in spellkave_manipulation_context) must carry that prompts[] row here as {\"semantic_context\": <row>}; without it the world rejects the attempt with prompt_context_required."
+			},
+			"participant_context": {
+				"type": "string",
+				"description": "Optional mpc:<id> token from spellkave_manipulation_context.participants for this action. Required when the ready context lists more than one participant row for the action (e.g. Load with two bolts). May also be placed inside args_json; the two must agree.",
+				"minLength": 1
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			},
+			{
+				"kind": "prefix",
+				"prefix": "frontier."
+			}
+		],
+		"ports": [],
+		"argumentGates": [
+			"Select an eligible caller-owned binding when multiple presences can perform this act; server checks target extent and consent for as_body_id."
+		]
+	}
+}

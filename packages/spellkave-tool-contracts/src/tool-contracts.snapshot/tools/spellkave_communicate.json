@@ -1,0 +1,44 @@
+{
+	"name": "spellkave_communicate",
+	"label": "Spellkave Communicate",
+	"description": "Attempt one authored speech act against one typed target. Use an observed participant or world target and an authored speech_act_id; the world authoritatively validates fresh state. An accepted utterance is echoed, may observe one bounded reply, and leaves later speech delivery in pushes. A prompt-bound answer (args_json.semantic_context), or an utterance on an action that carries an authored input form (a name or text field), also returns the next open prompt row as receipt.next_prompt, waited for inside the same reply window plus a short grace after the reply, so the next answer needs no manipulation_context read; next_prompt.status says whether a row opened, was already open, or timed out. An action's input.fields[].channel (from spellkave_manipulation_context) says how a field travels: \"utterance\" fields are read from what you say (plain text for one field, a JSON object keyed by field name for several); sending them in args_json is refused as utterance_required before dispatch.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"target_id",
+			"speech_act_id"
+		],
+		"properties": {
+			"target_id": {
+				"type": "string",
+				"description": "Typed target reference to communicate with — use an observed participant or location reference (e.g. 'entity:42'). The world authoritatively validates the attempt; a bare numeric id is ambiguous and may be rejected or misresolved.",
+				"minLength": 1
+			},
+			"speech_act_id": {
+				"type": "string",
+				"description": "Speech-act identifier to perform.",
+				"minLength": 1
+			},
+			"utterance": {
+				"type": "string",
+				"description": "Optional words to say. On acceptance they are delivered to the world as dispatch_text, echoed in the receipt, and may open the bounded reply window."
+			},
+			"args_json": {
+				"type": "string",
+				"description": "Optional JSON argument blob, passed 1:1 to the world. Defaults to '{}'. For an authored session opener, participant_entity_ids is a nonempty list of up to 64 distinct runtime body ids; the session definition and grid remain authored, and older modules refuse this argument before dispatch. For an action that creates an entity, definition_ref names an allowed definition; the world checks the choice against the action's authored limits. A prompt-bound answer (a speech_act_id listed in a prompts[] row's responseActionIds in spellkave_manipulation_context, e.g. dm/dialog/choice/2) must carry that prompts[] row here as {\"semantic_context\": <row>}; without it the world rejects the answer with prompt_context_required."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			}
+		],
+		"ports": []
+	}
+}

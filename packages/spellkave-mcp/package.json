@@ -1,0 +1,67 @@
+{
+	"name": "@spellkave/player-mcp",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Remote MCP adapter for the canonical Spellkave PLAYER tool registry.",
+	"type": "module",
+	"bin": {
+		"spellkave-player-mcp": "./bin/spellkave-player-mcp.js",
+		"spellkave-player-mcp-health": "./bin/spellkave-player-mcp-health.js",
+		"spellkave-player-mcp-local": "./bin/spellkave-player-mcp-local.js"
+	},
+	"main": "./src/index.ts",
+	"types": "./src/index.ts",
+	"exports": {
+		".": {
+			"types": "./src/index.ts",
+			"default": "./src/index.ts"
+		}
+	},
+	"files": [
+		"bin",
+		"src",
+		"static"
+	],
+	"scripts": {
+		"build": "tsc",
+		"test": "vitest run",
+		"test:behaviour": "vitest run --config vitest.behaviour.config.ts",
+		"guide": "behaviour-docs guide",
+		"readme": "behaviour-docs readme",
+		"report": "behaviour-docs report",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@modelcontextprotocol/node": "2.1.1",
+		"@modelcontextprotocol/server": "2.3.0",
+		"@spellkave/agent-observability": "workspace:*",
+		"@spellkave/sdk": "workspace:*",
+		"@spellkave/session": "workspace:*",
+		"@spellkave/tool-contracts": "workspace:*",
+		"@spellkave/tool-authoring": "workspace:*",
+		"hono": "4.13.11",
+		"tsx": "^4.19.2",
+		"typebox": "1.1.38",
+		"@spellkave/world-map": "workspace:*",
+		"@spellkave/gateway-identity": "workspace:*"
+	},
+	"devDependencies": {
+		"@mapbox/vector-tile": "2.0.4",
+		"@spellkave/test-lab": "workspace:*",
+		"@types/geojson-vt": "3.2.5",
+		"@types/node": "^24.12.4",
+		"@types/pbf": "3.0.5",
+		"maplibre-gl": "6.4.1",
+		"pbf": "4.0.1",
+		"vitest": "^3.2.6",
+		"@spellkave/behaviour": "workspace:*",
+		"allure-js-commons": "3.13.0",
+		"allure-vitest": "3.13.0",
+		"quickpickle": "1.11.2",
+		"smol-toml": "^1.9.1",
+		"@spellkave/world-author": "workspace:*",
+		"@spellkave/authoring-wasm": "0.1.0",
+		"@spellkave/validate-wasm": "0.1.0"
+	},
+	"license": "PolyForm-Shield-1.0.0"
+}

@@ -1,0 +1,5 @@
+{
+	"title": "Damage-type routing",
+	"intent": "Route a fire spell's HP loss through target immune/resistant/vulnerable defense tags using a DSL delta_source.",
+	"tags": ["damage", "spell", "routing", "has-tag", "modify-resource", "delta-source"]
+}

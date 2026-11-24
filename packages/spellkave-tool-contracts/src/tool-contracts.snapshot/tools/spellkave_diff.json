@@ -1,0 +1,90 @@
+{
+	"name": "spellkave_diff",
+	"label": "Diff Manifests",
+	"description": "Compare two manifest TOML files semantically: rows matched by natural/composite identity, line order ignored. only-left = gaps (in the reference, missing from the export); only-right = snapshot/play; changed = same key, field-level diffs. Offline. Default ignore list drops snapshot/enrichment noise (elevation_class, visibility, expires_at_tick, place_node_id on entities/locations, object_state.bundle_id, value_bool beside value_int/value_text). Repeatable --map-key from=to rewrites entity/actor key prefixes (and fields that carry them) before compare.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"left",
+			"right"
+		],
+		"properties": {
+			"left": {
+				"type": "string",
+				"description": "Reference manifest TOML (only-left rows are gaps)."
+			},
+			"right": {
+				"type": "string",
+				"description": "Compared manifest TOML (only-right rows are snapshot/play)."
+			},
+			"ignore_fields": {
+				"type": "string",
+				"description": "Comma-separated extra field names to ignore on every kind (merged with the default snapshot/enrichment list)."
+			},
+			"kinds": {
+				"type": "string",
+				"description": "Comma-separated row kinds to compare (default: every array-valued kind)."
+			},
+			"only": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "gaps"
+					},
+					{
+						"type": "string",
+						"const": "snapshot"
+					},
+					{
+						"type": "string",
+						"const": "changed"
+					}
+				],
+				"description": "Restrict the report: gaps = only-left, snapshot = only-right, changed = same key with field diffs."
+			},
+			"map_key": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"description": "Repeatable from=to key-prefix maps (sk-0m4.54). Rewrites entity/actor keys and every string field that is or embeds that key before compare, so an export keyed candidate_1 can match a reference keyed hero_1."
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"promptSnippet": "Diff two manifest TOML files by row identity (order-insensitive)",
+	"promptGuidelines": [
+		"spellkave_diff: pass two TOML paths; left is the reference (gaps), right is the export (snapshot/play).",
+		"spellkave_diff: a non-empty report is information, not failure — do not retry or treat it as invalid.",
+		"spellkave_diff: --map-key from=to (repeatable) rewrites entity/actor keys and reference fields before compare."
+	],
+	"cli": {
+		"positionals": [
+			"left",
+			"right"
+		],
+		"examples": [
+			{
+				"command": "sk diff packages/spellkave-adventure-elven-mini/fixtures/reference/renn.toml packages/spellkave-srd-cc/saves/<name>/elven_mini-adventure-candidate_1.toml --map-key elven_mini/adventure/candidate_1=elven_mini/adventure/hero_1",
+				"description": "compare a created candidate export to Renn without key-prefix noise"
+			}
+		]
+	},
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "prefix",
+				"prefix": "frontier."
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"node"
+		]
+	}
+}

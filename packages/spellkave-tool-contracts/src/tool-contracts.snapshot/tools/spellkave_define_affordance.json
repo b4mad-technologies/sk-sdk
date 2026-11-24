@@ -1,0 +1,69 @@
+{
+	"name": "spellkave_define_affordance",
+	"label": "Define Affordance (verb)",
+	"description": "#1968 verb-UX round 6: author ONE niche-triggered ENVIRONMENTAL affordance — an outcome_templates row + an affordance_templates row referencing an ALREADY-authored `niche_id`/`capability_id` — in a single call, with NO actor grant (contrast spellkave_define_behavior, which always binds a capability to a `grant_to` caster). The US5-7 live-dungeon pressure-plate trap shape: 'any actor holding an existing capability (e.g. core/walk) that steps onto an existing niche triggers this'. Self-scaffolds the [[bundles]] header if `bundle` has none yet. #1968 workspace idempotency: re-authoring the SAME bundle+id REPLACES both rows wholesale.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"id",
+			"niche_id",
+			"capability_id"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id stamped on every generated row. Omit to fall back to `context.defaultBundle` (#1968 smart default)."
+			},
+			"id": {
+				"type": "string",
+				"description": "Local affordance key stem — derives template_id '<bundle>/<id>/affordance' and outcome_template_id '<bundle>/<id>/outcome'."
+			},
+			"niche_id": {
+				"type": "string",
+				"description": "affordance_templates.niche_id — an ALREADY-authored niche_definitions id (workspace, live, or the active target, e.g. via spellkave_define_niche) this call never creates — the trigger surface (a trap/trigger niche, e.g. a pressure plate)."
+			},
+			"capability_id": {
+				"type": "string",
+				"description": "affordance_templates.capability_id — an ALREADY-authored capability_definitions id (workspace, live, or the active target, e.g. 'core/walk') this call never creates — the pre-existing capability any qualifying actor already holds (no NEW grant is authored by this call)."
+			},
+			"display_name": {
+				"type": "string",
+				"description": "Overrides the derived title-cased `id` for BOTH the outcome and affordance rows."
+			},
+			"predicate_source": {
+				"type": "string",
+				"description": "affordance_templates.predicate_source — the deterministic ELIGIBILITY gate for whether this affordance offers (e.g. a capability/state check like 'target.stat(\"srd/ac\") >= 1'). A stochastic comparison here (e.g. 'd20 >= 13') is treated as satisfied at materialise time and never gates offer (#1891) — author dice on the action's resolution_predicate_source (resolution_mode = 'Stochastic') instead. Omit for an ungated trigger (predicate_bool = true)."
+			},
+			"range_m": {
+				"type": "number",
+				"description": "affordance_templates.range_m (ADR-0053 metric embedding). Default 0."
+			},
+			"outcome_expression_source": {
+				"type": "string",
+				"description": "outcome_templates.outcome_expression_source — invokes a pre-authored effect (e.g. \"invoke_outcome_graph('<bundle>/<id>/graph')\"). Exactly ONE of `outcome_expression_source`/`manipulation_action_id` is required — an affordance with neither would trigger nothing."
+			},
+			"manipulation_action_id": {
+				"type": "string",
+				"description": "outcome_templates.manipulation_action_id — executes a pre-authored action_definitions row instead (the darkness-consumer idiom, packages/spellkave-srd/src/author/author-darkness.ts's `act_in_dark`). Exactly ONE of `outcome_expression_source`/`manipulation_action_id` is required."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

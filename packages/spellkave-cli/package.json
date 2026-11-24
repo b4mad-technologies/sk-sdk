@@ -1,0 +1,74 @@
+{
+	"name": "@spellkave/cli",
+	"version": "0.0.0",
+	"private": true,
+	"description": "`sk`, the Spellkave command line: authors build and check worlds, players act in them, agents explore them. Every command comes from the shared tool registry.",
+	"type": "module",
+	"bin": {
+		"sk": "./bin/sk.js"
+	},
+	"main": "./src/index.ts",
+	"types": "./src/index.ts",
+	"exports": {
+		".": {
+			"types": "./src/index.ts",
+			"default": "./src/index.ts"
+		}
+	},
+	"files": [
+		"bin",
+		"src",
+		"skill",
+		"README.md"
+	],
+	"scripts": {
+		"clean": "rm -rf dist",
+		"build": "tsc",
+		"dev": "tsc --watch",
+		"pack:portable": "node scripts/pack-portable.mjs",
+		"test:portable": "node scripts/prove-portable.mjs",
+		"test": "vitest run",
+		"bundle:portable": "node scripts/bundle-portable.mjs",
+		"build:runtime": "node scripts/build-runtime.mjs",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@earendil-works/pi-tui": "1.5.2",
+		"@spellkave/cli-plugin": "workspace:*",
+		"@spellkave/sdk": "workspace:*",
+		"@spellkave/session": "workspace:*",
+		"@spellkave/tool-authoring": "workspace:*",
+		"@spellkave/tool-contracts": "workspace:*",
+		"@spellkave/tool-node": "workspace:*",
+		"@spellkave/tool-runtime": "workspace:*",
+		"@spellkave/world-author": "workspace:*",
+		"@spellkave/world-map": "workspace:*",
+		"@toon-format/toon": "4.1.1",
+		"smol-toml": "^1.9.1",
+		"tsx": "^4.19.2",
+		"typebox": "1.1.38"
+	},
+	"peerDependencies": {
+		"@earendil-works/pi-agent-core": "1.5.2"
+	},
+	"devDependencies": {
+		"@earendil-works/pi-agent-core": "1.5.2",
+		"@spellkave/bindings": "2.1.0",
+		"@spellkave/test-lab": "workspace:*",
+		"@types/node": "^24.12.4",
+		"js-tiktoken": "1.0.21",
+		"vitest": "^3.2.6",
+		"esbuild": "0.28.1",
+		"@spellkave/behaviour": "workspace:*",
+		"@vitest/runner": "3.2.7",
+		"allure-js-commons": "3.13.0",
+		"allure-vitest": "3.13.0",
+		"quickpickle": "1.11.2",
+		"@spellkave/validate-wasm": "0.1.0",
+		"@spellkave/authoring-wasm": "0.1.0"
+	},
+	"sk": {
+		"plugins": []
+	},
+	"license": "PolyForm-Shield-1.0.0"
+}

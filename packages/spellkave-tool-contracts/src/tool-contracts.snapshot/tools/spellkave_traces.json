@@ -1,0 +1,55 @@
+{
+	"name": "spellkave_traces",
+	"label": "Spellkave Traces",
+	"description": "Orient on perceived traces at the connected actor's current node (location implicit). Items are MOST-RECENT-FIRST (highest inscribed_at first) — page 0 is what just happened here, matching spellkave_orient.traces; pass next_cursor to walk further back. Unfiltered and under the bound, returns EVERY perceived trace (`listing: \"complete\"`) alongside a capped-and-truthful `by_kind` histogram (`kind_groups_total`/`kind_groups_shown`/`kind_groups_truncated`) computed over ALL perceived traces at this node, regardless of any filter you pass. Add a `kind`/`kind_prefix`/`inscribed_by`/`visibility` filter, exceed the bound, or pass a `cursor` and it falls back to a flat, revision-bound paged list (`listing: \"paginated\"`) carrying the SAME handles, node id, and the SAME global `by_kind` histogram — filtering `items` never narrows `by_kind`. Raw payload JSON is never returned; use spellkave_trace_detail for parsed payload. Each item carries its OWN stable `handle`+`rev`: the SAME trace keeps the SAME handle across re-reads for as long as it stays perceivable, and `rev` gates freshness of that ONE trace only — copy both verbatim into spellkave_trace_detail, not the envelope's top-level `rev`.",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"kind": {
+				"type": "string",
+				"description": "Optional exact authored trace kind."
+			},
+			"kind_prefix": {
+				"type": "string",
+				"description": "Optional authored trace-kind prefix."
+			},
+			"inscribed_by": {
+				"type": "string",
+				"description": "Optional exact inscriber id."
+			},
+			"visibility": {
+				"type": "string",
+				"description": "Optional exact visibility class."
+			},
+			"limit": {
+				"type": "number",
+				"minimum": 1,
+				"maximum": 100,
+				"description": "Rows per page."
+			},
+			"cursor": {
+				"type": "string",
+				"description": "Opaque next_cursor from the prior page."
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			},
+			{
+				"kind": "prefix",
+				"prefix": "frontier."
+			}
+		],
+		"ports": [],
+		"argumentGates": [
+			"Caller-owned acting context only; presence is nonspatial and conveys no NPC consent."
+		]
+	}
+}

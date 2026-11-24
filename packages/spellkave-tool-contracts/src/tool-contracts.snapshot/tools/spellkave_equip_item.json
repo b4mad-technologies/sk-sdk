@@ -1,0 +1,49 @@
+{
+	"name": "spellkave_equip_item",
+	"label": "Equip Item (verb)",
+	"description": "sk-9ll.3: equip an already-placed, already-stowed item into a named equipment slot on an actor (actor_equipment_slots, upsert-by-(actor_entity_key, slot_id)) — folds the 'give the hero a starter weapon' idiom's raw actor_equipment_slots write into one checked call. `slot_id` existence and `item_entity_key`'s existence/placeability are enforced by the SAME validator the linter and manifest admission use (no bespoke re-check here); THIS call's own precondition is the one thing only it can see across separate tool calls — a slot already occupied by a DIFFERENT item is a hard rejection (matches the runtime EquipItem affordance's SlotAlreadyOccupied check), while re-equipping the SAME item into the SAME slot is idempotent.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"actor_entity_key",
+			"item_entity_key",
+			"slot_id"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id stamped on the generated row. Omit to fall back to `context.defaultBundle` (#1968 smart default)."
+			},
+			"actor_entity_key": {
+				"type": "string",
+				"description": "actor_equipment_slots.actor_entity_key — must already carry an actor_spatial_locations row (workspace, live, or the active target); place it first via spellkave_place_actor."
+			},
+			"item_entity_key": {
+				"type": "string",
+				"description": "actor_equipment_slots.item_key — an already-authored entities row that entity_containment already places inside actor_entity_key (stow it first via spellkave_stow_item)."
+			},
+			"slot_id": {
+				"type": "string",
+				"description": "actor_equipment_slots.slot_id — must already resolve to an authored equipment_slot_definitions row."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

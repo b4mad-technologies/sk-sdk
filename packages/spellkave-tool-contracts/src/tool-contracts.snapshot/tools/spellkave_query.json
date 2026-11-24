@@ -1,0 +1,290 @@
+{
+	"name": "spellkave_query",
+	"label": "Query Manifest / Definitions",
+	"description": "Read the authored world — merges the former spellkave_manifest_inspect + spellkave_lookup, plus the #1968 definition-lookup gap's missing single-row detail/ref-traversal capability, into ONE tool. Dispatch is inferred from which fields you pass (no mode flag): omit `kind` for a workspace/target summary (bundle ids + row-kind -> count map); pass `kind` alone (or with `pattern`) for a bounded catalog list (default ids-only; add fields:'preferred' or fields:[col,…] to project extra scalars — e.g. entities preferred yields name+place_node_id for who-is-where in one call); pass `kind` + `id` for the complete authored row, its source, and (by default) its outbound/inbound refs — chase a ref by re-calling this tool with its own {kind, id} (e.g. a capability -> its affordance_templates -> their action_definitions -> outcome_templates). Sources, in order: the workspace scratch manifest, plus the active connection-level `target` when wired, or the legacy live `context.db` when no target is configured (result.source says which). Offline with neither, this is workspace-only. `target` overrides the source for THIS call only (read-only — write verbs offer no such override).",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"explore": {
+				"type": "object",
+				"required": [
+					"operation"
+				],
+				"properties": {
+					"operation": {
+						"anyOf": [
+							{
+								"type": "string",
+								"const": "summary"
+							},
+							{
+								"type": "string",
+								"const": "search"
+							},
+							{
+								"type": "string",
+								"const": "detail"
+							},
+							{
+								"type": "string",
+								"const": "neighbors"
+							},
+							{
+								"type": "string",
+								"const": "references"
+							},
+							{
+								"type": "string",
+								"const": "field"
+							}
+						]
+					},
+					"source": {
+						"anyOf": [
+							{
+								"type": "string",
+								"const": "live"
+							},
+							{
+								"type": "string",
+								"const": "workspace"
+							},
+							{
+								"type": "string",
+								"const": "local"
+							}
+						]
+					},
+					"source_id": {
+						"type": "string",
+						"maxLength": 64,
+						"description": "The `source.source_id` of the response that returned `ref`/`within`. Required with `ref` and `within`; another source, world or connection is refused."
+					},
+					"collection": {
+						"anyOf": [
+							{
+								"type": "string",
+								"const": "places"
+							},
+							{
+								"type": "string",
+								"const": "definitions"
+							},
+							{
+								"type": "string",
+								"const": "instances"
+							}
+						]
+					},
+					"facets": {
+						"type": "boolean",
+						"description": "Summary only: include definition counts by kind and detailed authored tag facets. Default false; the compact summary offers this as a follow-up."
+					},
+					"view": {
+						"anyOf": [
+							{
+								"type": "string",
+								"const": "objects"
+							},
+							{
+								"type": "string",
+								"const": "rows"
+							}
+						],
+						"description": "Summary/search/neighbors only. Default objects: instance bodies once, without tag rows. Explicit kind selects rows. Use rows for the technical inventory."
+					},
+					"text": {
+						"type": "string",
+						"maxLength": 512
+					},
+					"tags": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"maxLength": 256
+						},
+						"maxItems": 16,
+						"description": "Summary: count these literal tags separately on definitions and distinct objects. Search: require all tags. Tags are never inherited from definitions."
+					},
+					"kind": {
+						"type": "string"
+					},
+					"bundle": {
+						"type": "string"
+					},
+					"within": {
+						"type": "object",
+						"required": [
+							"kind",
+							"id"
+						],
+						"properties": {
+							"kind": {
+								"type": "string"
+							},
+							"id": {
+								"type": "string"
+							},
+							"bundle": {
+								"type": "string"
+							}
+						},
+						"additionalProperties": false
+					},
+					"ref": {
+						"type": "object",
+						"required": [
+							"kind",
+							"id"
+						],
+						"properties": {
+							"kind": {
+								"type": "string"
+							},
+							"id": {
+								"type": "string"
+							},
+							"bundle": {
+								"type": "string"
+							}
+						},
+						"additionalProperties": false
+					},
+					"direction": {
+						"anyOf": [
+							{
+								"type": "string",
+								"const": "outbound"
+							},
+							{
+								"type": "string",
+								"const": "inbound"
+							}
+						]
+					},
+					"field": {
+						"type": "string"
+					},
+					"offset": {
+						"type": "integer",
+						"minimum": 0
+					},
+					"fields": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"maxLength": 256
+						},
+						"maxItems": 16,
+						"description": "search/detail only: scalar names from the collection schema for search, or the selected row kind's schema for detail; `label` is also selectable."
+					},
+					"limit": {
+						"type": "integer",
+						"minimum": 1,
+						"maximum": 100,
+						"description": "Page size. Default 12 tag facets for summary, 5 for search (ranked: label equals, starts with, contains, then other text), 20 otherwise."
+					},
+					"cursor": {
+						"type": "string",
+						"maxLength": 16384
+					}
+				},
+				"additionalProperties": false,
+				"description": "Bounded admitted discovery. Summary inventories all three collections with coverage and per-kind counts (incomplete kinds are lower bounds). Instance summary/search count objects once by default; view rows preserves technical rows and explicit kind selects rows. Defaults to live; search collection follows kind, otherwise unrestricted text searches all collections and empty text defaults to places. An explicit collection must agree with kind. Explicit workspace/local source is never unioned. Follow exact returned references; no read grants write permission."
+			},
+			"kind": {
+				"type": "string",
+				"description": "A manifest row-kind name (a ROW_KIND_NATURAL_KEY key — e.g. 'capability_definitions', 'affordance_templates', 'action_definitions', 'outcome_templates', 'entity_definitions', 'area_shape_definitions', 'resource_definitions'), the SAME vocabulary spellkave_write_rows and every define_* verb already use — not a closed enum. Also accepts a `*_tag` satellite kind (e.g. 'resource_definition_tag', 'capability_definition_tag') — these have a TWO-field composite key (parent id + tag) instead of a single natural key; see `schema: true` for the field order. Omit for a workspace/target summary (bundle ids + a row-kind -> count map) instead of listing one kind."
+			},
+			"id": {
+				"type": "string",
+				"description": "An exact natural-key value within `kind` — returns the complete authored row (detail shape), its source, and (by default) its refs. For a composite-keyed `*_tag` satellite kind, this is its ordered key fields' values joined by '::' (e.g. 'srd/wis::ability_score' for resource_definition_tag's `{resource_definition_id, tag}` — get the exact ids from a `kind`-only list call first). Mutually exclusive with `pattern`; requires `kind`."
+			},
+			"pattern": {
+				"type": "string",
+				"description": "A substring filter on `kind`'s ids (its natural-key value, or its '::'-joined composite-key value for a `*_tag` satellite kind) — returns a filtered list instead of the full catalog. Mutually exclusive with `id`; requires `kind`."
+			},
+			"bundle": {
+				"type": "string",
+				"description": "Restrict to rows stamped with this bundle_id (summary/list shapes only)."
+			},
+			"fields": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "preferred"
+					},
+					{
+						"type": "array",
+						"items": {
+							"type": "string",
+							"minLength": 1
+						},
+						"minItems": 1
+					}
+				],
+				"description": "List shape only (`kind` without `id`; ignored for detail/summary/schema). Default (omit): token-safe catalog — each item is only `{ id, bundle_id? }`. `preferred`: project a small kind-specific field set (e.g. entities → name, place_node_id, kind, entity_def_id) so one list call can answer who-is-where without N detail round-trips. Explicit string[]: project exactly those column names from each row (unknown/missing names omitted; nested values skipped). `id` is always present; `bundle_id` is included when the row has it."
+			},
+			"refs": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "none"
+					},
+					{
+						"type": "string",
+						"const": "outbound"
+					},
+					{
+						"type": "string",
+						"const": "both"
+					}
+				],
+				"description": "Detail shape only (`kind`+`id`; ignored otherwise). 'outbound': fields on this row pointing elsewhere (already-computed string-ref heuristic). 'both' additionally computes inbound_refs — every OTHER row anywhere in the resolved source whose own outbound ref points AT this row, grouped by referencing kind — so a caller traverses a chain (e.g. capability -> affordance -> action -> outcome) by re-calling spellkave_query with a ref's own {kind, id}, no separate traversal tool needed. Default: 'both' when `id` is set."
+			},
+			"target": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "workspace"
+					},
+					{
+						"type": "string",
+						"const": "local"
+					},
+					{
+						"type": "string",
+						"const": "live"
+					}
+				],
+				"description": "#1968 connection-level target override (READ-only — no write verb offers this): 'workspace' reads ONLY the workspace scratch manifest, ignoring any connection-level target/live db this call would otherwise consult. 'local' reads ONLY the active local folder target — errors if none is configured. 'live' reads ONLY the active live target (or the legacy live db when no target is wired at all) — errors if neither is available. Omit for the default union: workspace + whatever is configured (result.source says which)."
+			},
+			"schema": {
+				"type": "boolean",
+				"description": "Ask what a row of `kind` may CONTAIN instead of which rows exist (#1983): with `kind`, that row kind's required fields, field types, and natural/composite key; without `kind`, the row-kind vocabulary itself (every kind the manifest schema defines, flagged for whether this tool can also list its rows). Schema covers all 79 manifest row kinds — a superset of the ~53 `id`/`pattern` can address: the 40 with a single-column natural key, plus the `*_tag` satellite kinds and `tag_capability_grant` with a two-field composite key (finding #9; sk-bwd). Ignores `id`/`pattern`/`bundle`/`target`: a row kind's shape is the same everywhere, so no source is consulted."
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"promptSnippet": "Inspect authored/live rows and definitions by kind and id, or list what exists",
+	"promptGuidelines": [
+		"Use spellkave_query before spellkave_write_rows or a define_* verb to confirm an id doesn't already exist, or to check whether a referenced niche_id/capability_id/entity_def is already authored.",
+		"Call spellkave_query with kind+id to fetch one row's full detail and inbound/outbound references — chase a reference by re-calling spellkave_query with the ref's own {kind, id}.",
+		"Place graph + who-is-where: spellkave_map_graph, then spellkave_query kind=entities fields=preferred (group by place_node_id). Default list is ids-only — request fields when you need columns. Deeper playbook: spellkave_docs doc=place-graph-occupancy (only if needed)."
+	],
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "prefix",
+				"prefix": "frontier."
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

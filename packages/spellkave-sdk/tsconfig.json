@@ -1,0 +1,26 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"rootDir": "src",
+		"outDir": "dist",
+
+		// SDK consumes `@spellkave/bindings` as TypeScript source (the bindings
+		// package is `private` and exports `./src/index.ts` directly — see
+		// packages/spellkave-bindings/tsconfig.json for the rationale). To resolve
+		// that source tree, the SDK uses bundler resolution. The strict invariants
+		// from `tsconfig.base.json` (strict, noUncheckedIndexedAccess,
+		// exactOptionalPropertyTypes, …) all stay on; only module resolution is
+		// relaxed for the workspace-internal source-import boundary.
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+
+		// Relaxed for the same reason as `@spellkave/bindings`: the generated
+		// bindings tree (consumed as source by SDK) is not authored under
+		// exactOptionalPropertyTypes, and the SpacetimeDB SDK types it surfaces
+		// also widen `string | undefined` for several optional fields. Keeping
+		// this off here avoids contaminating SDK code with `?:`-vs-`| undefined`
+		// gymnastics that buy nothing for an internal package.
+		"exactOptionalPropertyTypes": false
+	},
+	"include": ["src/**/*"]
+}

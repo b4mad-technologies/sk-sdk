@@ -1,0 +1,37 @@
+{
+	"name": "spellkave_scene_detail",
+	"label": "Spellkave Scene Detail",
+	"description": "Read one current authorized scene target by its OWN rev+handle (copy both verbatim from that target's own listing row — not the listing envelope's top-level `rev`). The handle is a stable identity: the SAME exit/actor/entity/trace keeps the SAME handle across arbitrarily many scene re-reads and ticks, for as long as it exists, even while unrelated targets in the same scene change. `rev` gates freshness of that ONE target only — a rev mismatch (`stale_handle`) means THIS target's own content changed since the handle was issued; a handle that no longer resolves at all (`unknown_handle`) means the target left this actor's authorized scene (moved away, removed, out of range). An `actor` target's `detail` additionally carries `description` (authored flavor prose, `\"\"` if none), `appearance` (the public appearance text the character wrote at creation, `\"\"` if none), `entity_def_id` (its authored definition id — the SAME field the `entity` scene target already carries, `\"\"` if unresolved), and `conditions` (the SAME visibility-filtered status effects `spellkave_self_states kind=condition` surfaces for the connected actor's own body, `[]` if none). Two addressing modes: {handle, rev} copied from the listing (freshness-gated), or target_id — the same typed id spellkave_manipulate takes (entity:156, item:157, actor:7) — which reads the current row and returns its rev. Entity and actor detail includes contents {container_ref, scope: \"direct\", revision, status, items}; status is available, empty, unavailable or truncated, with no hidden total. Items carry canonical item:N target_ref, parent_ref, name, quantity and entity_def_id. Inspect a disclosed child with target_id, including nested containers; these children do not become room occupants. Contents changes affect the target revision, and closing an ancestor revokes its descendants. Visibility does not promise pickup success or grant personal inventory state.",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"rev": {
+				"type": "string",
+				"minLength": 1,
+				"description": "With handle: the target's OWN rev, copied verbatim from its row in spellkave_scene — not the listing envelope's top-level rev (stable per-target handles, freshness gated per target). Omit when addressing by target_id."
+			},
+			"handle": {
+				"type": "string",
+				"minLength": 2,
+				"description": "Stable scene target handle, e.g. s:exit:32 or s:actor:7 — copied from spellkave_scene. Pass with rev, or pass target_id instead."
+			},
+			"target_id": {
+				"type": "string",
+				"minLength": 3,
+				"description": "Alternative addressing, the same typed id spellkave_manipulate and spellkave_communicate take (entity:156, item:157, actor:7): reads a current scene target or an item:N child disclosed through an exposed container, and returns its rev. One of {handle, rev} or target_id."
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			}
+		],
+		"ports": []
+	}
+}

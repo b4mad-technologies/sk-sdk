@@ -1,0 +1,83 @@
+{
+	"name": "spellkave_explain",
+	"label": "Spellkave Explain",
+	"description": "Read authored role, binding, capability or extent-kind vocabulary. Files include the workspace closure and kernel bootstrap; live reads the connected world. Role answers include merged capabilities, contributing bundles and bound-to rows. Binding answers inspect the exact binding ID, its state, scope and derived elevation; identity details are self-only unless the publisher reads them. This grants no authority.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"kind",
+			"id"
+		],
+		"properties": {
+			"kind": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "verb"
+					},
+					{
+						"type": "string",
+						"const": "persona"
+					},
+					{
+						"type": "string",
+						"const": "role"
+					},
+					{
+						"type": "string",
+						"const": "binding"
+					},
+					{
+						"type": "string",
+						"const": "capability"
+					},
+					{
+						"type": "string",
+						"const": "extent-kind"
+					},
+					{
+						"type": "string",
+						"const": "place"
+					}
+				]
+			},
+			"id": {
+				"type": "string"
+			},
+			"target": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "files"
+					},
+					{
+						"type": "string",
+						"const": "live"
+					}
+				]
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"cli": {
+		"positionals": [
+			"kind",
+			"id"
+		]
+	},
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "prefix",
+				"prefix": "frontier."
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

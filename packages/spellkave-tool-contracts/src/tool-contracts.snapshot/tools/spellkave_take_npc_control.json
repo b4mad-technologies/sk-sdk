@@ -1,0 +1,64 @@
+{
+	"name": "spellkave_take_npc_control",
+	"label": "Take NPC Control",
+	"description": "Hold an observed non-Person NPC exclusively until explicit return. Supply the generation and world instance observed before the request; idle time never returns it.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"actor_id",
+			"presence_actor_id",
+			"world_instance_id",
+			"expected_generation",
+			"request_id",
+			"reason"
+		],
+		"properties": {
+			"actor_id": {
+				"type": "string",
+				"pattern": "^[0-9]+$"
+			},
+			"presence_actor_id": {
+				"type": "string",
+				"pattern": "^[0-9]+$"
+			},
+			"world_instance_id": {
+				"type": "string",
+				"minLength": 1
+			},
+			"expected_generation": {
+				"type": "string",
+				"pattern": "^[0-9]+$"
+			},
+			"request_id": {
+				"type": "string",
+				"minLength": 1,
+				"maxLength": 128
+			},
+			"reason": {
+				"type": "string",
+				"minLength": 1,
+				"maxLength": 1024
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"DM"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.impersonate"
+				]
+			}
+		],
+		"ports": [
+			"control"
+		],
+		"argumentGates": [
+			"Caller ownership, destination extent, current hold generation and server consent."
+		]
+	}
+}

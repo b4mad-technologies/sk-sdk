@@ -1,0 +1,36 @@
+{
+	"name": "@spellkave/agent-observability",
+	"version": "0.0.0",
+	"private": true,
+	"description": "World-actor run observability (ADR-0074): the agent-run-events/v1 schema, emit API + sinks, and the read/projection API. NOT ADR-0030 coding-agent telemetry.",
+	"type": "module",
+	"main": "./src/index.ts",
+	"types": "./src/index.ts",
+	"exports": {
+		".": {
+			"types": "./src/index.ts",
+			"default": "./src/index.ts"
+		},
+		"./resource": {
+			"types": "./src/node-resource.ts",
+			"default": "./src/node-resource.ts"
+		},
+		"./node": {
+			"types": "./src/node.ts",
+			"default": "./src/node.ts"
+		}
+	},
+	"files": [
+		"src"
+	],
+	"scripts": {
+		"clean": "rm -rf dist",
+		"build": "tsc",
+		"test": "vitest run"
+	},
+	"devDependencies": {
+		"@types/node": "^24.12.4",
+		"vitest": "^3.2.6"
+	},
+	"license": "PolyForm-Shield-1.0.0"
+}

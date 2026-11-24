@@ -1,0 +1,190 @@
+{
+	"name": "spellkave_place_entity",
+	"label": "Place entity",
+	"description": "Declaratively place authored world instances at build time. Emits an entity (+ optional object_state) without actor rows; use it for authored instances that are not steerable actors. Place them all at ONE node with the flat `at`/`count`/`resources`/`tags`, or split them across MULTIPLE nodes in the SAME call with `placements`; the two shapes are mutually exclusive. Self-scaffolds the `[[bundles]]` header if `bundle` has none yet (FIX②b). `kind` is explicit; optional `entity_def` is a separate fully-qualified catalog reference. Resolves `entity_def`/every `at` against the workspace, the active connection-level `target` when wired (#1968), and (legacy) live world when `context.db` is set directly — fails loudly on a dangling ref rather than authoring a broken instance. Returns the generated `entity_keys` (in placement order) for a later spellkave_define_behavior `grant_to`. #1968 workspace idempotency: pass `key_prefix` (flat shape) / `placements[].key_prefix` (placements shape) to give a placement an EXPLICIT, reproducible identity — a re-run with the SAME key_prefix upserts its owned rows. Anonymous placements are ADDITIVE — every call adds genuinely NEW instances, named '<bundle>/<short entity_def slug>_<n>' by default (falling back to the fully-qualified slug only on a short-slug collision across different entity_defs, #1968 addendum); name placements for idempotent scripts. sk-9ll.6: pass `entity_key` (flat) / `placements[].entity_key` (placements shape) instead of `key_prefix` for an explicit, LITERAL key with NO ordinal minted at all (e.g. a fixture-mandated 'bundle/hero') — mutually exclusive with `key_prefix`, only legal for a single instance. sk-9ll.7: pass `tags` (flat) / `placements[].tags` (placements shape) for INSTANCE-level `entity_tag` rows seeded on every instance in that shape — clear-and-reseed idempotent exactly like `resources` (a re-run with FEWER tags drops the stale ones). Tag-grammar membership (MF-VAL-300) is enforced by the shared validator at commit, not re-validated here; when a tag carries an authored tag_capability_grant, the result's `tag_capability_grants` reports the capability it live-grants (informational, never blocking). sk-ntz.1: pass `name` (flat) / `placements[].name` (placements shape) for a VERBATIM `entities.name`/`actors.name` override (no ordinal suffix appended) instead of the default title-cased `kind`/`entity_def` naming — the per-placement value wins when both flat `name` and a placement's own `name` are set. Pass `quantity` (flat) / `placements[].quantity` (placements shape) for an explicit `entities.quantity` (stack size) override instead of the schema default (1) — spellkave_place_entity ONLY; spellkave_place_actor rejects a set `quantity` outright (actors carry no stack) — the per-placement value wins here too. This authors manifest rows; runtime creation belongs to future DM spawn tools.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"kind"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id stamped on every generated row. Omit to fall back to `context.defaultBundle` (#1968 smart default)."
+			},
+			"kind": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "player"
+					},
+					{
+						"type": "string",
+						"const": "npc"
+					},
+					{
+						"type": "string",
+						"const": "item"
+					},
+					{
+						"type": "string",
+						"const": "place"
+					}
+				],
+				"description": "Manifest entity kind accepted by the current authoritative schema. The placement tool controls whether actor steering rows exist; `kind` does not. The open-vocabulary migration is tracked by #2066."
+			},
+			"entity_def": {
+				"type": "string",
+				"description": "Optional fully-qualified catalog entity_def_id (contains '/', e.g. 'srd/monster/goblin') that must already resolve in the workspace or live world. `kind` remains explicit and independent."
+			},
+			"at": {
+				"type": "string",
+				"description": "FLAT single-location shape: an already-authored place_node id every instance is placed at. Mutually exclusive with `placements` (FIX①, #1968) — set `at` (+ `count`/`resources`) for ONE location, or `placements` to split a batch across MULTIPLE locations in one call, never both."
+			},
+			"count": {
+				"type": "number",
+				"description": "FLAT shape only: how many identical instances to place (default 1)."
+			},
+			"resources": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"required": [
+						"resource",
+						"value"
+					],
+					"properties": {
+						"resource": {
+							"type": "string",
+							"description": "A resource_definition_id (or any object_state state_id)."
+						},
+						"value": {
+							"type": "number",
+							"description": "The per-instance value_int override."
+						}
+					}
+				},
+				"description": "FLAT shape only: per-instance object_state overrides seeded on EVERY placed entity in this call (e.g. a non-default starting pool value). Does NOT declare the resource_definitions row itself (use spellkave_define_resource first)."
+			},
+			"tags": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"description": "One INSTANCE-level entity_tag row per tag ('this goblin is the leader / faction X') — NOT an entity_definition_tag. Tag-grammar membership (MF-VAL-300) and dedup are enforced by the shared validator at commit; an unknown-grammar tag is reported as a diagnostic, not persisted. When a tag has authored tag_capability_grant rows (workspace/live), the result surfaces 'tag X grants capability Y' so the author sees the consequence — informational, never blocking."
+			},
+			"placements": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"required": [
+						"at"
+					],
+					"properties": {
+						"at": {
+							"type": "string",
+							"description": "An already-authored place_node id (e.g. from spellkave_author_place) every instance in THIS placement is placed at."
+						},
+						"count": {
+							"type": "number",
+							"description": "How many identical instances at this placement (default 1)."
+						},
+						"resources": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"required": [
+									"resource",
+									"value"
+								],
+								"properties": {
+									"resource": {
+										"type": "string",
+										"description": "A resource_definition_id (or any object_state state_id)."
+									},
+									"value": {
+										"type": "number",
+										"description": "The per-instance value_int override."
+									}
+								}
+							},
+							"description": "Per-instance object_state overrides seeded on EVERY instance in THIS placement."
+						},
+						"key_prefix": {
+							"type": "string",
+							"description": "#1968 workspace idempotency: THIS placement's own explicit identity stem — keys become '<bundle>/<key_prefix>_<n>' (n restarts at 1 for this placement's own prefix, EVERY call — never derived from what already exists in the workspace). A re-run with the SAME key_prefix therefore reproduces the SAME keys and UPSERTS the rows owned by the selected placement tool. Omit for an anonymous, additive placement (default '<bundle>/<slugified entity_def>_<n>', numbered onward from whatever already exists in the workspace so repeated calls never collide) — name placements for idempotent scripts. Mutually exclusive with `entity_key`."
+						},
+						"entity_key": {
+							"type": "string",
+							"description": "sk-9ll.6: THIS placement's own explicit, LITERAL entity_key, used verbatim — NO bundle prefix and NO ordinal suffix minted (contrast `key_prefix`'s derived '<bundle>/<key_prefix>_<n>'). For a pre-known exact key a script/fixture depends on (e.g. 'fastlane/hero') that does not follow the '<bundle>/<stem>_<n>' convention — the escape hatch that let raw write_rows chains mint exact keys this verb previously could not reproduce. Re-running with the SAME entity_key upserts its owned rows, same as `key_prefix`. Mutually exclusive with `key_prefix`; only legal for a single instance — omit `count` or set it to 1."
+						},
+						"name": {
+							"type": "string",
+							"description": "sk-ntz.1: THIS placement's own explicit, VERBATIM `entities.name`/`actors.name` override — used AS-IS on every instance in THIS placement, no ordinal suffix appended (contrast the default title-cased `kind`/`entity_def` naming, which DOES append an ordinal for multi-instance placements). Overrides the flat `name` when both are set (THIS placement's own `name` wins) — the escape hatch that let raw write_rows chains author a custom display name this verb previously could not reproduce (the fold this verb was widened for, sk-ntz.1, otherwise had no way to keep a fixture's own 'Fast-lane Hero' style name). Mutually exclusive with `name_prefix`. Omit for the existing default: title-cased `kind`/`entity_def`, ordinal-suffixed for multi-instance placements — unchanged."
+						},
+						"name_prefix": {
+							"type": "string",
+							"description": "sk-jay0.7.15.3: THIS placement's own display-name STEM — replaces only the title-cased `kind`/`entity_def` half of the derived name and KEEPS the ordinal (`'<name_prefix> <n>'`). The group-placement counterpart to verbatim `name` (which is used AS-IS with no ordinal, so a count>1 batch would otherwise share one identical name). Overrides the flat `name_prefix` when both are set (THIS placement's own `name_prefix` wins). Mutually exclusive with `name`. Illegal with `entity_key` (no ordinal is minted — use `name` for a single literal key). Omit for the existing default — unchanged."
+						},
+						"quantity": {
+							"type": "integer",
+							"minimum": 1,
+							"description": "sk-ntz.1: THIS placement's own explicit `entities.quantity` (stack size) override for every instance in THIS placement — spellkave_place_entity ONLY (a stackable item's own on-instance count, e.g. a 10-credit purse); spellkave_place_actor rejects a set `quantity` outright (actors carry no stack — use spellkave_place_entity instead). Overrides the flat `quantity` when both are set (THIS placement's own `quantity` wins). Omit for the schema default (1) — unchanged."
+						},
+						"tags": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							},
+							"description": "One INSTANCE-level entity_tag row per tag ('this goblin is the leader / faction X') — NOT an entity_definition_tag. Tag-grammar membership (MF-VAL-300) and dedup are enforced by the shared validator at commit; an unknown-grammar tag is reported as a diagnostic, not persisted. When a tag has authored tag_capability_grant rows (workspace/live), the result surfaces 'tag X grants capability Y' so the author sees the consequence — informational, never blocking."
+						}
+					}
+				},
+				"description": "MULTI-LOCATION shape (FIX①, #1968): one or more {at, count?, resources?, tags?} groups placing the SAME kind/entity_def split across DIFFERENT place_nodes in a single call (e.g. 3 targets at the blast center + 1 bystander at the fringe). Mutually exclusive with the flat `at`/`count`/`resources`/`tags` — set ONE shape or the other, never both."
+			},
+			"description": {
+				"type": "string",
+				"description": "Sets EVERY placed entity's own `description` column (across every placement) — e.g. 'the guard with the limp' (#1968 — a first-class, never load-bearing authoring field, not a metadata_attachments row)."
+			},
+			"key_prefix": {
+				"type": "string",
+				"description": "FLAT shape only (mutually exclusive with `placements` — set `placements[].key_prefix` there instead). #1968 workspace idempotency: see `placements[].key_prefix`'s description for the full semantics — this is the same field, for the single-location flat shape. Mutually exclusive with `entity_key`."
+			},
+			"entity_key": {
+				"type": "string",
+				"description": "FLAT shape only (mutually exclusive with `placements` — set `placements[].entity_key` there instead). sk-9ll.6: see `placements[].entity_key`'s description for the full semantics — this is the same field, for the single-location flat shape."
+			},
+			"name": {
+				"type": "string",
+				"description": "sk-ntz.1: FLAT shape (also `placements[].name`, which wins when both are set): sets EVERY placed entity's own `entities.name`/`actors.name` verbatim (no ordinal suffix), instead of the default title-cased `kind`/`entity_def` naming. A first-class, never load-bearing authoring field, mirrors `description`'s own shared-across-every-placement convention. Mutually exclusive with `name_prefix`. Omit for the existing default — unchanged."
+			},
+			"name_prefix": {
+				"type": "string",
+				"description": "sk-jay0.7.15.3: FLAT shape (also `placements[].name_prefix`, which wins when both are set): replaces only the title-cased `kind`/`entity_def` half of the derived name and KEEPS the ordinal (`'<name_prefix> <n>'`) across every placed instance. The group-placement counterpart to verbatim `name`. Mutually exclusive with `name`. Illegal with `entity_key`. Omit for the existing default — unchanged."
+			},
+			"quantity": {
+				"type": "integer",
+				"minimum": 1,
+				"description": "sk-ntz.1: FLAT shape (also `placements[].quantity`, which wins when both are set): sets EVERY placed entity's own `entities.quantity` (stack size) — spellkave_place_entity ONLY; spellkave_place_actor rejects a set `quantity` (actors carry no stack — use spellkave_place_entity for a stackable item instance instead). Omit for the schema default (1) — unchanged."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

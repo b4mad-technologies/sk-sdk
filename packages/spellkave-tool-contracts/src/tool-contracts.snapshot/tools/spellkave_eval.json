@@ -1,0 +1,87 @@
+{
+	"name": "spellkave_eval",
+	"label": "Evaluate DSL Expression",
+	"description": "Evaluate a Spellkave DSL expression offline using the wasm-compiled resolution evaluator. Accepts expression source, kind (predicate, int, or text), author-supplied facts grouped by subject or pool, and die faces in draw order. Returns the result value with its type, draws used, and evaluation trace, or a named rejection naming the cause.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"expression",
+			"kind"
+		],
+		"properties": {
+			"expression": {
+				"type": "string",
+				"description": "DSL source text to evaluate offline."
+			},
+			"kind": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "predicate"
+					},
+					{
+						"type": "string",
+						"const": "int"
+					},
+					{
+						"type": "string",
+						"const": "text"
+					}
+				],
+				"description": "Expression result kind: 'predicate', 'int', or 'text'."
+			},
+			"facts": {
+				"type": "object",
+				"patternProperties": {
+					"^.*$": {}
+				},
+				"description": "The values the expression reads, grouped by subject (actor, target, location, session, world, actor.wielded_item, equipped items, bindings, event), plus roll_tables, item_sources, roll_modifier_bias, event_kind, occupants_at, peers_near_target, channel_pools. Validated strictly in Rust."
+			},
+			"dice": {
+				"type": "array",
+				"items": {
+					"type": "integer",
+					"minimum": 1
+				},
+				"description": "Die faces in draw order consumed by stochastic roll operators and roll tables."
+			}
+		},
+		"additionalProperties": false
+	},
+	"executionMode": "parallel",
+	"promptSnippet": "Evaluate a DSL expression offline with traced execution and fixed dice",
+	"promptGuidelines": [
+		"spellkave_eval: evaluate offline; no running node or connection needed.",
+		"spellkave_eval: false predicate returns ok=true with value={type:'Bool', value:false}; check errors and bounds reject with ok=false."
+	],
+	"cli": {
+		"positionals": [
+			"expression"
+		],
+		"examples": [
+			{
+				"command": "sk eval \"1d20 + actor.stat('demo/bonus') >= target.stat('demo/threshold')\" --kind predicate --facts '{\"actor\":{\"stat\":{\"demo/bonus\":3}},\"target\":{\"stat\":{\"demo/threshold\":15}}}' --dice 12",
+				"description": "evaluate an attack roll offline against supplied stats"
+			},
+			{
+				"command": "sk eval \"1d8 + 3\" --kind int --dice 6",
+				"description": "evaluate a damage roll offline with fixed dice"
+			}
+		]
+	},
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "prefix",
+				"prefix": "frontier."
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

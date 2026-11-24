@@ -1,0 +1,58 @@
+{
+	"name": "spellkave_set_movement_default",
+	"label": "Set Movement Default",
+	"description": "Author a bundle- or graph-scoped default traversal mode (ADR-0101) — the primitive that makes ordinary walking need ZERO per-edge place_edge_affordance rows (A-1). Validates affordance_template_id (and place_graph_id, when given) both already resolve, then upserts by (bundle_id, place_graph_id, mode_id, affordance_template_id) — re-authoring the SAME scope+mode+template REPLACES bindings_json; a second template in the same scope+mode is a sibling row (AND-join); a distinct mode_id is a third alternative (OR, cheapest-mode charges).",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"affordance_template_id"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "movement_defaults.bundle_id. Omit to fall back to `context.defaultBundle`. ALWAYS the scope owner, even when place_graph_id narrows the row to one graph."
+			},
+			"place_graph_id": {
+				"type": "string",
+				"description": "movement_defaults.place_graph_id (default \"\" — bundle scope, applies to every edge in the bundle with no closer graph default). Set to scope this default to ONE place_graph instead (must already exist in workspace/live/target) — a graph-scoped default beats a bundle-scoped one for edges in that graph (D-2: edge > graph > bundle)."
+			},
+			"mode_id": {
+				"type": "string",
+				"description": "movement_defaults.mode_id (default \"\" — the implicit default mode, same open author-chosen vocabulary as spellkave_bind_edge_affordance's mode_id, e.g. \"fly\"). Rows sharing one (scope, mode_id) AND-join; a distinct mode_id under the same scope is an alternative the kernel OR-picks the cheapest passing one from."
+			},
+			"affordance_template_id": {
+				"type": "string",
+				"description": "movement_defaults.affordance_template_id — must already resolve to an authored affordance_templates row (workspace, live, or the active target); this call does not auto-create it."
+			},
+			"bindings_json": {
+				"type": "string",
+				"description": "movement_defaults.bindings_json (default \"\"). e.g. '{\"movement_reach_resource\":\"srd/speed-walk\",\"long_running_move_session\":\"srd/long_running_move\"}' for srd Step."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"promptSnippet": "Author a bundle/graph-wide default traversal mode (no per-edge rows needed)",
+	"promptGuidelines": [
+		"Author ONE bundle-scoped default (omit place_graph_id) up front for ordinary walking — every edge inherits it unless its own inherit_movement_default is false.",
+		"place_graph_id scopes to one graph and wins over a bundle default there (edge > graph > bundle).",
+		"mode_id groups AND-joined rows in one mode; give a fly/swim alternative its own mode_id so the kernel treats it as an OR-alternative, not a conflicting AND-join.",
+		"Idempotent: re-calling with the same (bundle, place_graph_id, mode_id, affordance_template_id) replaces bindings_json in place."
+	],
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

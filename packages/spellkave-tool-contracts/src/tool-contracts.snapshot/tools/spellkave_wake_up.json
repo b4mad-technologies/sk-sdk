@@ -1,0 +1,23 @@
+{
+	"name": "spellkave_wake_up",
+	"label": "Spellkave Wake Up",
+	"description": "Seed wake-up perception for the active actor's current node via the approved r_actor_wake_up path. Idempotent; call once after connecting. Fire-and-confirm (read observer_knowledge to verify).",
+	"parameters": {
+		"type": "object",
+		"properties": {}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"DM"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"publisherRead"
+		]
+	}
+}

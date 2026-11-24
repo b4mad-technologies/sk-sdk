@@ -1,0 +1,68 @@
+{
+	"name": "spellkave_sense",
+	"label": "Spellkave Sense",
+	"description": "Attempt one typed sensing query from spellkave_sense_context. The world freshly selects and authorizes the outcome; a returned query is discovery data, never a success guarantee.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"query_kind",
+			"visibility"
+		],
+		"properties": {
+			"as_body_id": {
+				"type": "string",
+				"minLength": 1,
+				"description": "Observed non-presence body to act as using frontier.impersonate; the server checks scope and consent."
+			},
+			"control_token": {
+				"type": "object",
+				"required": [
+					"world_instance_id",
+					"generation",
+					"actor_id",
+					"body_entity_id"
+				],
+				"properties": {
+					"world_instance_id": {
+						"type": "string",
+						"minLength": 1
+					},
+					"generation": {
+						"type": "string",
+						"pattern": "^[0-9]+$"
+					},
+					"actor_id": {
+						"type": "string",
+						"pattern": "^[0-9]+$"
+					},
+					"body_entity_id": {
+						"type": "string",
+						"pattern": "^[0-9]+$"
+					}
+				}
+			},
+			"query_kind": {
+				"type": "string",
+				"description": "Authored sensing query identifier from spellkave_sense_context (for example 'look'). The server authoritatively selects and validates it.",
+				"minLength": 1
+			},
+			"visibility": {
+				"type": "string",
+				"description": "Authored visibility class from spellkave_sense_context (for example 'Local').",
+				"minLength": 1
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			}
+		],
+		"ports": []
+	}
+}

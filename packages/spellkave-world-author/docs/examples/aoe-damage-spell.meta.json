@@ -1,0 +1,5 @@
+{
+	"title": "Area-of-effect damage spell",
+	"intent": "Add an area-of-effect blast that damages every co-located actor (ForEachActorInRadius + ModifyResource).",
+	"tags": ["aoe", "spell", "damage", "for-each-actor", "modify-resource", "frame-write"]
+}

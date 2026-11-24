@@ -1,0 +1,55 @@
+{
+	"name": "spellkave_stow_item",
+	"label": "Stow Item (verb)",
+	"description": "sk-9ll.3: place an already-authored entity inside a container (entity_containment, upsert-by-entity_key — a re-authored containment MOVES the entity, mirroring add-entity-containment's own upsert semantics). Folds the 'starter pack straight into the hero' / 'item straight onto its holder' idiom (container_entity_key omitted, defaults to actor_entity_key) AND the nested-container idiom (container_entity_key explicit, e.g. a torch into an already-stowed field kit) into one checked call, replacing a raw spellkave_write_rows entity_containment call.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"item_entity_key"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id stamped on the generated row. Omit to fall back to `context.defaultBundle` (#1968 smart default)."
+			},
+			"actor_entity_key": {
+				"type": "string",
+				"description": "The actor stowing item_entity_key — must already carry an actor_spatial_locations row (workspace, live, or the active target); place it first via spellkave_place_actor. Also the DEFAULT container when container_entity_key is omitted. Omit it to put an item into a placed container with no actor involved (a potion in a chest): then container_entity_key is required."
+			},
+			"item_entity_key": {
+				"type": "string",
+				"description": "entity_containment.entity_key — an already-placed entity (workspace or the active target) to move into container_entity_key (or actor_entity_key when container_entity_key is omitted)."
+			},
+			"container_entity_key": {
+				"type": "string",
+				"description": "entity_containment.container_entity_key. Default actor_entity_key — the common 'give the actor this item directly' case (a starter weapon straight into the hero's inventory). Pass a DIFFERENT already-placed container (e.g. a field kit already stowed on the actor) to nest item_entity_key inside IT instead (the torch-inside-the-field-kit idiom)."
+			},
+			"slot_id": {
+				"type": "string",
+				"description": "entity_containment.slot_id — machine-port slot id. Default '' (loose carriage — the common item-in-backpack/actor-holding-item case, not a machine port)."
+			},
+			"direction": {
+				"type": "string",
+				"description": "entity_containment.direction — machine-port direction ('in'/'out'). Default '' (loose carriage)."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

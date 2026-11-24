@@ -1,0 +1,73 @@
+{
+	"name": "@spellkave/sdk",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Host-neutral Spellkave TypeScript SDK. Read-first connection, snapshot, and read-model helpers built on `spacetimedb` + `@spellkave/bindings`. No pi.dev / React / Vite / Playwright deps.",
+	"type": "module",
+	"main": "./src/index.ts",
+	"types": "./src/index.ts",
+	"exports": {
+		".": {
+			"types": "./src/index.ts",
+			"default": "./src/index.ts"
+		},
+		"./readers": {
+			"types": "./src/readers.ts",
+			"default": "./src/readers.ts"
+		},
+		"./schema-surface": {
+			"types": "./src/core/binding_drift.ts",
+			"default": "./src/core/binding_drift.ts"
+		},
+		"./replay": {
+			"types": "./src/replay.ts",
+			"default": "./src/replay.ts"
+		},
+		"./actor-control": {
+			"types": "./src/core/actor_control.ts",
+			"default": "./src/core/actor_control.ts"
+		},
+		"./profiles": {
+			"types": "./src/core/profiles.ts",
+			"default": "./src/core/profiles.ts"
+		},
+		"./node": {
+			"types": "./src/core/node-io.ts",
+			"default": "./src/core/node-io.ts"
+		},
+		"./world-events": {
+			"types": "./src/world-events/builder.ts",
+			"default": "./src/world-events/builder.ts"
+		},
+		"./environment-state": {
+			"types": "./src/core/effective_environment_state.ts",
+			"default": "./src/core/effective_environment_state.ts"
+		}
+	},
+	"files": [
+		"src"
+	],
+	"scripts": {
+		"clean": "rm -rf dist",
+		"build": "tsc",
+		"dev": "tsc --watch",
+		"test": "vitest run",
+		"test:integration": "vitest run --reporter=verbose",
+		"generate:kernel-contract": "tsx scripts/generate-kernel-contract.ts",
+		"generate:kernel-contract:check": "tsx scripts/generate-kernel-contract.ts --check",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@spellkave/bindings": "2.1.0",
+		"@spellkave/world-events": "workspace:*",
+		"smol-toml": "^1.9.1",
+		"spacetimedb": "2.14.1"
+	},
+	"devDependencies": {
+		"@spellkave/agent-observability": "workspace:*",
+		"@types/node": "^24.12.4",
+		"@spellkave/validate-wasm": "0.1.0",
+		"tsx": "^4.19.2"
+	},
+	"license": "PolyForm-Shield-1.0.0"
+}

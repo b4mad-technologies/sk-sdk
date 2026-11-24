@@ -1,0 +1,13 @@
+{
+	"title": "Minimal single-identity spell",
+	"intent": "Author the clean, lint-clean end-state of a spell: one identity (capability_id == entity_def_id == required_capability), one cast action with no twin, taxonomy tags on the identity only.",
+	"tags": [
+		"spell",
+		"identity",
+		"emit-spell",
+		"best-practice",
+		"lint",
+		"capability",
+		"render-discipline"
+	]
+}

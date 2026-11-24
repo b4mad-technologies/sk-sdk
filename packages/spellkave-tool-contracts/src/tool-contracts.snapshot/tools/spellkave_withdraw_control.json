@@ -1,0 +1,30 @@
+{
+	"name": "spellkave_withdraw_control",
+	"label": "Withdraw Control",
+	"description": "Withdraw steering consent from your primary body immediately. Pending steering work is invalidated.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"identity"
+		],
+		"properties": {
+			"identity": {
+				"type": "string",
+				"minLength": 1,
+				"description": "Login identity whose steering consent is withdrawn."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			}
+		],
+		"ports": []
+	}
+}

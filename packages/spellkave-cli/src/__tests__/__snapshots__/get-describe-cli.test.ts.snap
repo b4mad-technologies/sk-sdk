@@ -1,0 +1,245 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`sk describe human rendering > shows chain end cycle and left-out belonging rows 1`] = `
+"Describe result
+
+┌────────────────────┬───────────┐
+│ Field              │ Value     │
+├────────────────────┼───────────┤
+│ Ok                 │ true      │
+├────────────────────┼───────────┤
+│ Tick               │ 12        │
+├────────────────────┼───────────┤
+│ Numeric id         │ 41        │
+├────────────────────┼───────────┤
+│ Match count        │ 3         │
+├────────────────────┼───────────┤
+│ Left out           │ 2         │
+├────────────────────┼───────────┤
+│ Instance kind      │ entities  │
+├────────────────────┼───────────┤
+│ Reads as publisher │ true      │
+├────────────────────┼───────────┤
+│ Connected identity │ publisher │
+└────────────────────┴───────────┘
+
+Labels
+
+- authored_entities_only
+
+Row
+
+┌────────────┬────────────────────────────────────────┐
+│ Field      │ Value                                  │
+├────────────┼────────────────────────────────────────┤
+│ Entity key │ elven_mini/adventure/item/loft_chest_1 │
+├────────────┼────────────────────────────────────────┤
+│ Name       │ Loft chest                             │
+└────────────┴────────────────────────────────────────┘
+
+Slices
+
+### Entities
+
+┌────────────────────────────────────────┐
+│ Entity key                             │
+├────────────────────────────────────────┤
+│ elven_mini/adventure/item/loft_chest_1 │
+└────────────────────────────────────────┘
+
+### Object state
+
+┌──────────┬───────┐
+│ State id │ Value │
+├──────────┼───────┤
+│ locked   │ false │
+└──────────┴───────┘
+
+Container chain
+
+┌────────────┬────────────────────────────────────────┬─────────────────┐
+│ Numeric id │ Entity key                             │ Place           │
+├────────────┼────────────────────────────────────────┼─────────────────┤
+│ 41         │ elven_mini/adventure/item/loft_chest_1 │ elven_mini/loft │
+└────────────┴────────────────────────────────────────┴─────────────────┘
+
+Chain end
+
+┌────────────┬───────┐
+│ Field      │ Value │
+├────────────┼───────┤
+│ Reason     │ cycle │
+├────────────┼───────┤
+│ Numeric id │ 41    │
+└────────────┴───────┘
+
+Belonging
+
+┌───────────────────────────────────────────┬───────────┬────────┬───────────────────┬─────────────┐
+│ Entity key                                │ Numeric   │ Name   │ Belongs to        │ Relation    │
+│                                           │ id        │        │ numeric id        │             │
+├───────────────────────────────────────────┼───────────┼────────┼───────────────────┼─────────────┤
+│ elven_mini/adventure/item/loft_chest_poti │ 42        │ Potion │ 41                │ containment │
+│ on_1                                      │           │        │                   │             │
+└───────────────────────────────────────────┴───────────┴────────┴───────────────────┴─────────────┘"
+`;
+
+exports[`sk describe human rendering > shows chain end none when no place is found 1`] = `
+"Describe result
+
+┌────────────────────┬───────────┐
+│ Field              │ Value     │
+├────────────────────┼───────────┤
+│ Ok                 │ true      │
+├────────────────────┼───────────┤
+│ Tick               │ 12        │
+├────────────────────┼───────────┤
+│ Numeric id         │ 41        │
+├────────────────────┼───────────┤
+│ Match count        │ 0         │
+├────────────────────┼───────────┤
+│ Left out           │ 0         │
+├────────────────────┼───────────┤
+│ Instance kind      │ entities  │
+├────────────────────┼───────────┤
+│ Reads as publisher │ true      │
+├────────────────────┼───────────┤
+│ Connected identity │ publisher │
+└────────────────────┴───────────┘
+
+Labels
+
+- authored_entities_only
+
+Row
+
+┌────────────┬────────────────────────────────────────┐
+│ Field      │ Value                                  │
+├────────────┼────────────────────────────────────────┤
+│ Entity key │ elven_mini/adventure/item/loft_chest_1 │
+├────────────┼────────────────────────────────────────┤
+│ Name       │ Loft chest                             │
+└────────────┴────────────────────────────────────────┘
+
+Slices
+
+### Entities
+
+┌────────────────────────────────────────┐
+│ Entity key                             │
+├────────────────────────────────────────┤
+│ elven_mini/adventure/item/loft_chest_1 │
+└────────────────────────────────────────┘
+
+### Object state
+
+┌──────────┬───────┐
+│ State id │ Value │
+├──────────┼───────┤
+│ locked   │ false │
+└──────────┴───────┘
+
+Container chain
+
+None.
+
+Chain end
+
+┌────────┬───────┐
+│ Field  │ Value │
+├────────┼───────┤
+│ Reason │ none  │
+└────────┴───────┘
+
+Belonging
+
+None."
+`;
+
+exports[`sk describe human rendering > shows slices, chain end at a place, and bounded belonging 1`] = `
+"Describe result
+
+┌────────────────────┬─────────────────┐
+│ Field              │ Value           │
+├────────────────────┼─────────────────┤
+│ Ok                 │ true            │
+├────────────────────┼─────────────────┤
+│ Tick               │ 12              │
+├────────────────────┼─────────────────┤
+│ Numeric id         │ 41              │
+├────────────────────┼─────────────────┤
+│ Place              │ elven_mini/loft │
+├────────────────────┼─────────────────┤
+│ Match count        │ 1               │
+├────────────────────┼─────────────────┤
+│ Left out           │ 0               │
+├────────────────────┼─────────────────┤
+│ Instance kind      │ entities        │
+├────────────────────┼─────────────────┤
+│ Reads as publisher │ true            │
+├────────────────────┼─────────────────┤
+│ Connected identity │ publisher       │
+└────────────────────┴─────────────────┘
+
+Labels
+
+- authored_entities_only
+
+Row
+
+┌────────────┬────────────────────────────────────────┐
+│ Field      │ Value                                  │
+├────────────┼────────────────────────────────────────┤
+│ Entity key │ elven_mini/adventure/item/loft_chest_1 │
+├────────────┼────────────────────────────────────────┤
+│ Name       │ Loft chest                             │
+└────────────┴────────────────────────────────────────┘
+
+Slices
+
+### Entities
+
+┌────────────────────────────────────────┐
+│ Entity key                             │
+├────────────────────────────────────────┤
+│ elven_mini/adventure/item/loft_chest_1 │
+└────────────────────────────────────────┘
+
+### Object state
+
+┌──────────┬───────┐
+│ State id │ Value │
+├──────────┼───────┤
+│ locked   │ false │
+└──────────┴───────┘
+
+Container chain
+
+┌────────────┬────────────────────────────────────────┬─────────────────┐
+│ Numeric id │ Entity key                             │ Place           │
+├────────────┼────────────────────────────────────────┼─────────────────┤
+│ 41         │ elven_mini/adventure/item/loft_chest_1 │ elven_mini/loft │
+└────────────┴────────────────────────────────────────┴─────────────────┘
+
+Chain end
+
+┌────────────┬───────┐
+│ Field      │ Value │
+├────────────┼───────┤
+│ Reason     │ place │
+├────────────┼───────┤
+│ Numeric id │ 41    │
+└────────────┴───────┘
+
+Belonging
+
+┌───────────────────────────────────────────┬───────────┬────────┬───────────────────┬─────────────┐
+│ Entity key                                │ Numeric   │ Name   │ Belongs to        │ Relation    │
+│                                           │ id        │        │ numeric id        │             │
+├───────────────────────────────────────────┼───────────┼────────┼───────────────────┼─────────────┤
+│ elven_mini/adventure/item/loft_chest_poti │ 42        │ Potion │ 41                │ containment │
+│ on_1                                      │           │        │                   │             │
+└───────────────────────────────────────────┴───────────┴────────┴───────────────────┴─────────────┘"
+`;
+
+exports[`sk get / sk describe routing > empty listing still exits 0 1`] = `"{"ok":true,"tick":"1","labels":["authored_entities_only"],"rows":[],"match_count":0,"left_out":0,"kind":"get_result","instance_kind":"entities","reads_as_publisher":true,"connected_identity":"publisher"}"`;

@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Spellkave maps demo</title>
+		<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+		<style>
+			html,
+			body {
+				margin: 0;
+				height: 100%;
+				background: #0b1215;
+				color: #edf2f4;
+				font: 14px/1.4 system-ui, sans-serif;
+			}
+			#map {
+				position: absolute;
+				inset: 0;
+			}
+			#ui {
+				position: absolute;
+				z-index: 2;
+				top: 12px;
+				left: 12px;
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+				max-width: min(420px, 90vw);
+			}
+			#ui .panel {
+				background: rgba(11, 18, 21, 0.88);
+				border: 1px solid #415a77;
+				border-radius: 8px;
+				padding: 10px 12px;
+			}
+			#levels {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 6px;
+			}
+			button {
+				background: #1b263b;
+				color: #edf2f4;
+				border: 1px solid #778da9;
+				border-radius: 6px;
+				padding: 4px 10px;
+				cursor: pointer;
+			}
+			button.active {
+				background: #ee6c4d;
+				border-color: #ee6c4d;
+				color: #0b1215;
+			}
+			#status {
+				opacity: 0.85;
+				font-size: 12px;
+			}
+			code {
+				font-size: 12px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="map"></div>
+		<div id="ui">
+			<div class="panel">
+				<strong>Spellkave maps demo</strong>
+				<div id="status">loading…</div>
+				<div id="levels"></div>
+			</div>
+		</div>
+		<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+		<script>
+			/**
+			 * Dev demo: loads /w/<slug>/style.json with Bearer from ?token= or
+			 * localStorage SPELLKAVE_MCP_TOKEN. Level picker uses setFilter
+			 * (no MapLibre global-state in the pinned style-spec).
+			 *
+			 * Served only via GET /w/<slug>/maps-demo behind the same Bearer
+			 * as the tile endpoints (gateway). Not a public unauthenticated page.
+			 */
+			(function () {
+				const pathParts = location.pathname.split("/").filter(Boolean);
+				// /w/<slug>/maps-demo
+				const slug = pathParts[0] === "w" ? pathParts[1] : "elven-mini";
+				const params = new URLSearchParams(location.search);
+				const token =
+					params.get("token") ||
+					localStorage.getItem("SPELLKAVE_MCP_TOKEN") ||
+					"";
+				const statusEl = document.getElementById("status");
+				const levelsEl = document.getElementById("levels");
+
+				function authHeaders() {
+					return token ? { Authorization: "Bearer " + token } : {};
+				}
+
+				// TransformRequest injects Bearer for style/tiles/glyphs/assets.
+				const transformRequest = (url, resourceType) => {
+					if (!token) return { url };
+					if (
+						resourceType === "Style" ||
+						resourceType === "Tile" ||
+						resourceType === "Glyphs" ||
+						resourceType === "Image" ||
+						resourceType === "Source"
+					) {
+						return { url, headers: { Authorization: "Bearer " + token } };
+					}
+					return { url };
+				};
+
+				const styleUrl = "/w/" + slug + "/style.json";
+				statusEl.textContent = "style " + styleUrl;
+
+				const map = new maplibregl.Map({
+					container: "map",
+					style: styleUrl,
+					transformRequest,
+					attributionControl: true,
+				});
+				window.__spellkaveMap = map;
+				map.addControl(new maplibregl.NavigationControl(), "top-right");
+
+				const LEVEL_LAYERS = [
+					"room-fill",
+					"corridor-line",
+					"steps-dash",
+					"door-symbol",
+					"node-circle",
+					"node-label",
+				];
+
+				function levelFilter(level) {
+					if (level === "all") return null;
+					return [
+						"any",
+						["!", ["has", "level"]],
+						["==", ["get", "level"], level],
+						["in", level, ["get", "level"]],
+					];
+				}
+
+				function applyLevel(level) {
+					const filter = levelFilter(level);
+					for (const id of LEVEL_LAYERS) {
+						if (!map.getLayer(id)) continue;
+						if (filter === null) {
+							if (id === "steps-dash") {
+								map.setFilter(id, ["==", ["get", "highway"], "steps"]);
+							} else if (id === "door-symbol") {
+								map.setFilter(id, ["==", ["get", "door"], "yes"]);
+							} else {
+								map.setFilter(id, null);
+							}
+						} else if (id === "steps-dash") {
+							map.setFilter(id, ["all", filter, ["==", ["get", "highway"], "steps"]]);
+						} else if (id === "door-symbol") {
+							map.setFilter(id, ["all", filter, ["==", ["get", "door"], "yes"]]);
+						} else {
+							map.setFilter(id, filter);
+						}
+					}
+					for (const btn of levelsEl.querySelectorAll("button")) {
+						btn.classList.toggle("active", btn.dataset.level === level);
+					}
+				}
+
+				async function loadLevels() {
+					const r = await fetch("/w/" + slug + "/tiles.json", {
+						headers: authHeaders(),
+					});
+					if (!r.ok) throw new Error("tiles.json " + r.status);
+					const tj = await r.json();
+					const levels = Array.isArray(tj.levels) ? tj.levels : [];
+					levelsEl.innerHTML = "";
+					const mk = (label, value) => {
+						const b = document.createElement("button");
+						b.textContent = label;
+						b.dataset.level = value;
+						b.addEventListener("click", () => applyLevel(value));
+						levelsEl.appendChild(b);
+					};
+					mk("all", "all");
+					for (const lvl of levels) mk("L" + lvl, String(lvl));
+					applyLevel(levels.includes("0") ? "0" : levels[0] || "all");
+					statusEl.innerHTML =
+						"<code>" +
+						slug +
+						"</code> · tick " +
+						(tj.tick ?? "?") +
+						" · levels " +
+						(levels.join(", ") || "none") +
+						(token ? "" : " · <b>missing token</b>");
+				}
+
+				map.on("load", () => {
+					loadLevels().catch((err) => {
+						statusEl.textContent = String(err);
+					});
+					window.__spellkaveReady = true;
+				});
+				map.on("error", (e) => {
+					statusEl.textContent = "map error: " + (e.error?.message || e.error || e);
+				});
+			})();
+		</script>
+	</body>
+</html>

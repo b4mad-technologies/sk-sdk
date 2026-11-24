@@ -1,0 +1,28 @@
+{
+	"name": "spellkave_sense_context",
+	"label": "Spellkave Sense Context",
+	"description": "Read factual sensing syntax from the actor's visible place and niches, its visible capabilities, and public authored metadata. The returned queries are unassessed candidates, not eligibility promises; make one direct sensing attempt and let the world freshly authorize it.",
+	"parameters": {
+		"type": "object",
+		"properties": {}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			},
+			{
+				"kind": "prefix",
+				"prefix": "frontier."
+			}
+		],
+		"ports": [],
+		"argumentGates": [
+			"Caller-owned acting context only; presence is nonspatial and conveys no NPC consent."
+		]
+	}
+}

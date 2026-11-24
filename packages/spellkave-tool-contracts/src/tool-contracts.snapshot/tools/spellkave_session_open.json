@@ -1,0 +1,36 @@
+{
+	"name": "spellkave_session_open",
+	"label": "Spellkave Session Open",
+	"description": "Open an interaction session (e.g. dialogue, combat) for bodies the caller directly controls via r_session_open. Seeing a body through a grant does not permit opening for it. Publisher maintenance may set up other participants. Success is provenance-observed.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"session_def_id"
+		],
+		"properties": {
+			"session_def_id": {
+				"type": "string",
+				"description": "Session definition identifier to open.",
+				"minLength": 1
+			},
+			"participants_csv": {
+				"type": "string",
+				"description": "Optional comma-separated participant body ids the caller directly controls. Defaults to empty."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"DM"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"publisherRead"
+		]
+	}
+}

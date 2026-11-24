@@ -1,0 +1,5 @@
+{
+	"title": "Communicate with a co-located actor",
+	"intent": "Add a co-located NPC that can be addressed with core communication.",
+	"tags": ["communication", "actor", "entity-definition", "affordance", "npc"]
+}

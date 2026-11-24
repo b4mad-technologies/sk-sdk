@@ -1,0 +1,40 @@
+{
+	"name": "@spellkave/gateway-identity",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Shared identity, auth, rate-limit, and world catalog helpers for Spellkave gateway services.",
+	"type": "module",
+	"main": "./src/index.ts",
+	"types": "./src/index.ts",
+	"exports": {
+		".": {
+			"types": "./src/index.ts",
+			"default": "./src/index.ts"
+		}
+	},
+	"files": [
+		"src",
+		"README.md"
+	],
+	"scripts": {
+		"build": "tsc",
+		"test": "vitest run --passWithNoTests",
+		"test:behaviour": "vitest run --config vitest.behaviour.config.ts",
+		"guide": "behaviour-docs guide",
+		"readme": "behaviour-docs readme",
+		"report": "behaviour-docs report"
+	},
+	"dependencies": {
+		"@modelcontextprotocol/server": "2.3.0",
+		"@spellkave/sdk": "workspace:*"
+	},
+	"devDependencies": {
+		"@spellkave/behaviour": "workspace:*",
+		"@types/node": "^24.12.4",
+		"allure-js-commons": "3.13.0",
+		"allure-vitest": "3.13.0",
+		"quickpickle": "1.11.2",
+		"vitest": "^3.2.6"
+	},
+	"license": "PolyForm-Shield-1.0.0"
+}

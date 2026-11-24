@@ -1,0 +1,39 @@
+{
+	"name": "spellkave_orient",
+	"label": "Spellkave Orient",
+	"description": "Rebuild your situation from the world in one call: self/scene/in-world turn-scene/manipulation and sensing facts plus inventory and the MOST RECENT page of traces — the one thing an actor with no history legitimately needs (a fresh conversation, a reloaded world, a restarted host). Freely callable mid-run too, as a situation refresh. Traces are bounded and page most-recent-first, never the whole history at once; pass the returned traces.next_cursor back as cursor to go further back, one page per call. view.manipulation_context uses the same snake_case rows as spellkave_manipulation_context (a prompts[] row from either is the same semantic_context); its actions are bounded to the most relevant rows (answers to open prompts first, then authored cues and defaults, then input forms, then alphabetical) with actions_total, actions_more and actions_by_niche saying what was left out — call spellkave_manipulation_context for more_action_ids (every other action id) and pass action_ids there for the syntax rows of named actions.",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"cursor": {
+				"type": "string",
+				"description": "Opaque traces.next_cursor from a prior spellkave_orient call — fetches the NEXT (older) page of traces. Omit for the first call: the most recent page, which stands alone as a usable orientation."
+			},
+			"limit": {
+				"type": "number",
+				"minimum": 1,
+				"maximum": 25,
+				"description": "Traces per page (default 10, max 25). Going further back costs more calls, deliberately — recall should cost turns, not one unbounded dump."
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			},
+			{
+				"kind": "prefix",
+				"prefix": "frontier."
+			}
+		],
+		"ports": [],
+		"argumentGates": [
+			"Caller-owned acting context only; presence is nonspatial and conveys no NPC consent."
+		]
+	}
+}

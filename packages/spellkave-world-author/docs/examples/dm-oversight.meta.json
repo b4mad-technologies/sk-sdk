@@ -1,0 +1,5 @@
+{
+	"title": "Define a DM that sees a region's hidden state",
+	"intent": "Author a game-master body that sees the Hidden rows of every body inside a bounded, authored region \u2014 without any DM type in the substrate.",
+	"tags": ["dm", "visibility", "hidden", "extent", "place-graph", "capability", "oversight"]
+}

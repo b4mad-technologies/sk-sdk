@@ -1,0 +1,122 @@
+{
+	"name": "spellkave_applyset_diff",
+	"label": "Diff Applyset",
+	"description": "Compare an applyset root (its manifest.toml and includes) with what the world remembers applying from it (the applyset memory, ADR-0145), like kubectl diff. Every row is create (not applied yet), configure (applied with other content), move (same content, other file), prune (applied before, in no file now) or unchanged. Rows the world holds but this applyset never applied are left alone. Publisher export or complete caller-scoped instance projections supply live comparison. Rows whose live value differs from the files carry a drift warning (information only); incomplete, masked, unsupported or unavailable observations are explicit. With prune=true, previews world-added rows on each entity candidate; unreadable contents are refused explicitly, and entity-content inspection requires publisher closure. Sends nothing. Requires a live connection.",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"dir": {
+				"type": "string",
+				"description": "The applyset root: a directory holding manifest.toml, or the root manifest file itself. Its includes are read too; only the root's own rows are compared and sent."
+			},
+			"source": {
+				"type": "object",
+				"required": [
+					"root_path",
+					"root_toml",
+					"fragments"
+				],
+				"properties": {
+					"root_path": {
+						"type": "string",
+						"description": "Stable logical relative root name recorded in applyset provenance; never a server file path."
+					},
+					"root_toml": {
+						"type": "string"
+					},
+					"fragments": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"required": [
+								"path",
+								"toml"
+							],
+							"properties": {
+								"path": {
+									"type": "string"
+								},
+								"toml": {
+									"type": "string"
+								}
+							},
+							"additionalProperties": false
+						}
+					}
+				},
+				"additionalProperties": false
+			},
+			"dep": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"description": "Repeatable dependency root manifests (or their directories), loaded for validation only and never sent."
+			},
+			"prune": {
+				"type": "boolean",
+				"description": "Preview an apply with pruning: inspect world-added rows on each removed entity, without writing. Requires publisher closure to inspect entity contents; an unreadable candidate is reported as a refusal. Off by default."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"promptSnippet": "Show what sk apply would change: files vs the world's applyset memory",
+	"promptGuidelines": [
+		"spellkave_applyset_diff: pass dir= the applyset root (the directory with manifest.toml); it needs a live connection.",
+		"spellkave_applyset_diff: differences are information, not failure; a drift warning never changes what spellkave_applyset_apply sends."
+	],
+	"cli": {
+		"positionals": [
+			"dir"
+		],
+		"examples": [
+			{
+				"command": "sk diff -k ./rules/manifest.toml",
+				"description": "show what sk apply would send to the current context's world"
+			}
+		]
+	},
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			},
+			{
+				"kind": "prefix",
+				"prefix": "frontier.bind."
+			},
+			{
+				"kind": "role-capabilities"
+			},
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.escalate"
+				]
+			}
+		],
+		"ports": [
+			"applyset"
+		],
+		"inputModes": [
+			"source",
+			"local dir"
+		],
+		"limitations": [
+			"Scoped prospective writes require complete comparison; entity prune requires publisher closure."
+		],
+		"argumentGates": [
+			"Binding-only payloads retain D-6 server admission; mixed writes require readable prospective state.",
+			"Role widening still checks all-contained capabilities or frontier.escalate on the server; unsupported comparison kinds refuse."
+		]
+	}
+}

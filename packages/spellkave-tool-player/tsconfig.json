@@ -1,0 +1,16 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"noEmit": true,
+		"declaration": false,
+		"declarationMap": false,
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"exactOptionalPropertyTypes": false,
+		"allowImportingTsExtensions": true,
+		"rewriteRelativeImportExtensions": true,
+		"types": ["node"]
+	},
+	"include": ["src/**/*.ts"],
+	"exclude": ["src/__tests__/**"]
+}

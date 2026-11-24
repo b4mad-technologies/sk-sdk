@@ -1,0 +1,58 @@
+{
+	"name": "@spellkave/tool-contracts",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Browser-safe canonical contracts for every PLAYER, DM, and AUTHOR tool: names, labels, descriptions, TypeBox schemas, execution modes, prompt/CLI metadata, and role roster membership. Sole source; no SDK, SpacetimeDB, Node, Pi, MCP, filesystem, spatial shim, or runtime dependencies.",
+	"type": "module",
+	"main": "./src/index.ts",
+	"types": "./src/index.ts",
+	"exports": {
+		".": {
+			"types": "./src/index.ts",
+			"default": "./src/index.ts"
+		},
+		"./schemas": {
+			"types": "./src/schemas.ts",
+			"default": "./src/schemas.ts"
+		},
+		"./roster": {
+			"types": "./src/roster.ts",
+			"default": "./src/roster.ts"
+		},
+		"./metadata": {
+			"types": "./src/metadata.ts",
+			"default": "./src/metadata.ts"
+		},
+		"./contract-guard": {
+			"types": "./src/contract-guard.ts",
+			"default": "./src/contract-guard.ts"
+		},
+		"./snapshot-storage": {
+			"types": "./src/snapshot-storage.ts",
+			"default": "./src/snapshot-storage.ts"
+		}
+	},
+	"files": [
+		"src"
+	],
+	"scripts": {
+		"clean": "rm -rf dist",
+		"build": "tsc",
+		"dev": "tsc --watch",
+		"test": "vitest run",
+		"test:drift": "vitest run src/__tests__/contract-drift.test.ts",
+		"test:browser-gate": "node scripts/check-browser-resolution.mjs",
+		"test:forbidden-imports": "vitest run src/__tests__/forbidden-imports.test.ts",
+		"capture-contracts": "tsx scripts/capture-contracts.ts",
+		"check-compat": "tsx scripts/check-contract-compat.ts"
+	},
+	"dependencies": {
+		"typebox": "1.1.38"
+	},
+	"devDependencies": {
+		"esbuild": "0.28.1",
+		"tsx": "^4.19.2",
+		"vitest": "^3.2.6"
+	},
+	"license": "PolyForm-Shield-1.0.0"
+}

@@ -1,0 +1,77 @@
+{
+	"name": "spellkave_self_states",
+	"label": "Spellkave Self Sheet",
+	"description": "Page through the connected actor's authorized state pools, conditions, capabilities, identity facets, recent evaluation history, or action-economy channel spends. Use kind=condition for condition continuation, kind=capability for the actor's own trained/granted capabilities, kind=identity for the actor's own species/class/background tags (static session-entry detail, with descriptions where the world declared them; fetch this once at session start rather than on every turn), kind=evaluation for the actor's own recent check outcomes (status and any resolved rolls — e.g. what a check rolled), most-recent-first, kind=economy for the actor's own action-economy channel standing (per channel: current-window spent_ms/window_start_ms, plus the last spend's cost_ms/remaining_ms — \"how much of my turn is left\"). State rows support authored state-id prefix and exact resource-tag filters. Evaluation rows support an exact provenance_id filter to look up a specific record (e.g. from an act receipt). Use next_cursor to continue.",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"kind": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "state"
+					},
+					{
+						"type": "string",
+						"const": "condition"
+					},
+					{
+						"type": "string",
+						"const": "capability"
+					},
+					{
+						"type": "string",
+						"const": "evaluation"
+					},
+					{
+						"type": "string",
+						"const": "economy"
+					},
+					{
+						"type": "string",
+						"const": "economy_budget"
+					},
+					{
+						"type": "string",
+						"const": "identity"
+					}
+				],
+				"description": "Self-sheet row kind. Defaults to state."
+			},
+			"state_prefix": {
+				"type": "string",
+				"description": "Exact state_id prefix filter; valid only for kind=state."
+			},
+			"state_tag": {
+				"type": "string",
+				"description": "Exact authored resource tag filter; valid only for kind=state."
+			},
+			"provenance_id": {
+				"type": "string",
+				"description": "Exact provenance_id filter; valid only for kind=evaluation. Returns matched 1 and the row, or matched 0."
+			},
+			"limit": {
+				"type": "number",
+				"minimum": 1,
+				"maximum": 100,
+				"description": "Rows per page."
+			},
+			"cursor": {
+				"type": "string",
+				"description": "Opaque next_cursor from the prior page."
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			}
+		],
+		"ports": []
+	}
+}

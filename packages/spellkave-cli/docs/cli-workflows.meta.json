@@ -1,0 +1,5 @@
+{
+	"title": "Installed CLI workflows",
+	"intent": "Choose the authoring or player loop, inspect arguments, recover a refusal and prove a supported change using the installed CLI.",
+	"tags": ["cli", "workflow", "author", "player", "session", "recovery", "connection"]
+}

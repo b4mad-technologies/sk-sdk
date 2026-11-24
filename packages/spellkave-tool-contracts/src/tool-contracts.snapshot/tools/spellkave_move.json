@@ -1,0 +1,75 @@
+{
+	"name": "spellkave_move",
+	"label": "Spellkave Move",
+	"description": "Move the active actor — exactly one addressing mode per call. Preferred: {rev, handle}, a stable-identity scene exit handle copied VERBATIM (both fields) from that exit's own row in spellkave_scene — the SAME exit keeps the SAME handle across re-reads and ticks; `rev` gates freshness of that ONE exit only, never the whole scene. Compatibility: {edge_id}, an adjacent-exit identifier when you do not have a scene handle. Movement is ATTEMPT-based: every exit is tried, and the world gives the authoritative verdict. The scene listing's `traversal_gates` and this tool's own `traversal_gates` echo (rev+handle mode only) are map info about what LOOKED likely, never permission. In rev+handle mode, the result carries `receipt` (what the world did) and a sibling `observation` (prose of what the actor perceived — an authored node description, or the region's own description only when the move crossed into a different region, never repeated within the same one — or null + observation_gap when no authorized source backs this outcome); a rejection carries `receipt.move.reason` and `receipt.move.failure_detail`, never a throw. In edge_id mode, the result is a flatter `{status, actor_id, edge_id, from_node, to_node, observed_at_tick}` shape, with `reason`/`failure_detail` on rejection. Movement is never turn-gated: a move may be accepted even while `my_turn` is false. In rev+handle mode, on an ADMITTED dispatch (an immediate arrival OR a promoted long-running 'travelling' walk) with a host world-event builder wired, the result also carries `consequences`: same-tick, same-transaction WorldEvents THIS move deterministically caused (e.g. a travel-cost resource spend) — a THIRD register, distinct from `receipt`/`observation` (the reducer's own outcome) and from a LATER `pushes` drain off the same builder (world news, including this move's own delayed arrival). Omitted entirely when no builder is wired; `[]` when wired but nothing was caused. A move longer than your reach returns outcome \"travelling\" and takes several ticks: pass wait_for_arrival_ms to wait for the arrival in the same call, or spellkave_scene with wait_for_arrival_ms to keep waiting; do not poll.",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"as_body_id": {
+				"type": "string",
+				"minLength": 1,
+				"description": "Observed non-presence body to act as using frontier.impersonate; the server checks scope and consent."
+			},
+			"control_token": {
+				"type": "object",
+				"required": [
+					"world_instance_id",
+					"generation",
+					"actor_id",
+					"body_entity_id"
+				],
+				"properties": {
+					"world_instance_id": {
+						"type": "string",
+						"minLength": 1
+					},
+					"generation": {
+						"type": "string",
+						"pattern": "^[0-9]+$"
+					},
+					"actor_id": {
+						"type": "string",
+						"pattern": "^[0-9]+$"
+					},
+					"body_entity_id": {
+						"type": "string",
+						"pattern": "^[0-9]+$"
+					}
+				}
+			},
+			"rev": {
+				"type": "string",
+				"minLength": 1,
+				"description": "Scene-handle mode: the exit's OWN rev, copied verbatim from its row in spellkave_scene — not the listing envelope's top-level rev. Required together with handle; omit both and pass edge_id instead for the adjacent-exit mode."
+			},
+			"handle": {
+				"type": "string",
+				"minLength": 2,
+				"description": "Scene-handle mode: stable scene exit handle, e.g. s:exit:32, from spellkave_scene. Required together with rev; omit both and pass edge_id instead for the adjacent-exit mode."
+			},
+			"edge_id": {
+				"type": "string",
+				"minLength": 1,
+				"description": "Adjacent-exit mode: identifier of an adjacent exit from where you are. Prefer rev+handle instead — this mode exists when you do not have a scene handle."
+			},
+			"wait_for_arrival_ms": {
+				"type": "number",
+				"minimum": 0,
+				"maximum": 30000,
+				"description": "Optional, scene-handle mode. A move longer than your reach becomes a journey of several ticks (outcome \"travelling\"). With this field the call waits up to that many milliseconds for the journey to end and then returns the arrival observation; journey says whether you arrived, were stopped elsewhere, or are still travelling (the host may cap the wait). Without it the call returns as soon as the journey starts."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			}
+		],
+		"ports": []
+	}
+}

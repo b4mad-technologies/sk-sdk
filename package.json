@@ -1,0 +1,23 @@
+{
+  "name": "sk-sdk",
+  "private": true,
+  "license": "PolyForm-Shield-1.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=24.22.1 <25"
+  },
+  "packageManager": "pnpm@11.13.1",
+  "scripts": {
+    "prepare:corpus": "node scripts/generate-authoring-corpus.ts --prepare",
+    "build": "pnpm prepare:corpus && pnpm -r --if-present run build",
+    "typecheck": "pnpm prepare:corpus && pnpm -r --if-present run typecheck",
+    "test": "pnpm prepare:corpus && pnpm -r --workspace-concurrency=2 run test"
+  },
+  "devDependencies": {
+    "@spellkave/validate-wasm": "0.1.0",
+    "@types/node": "^24.12.4",
+    "tsx": "^4.19.2",
+    "typescript": "~5.9.3",
+    "vitest": "^3.2.6"
+  }
+}

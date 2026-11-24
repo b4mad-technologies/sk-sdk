@@ -1,0 +1,57 @@
+{
+	"name": "spellkave_prepare_hand_over",
+	"label": "Prepare role handover",
+	"description": "Review one live binding and bounded authorized context as the caller. The preview is not a frozen snapshot; copy every returned precondition into the explicit commit. Shared notes are text, never authority.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"binding_id",
+			"subject"
+		],
+		"properties": {
+			"binding_id": {
+				"type": "string"
+			},
+			"subject": {
+				"type": "string"
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"cli": {
+		"positionals": [
+			"binding_id",
+			"subject"
+		]
+	},
+	"roles": [
+		"AUTHOR"
+	],
+	"authority": {
+		"kind": "role-binding",
+		"readSubject": true
+	},
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "publisher"
+			},
+			{
+				"kind": "prefix",
+				"prefix": "frontier.bind."
+			},
+			{
+				"kind": "role-capabilities"
+			}
+		],
+		"ports": [
+			"grants"
+		],
+		"argumentGates": [
+			"The server checks old/new D-6 coverage for this binding; the commit also checks reviewed digests, incarnation/revision, expiry and the one-row subject-only envelope."
+		],
+		"limitations": [
+			"Discovery is a conservative capability superset and cannot authorize a transfer or reveal an unauthorized briefing."
+		]
+	}
+}

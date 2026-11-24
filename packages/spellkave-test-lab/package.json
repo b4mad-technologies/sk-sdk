@@ -1,0 +1,62 @@
+{
+	"name": "@spellkave/test-lab",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Live-node test library for Spellkave: test worlds, private scenes, step helpers and the sync barrier. The only import path for live TypeScript tests; not production code.",
+	"type": "module",
+	"main": "./src/index.ts",
+	"types": "./src/index.ts",
+	"exports": {
+		".": {
+			"types": "./src/index.ts",
+			"default": "./src/index.ts"
+		},
+		"./environment-ownership-fixture": {
+			"types": "./src/environment-ownership-fixture.ts",
+			"default": "./src/environment-ownership-fixture.ts"
+		},
+		"./privileged-acts-fixture": {
+			"types": "./src/privileged-acts-fixture.ts",
+			"default": "./src/privileged-acts-fixture.ts"
+		},
+		"./seal-break-evidence": {
+			"types": "./src/seal-break-evidence.ts",
+			"default": "./src/seal-break-evidence.ts"
+		},
+		"./seal-break-fixture": {
+			"types": "./src/seal-break-fixture.ts",
+			"default": "./src/seal-break-fixture.ts"
+		},
+		"./lanes": {
+			"types": "./src/lanes.ts",
+			"default": "./src/lanes.ts"
+		},
+		"./reporter": {
+			"types": "./src/reporter.ts",
+			"default": "./src/reporter.ts"
+		},
+		"./vitest-setup": {
+			"types": "./src/vitest-setup.ts",
+			"default": "./src/vitest-setup.ts"
+		}
+	},
+	"files": [
+		"src"
+	],
+	"scripts": {
+		"test": "vitest run --config vitest.offline.config.ts",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@spellkave/bindings": "2.1.0",
+		"@spellkave/sdk": "workspace:*",
+		"smol-toml": "^1.9.1",
+		"spacetimedb": "2.14.1"
+	},
+	"devDependencies": {
+		"@types/node": "^24.12.4",
+		"vitest": "^3.2.6",
+		"@spellkave/validate-wasm": "0.1.0"
+	},
+	"license": "PolyForm-Shield-1.0.0"
+}

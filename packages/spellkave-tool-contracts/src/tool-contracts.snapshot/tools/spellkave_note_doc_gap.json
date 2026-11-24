@@ -1,0 +1,43 @@
+{
+	"name": "spellkave_note_doc_gap",
+	"label": "Note Doc Gap",
+	"description": "Record a discrepancy between what the modding docs implied and what the validator actually accepted. Does NOT end your run — keep authoring. Sharpens the docs shipped to other authors.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"doc",
+			"expected",
+			"actual"
+		],
+		"properties": {
+			"doc": {
+				"type": "string",
+				"description": "Which corpus doc id you were working from, e.g. 'dsl-grammar'."
+			},
+			"expected": {
+				"type": "string",
+				"description": "What the doc led you to expect."
+			},
+			"actual": {
+				"type": "string",
+				"description": "What the validator actually did — the discrepancy."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "prefix",
+				"prefix": "frontier."
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

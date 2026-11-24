@@ -1,0 +1,5 @@
+{
+	"title": "Weighted int roll table",
+	"intent": "Add a weighted non-identity int roll_table for non-die DSL draws (not a smuggled dN).",
+	"tags": ["roll_table", "dsl", "weighted"]
+}

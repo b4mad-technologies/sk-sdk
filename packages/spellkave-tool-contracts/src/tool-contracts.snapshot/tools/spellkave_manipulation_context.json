@@ -1,0 +1,62 @@
+{
+	"name": "spellkave_manipulation_context",
+	"label": "Spellkave Manipulation Context",
+	"description": "Read your additive factored manipulation context: shared authored action syntax, independently observed typed targets, and complete participant expectations. These are neutral discovery facts, not a list of action-target offers and not a promise that an attempt will succeed. Use them to compose one typed manipulation attempt; the world authoritatively reselects and validates it against fresh state. The default answer is a bounded summary: prompts[], targets[], participants[], the most relevant action rows in actions[] (answers to open prompts first, then authored cues and defaults, then input forms, then alphabetical), and more_action_ids naming every other action you may attempt. Pass action_ids to read the syntax rows of named actions; detail=\"full\" returns the whole registry and is large. prompts[] lists the open dialogue prompts you may answer now (question, labels, responseActionIds; multi-pick questions state the remaining picks, this one included); answering one means sending its responseActionId with that row as args_json {\"semantic_context\": <row>}. A prompt opens one to three ticks after the answer that leads to it; pass wait_for_prompt_ms to wait for it in one call instead of polling. It waits for a prompt only: it is not a way to wait for a journey or a turn.",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"as_body_id": {
+				"type": "string",
+				"minLength": 1,
+				"description": "Observed non-presence body to act as using frontier.impersonate; the server checks scope and consent."
+			},
+			"detail": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "summary"
+					},
+					{
+						"type": "string",
+						"const": "full"
+					}
+				],
+				"description": "Optional, default \"summary\": prompts[], targets[], participants[], the most relevant action rows (answers to open prompts first, then authored cues and defaults, then input forms, then alphabetical) as composition syntax, and more_action_ids naming every other action. \"full\" returns every action row with provider flags, template ids, groups and tags; it grows with the actor's capabilities (100 KB for a spellcaster) and is meant for programmatic readers."
+			},
+			"action_ids": {
+				"type": "array",
+				"items": {
+					"type": "string",
+					"minLength": 1
+				},
+				"maxItems": 25,
+				"description": "Optional, summary only: action ids (from more_action_ids, a prompt's response_action_ids, or a hint) whose syntax rows to return first in actions[]. Ids the listing does not hold come back in unknown_action_ids."
+			},
+			"wait_for_prompt_ms": {
+				"type": "number",
+				"minimum": 0,
+				"maximum": 30000,
+				"description": "Optional. When prompts[] holds no open, unanswered prompt yet, wait up to this many milliseconds for one to open before returning (a prompt opens one to three ticks after the answer that leads to it). Returns as soon as one opens, or at the deadline with prompts[] as it is then; the host may cap the wait. Omit for an immediate read."
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			},
+			{
+				"kind": "prefix",
+				"prefix": "frontier."
+			}
+		],
+		"ports": [],
+		"argumentGates": [
+			"Caller-owned acting context only; presence is nonspatial and conveys no NPC consent."
+		]
+	}
+}

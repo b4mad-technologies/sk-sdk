@@ -1,0 +1,32 @@
+{
+	"name": "spellkave_observer_knowledge",
+	"label": "Spellkave Observer Knowledge",
+	"description": "Read an observer body's knowledge of entities. Body-keyed fog-of-war view; use the place and trace knowledge tools for those domains.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"observer_id"
+		],
+		"properties": {
+			"observer_id": {
+				"type": "string",
+				"description": "Observer body entity identifier. Returns what that body has perceived (entities, action facts, traces).",
+				"minLength": 1
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"DM"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"publisherRead"
+		]
+	}
+}

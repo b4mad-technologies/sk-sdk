@@ -1,0 +1,23 @@
+{
+	"name": "spellkave_status",
+	"label": "Spellkave Status",
+	"description": "Read current Spellkave world status from the SDK snapshot.",
+	"parameters": {
+		"type": "object",
+		"properties": {}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"DM"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"publisherRead"
+		]
+	}
+}

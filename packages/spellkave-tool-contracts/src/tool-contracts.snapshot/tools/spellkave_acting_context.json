@@ -1,0 +1,35 @@
+{
+	"name": "spellkave_acting_context",
+	"label": "Spellkave Acting Context",
+	"description": "List or explicitly select your current character or caller-owned presence binding for this session. Selection is revalidated on every call; revoked and foreign bindings refuse. Select one of the listed binding ids when a privileged act is ambiguous. This does not grant roles or transfer NPC consent.",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"binding_id": {
+				"type": "string",
+				"description": "Select a currently caller-owned presence binding. Omit to list your contexts."
+			},
+			"character": {
+				"type": "boolean",
+				"description": "Select your primary character. Mutually exclusive with binding_id."
+			}
+		},
+		"additionalProperties": false
+	},
+	"executionMode": "sequential",
+	"roles": [],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "prefix",
+				"prefix": "frontier."
+			},
+			{
+				"kind": "presence"
+			}
+		],
+		"ports": [
+			"actingContext"
+		]
+	}
+}

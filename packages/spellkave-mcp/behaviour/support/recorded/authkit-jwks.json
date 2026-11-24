@@ -1,0 +1,15 @@
+{
+	"_source": "Locally generated public test key for https://issuer.example.test/oauth2/jwks",
+	"body": {
+		"keys": [
+			{
+				"kty": "RSA",
+				"n": "2ZqKAmIRNir5CxZ4afXlFjqmghRf4X_uT6bpHRU6_t8U6hve2Lsiz2wrDJkTfWCjG85AjZ3yS9yWA-PlYNCCv77uxTCuNQBiBtJuN1Il1vT7USxHItRGVo2PdSceZ3IL8XTX_ne7YQa3x9mQh5qpNmvbANQumCyVTI4potxxQs-3obF1J4zHWRqNzsl8s_4sEa6sURS4WHwoBUNBqkmsJX2tQc5CuLqIGElRBIYFs5lr_0wuRRSgMNyMCYVyonXastgIhQR-ccuK51VPEIPz7jmlPWe4zSc-371-yjAZGmQpqm-V4xgQc3uLoMuCVu2Y8sU0xBAPqWOahMZ62NBJHQ",
+				"e": "AQAB",
+				"kid": "example-rsa-key",
+				"alg": "RS256",
+				"use": "sig"
+			}
+		]
+	}
+}

@@ -1,0 +1,32 @@
+{
+	"name": "spellkave_entity_body",
+	"label": "Spellkave Entity Body",
+	"description": "Read the body row for an entity, or null if it has none.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"entity_id"
+		],
+		"properties": {
+			"entity_id": {
+				"type": "string",
+				"description": "Entity identifier. Returns its body row, or null if it has none.",
+				"minLength": 1
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"DM"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"publisherRead"
+		]
+	}
+}

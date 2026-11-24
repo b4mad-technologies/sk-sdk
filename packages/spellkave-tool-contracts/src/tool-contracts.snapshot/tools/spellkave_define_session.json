@@ -1,0 +1,115 @@
+{
+	"name": "spellkave_define_session",
+	"label": "Define Session (verb)",
+	"description": "Author ONE session_definitions row in a single call — the first-class shape for #2022 sessions: a long-running/timed solo session (smart defaults: turn_rule 'Sequential', visibility 'Public'; set round_duration_ms=6000 + a termination_pred for tick-paced expiry) or a combat encounter (point turn_scheduler_id / combat_grid_blueprint_id at already-authored rows — this verb never creates or ref-checks them; the validator's cross-row pass judges FKs at validate/apply). Busy policy (busy_allow_pred / busy_break_pred) governs what a busy participant may attempt; both absent = full block. Self-scaffolds the [[bundles]] header if `bundle` has none yet. #1968 workspace idempotency: re-authoring the SAME bundle+id REPLACES the row wholesale.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"id"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id stamped on the session_definitions row. Omit to fall back to `context.defaultBundle` (#1968 smart default)."
+			},
+			"id": {
+				"type": "string",
+				"description": "Local session_def_id stem; the full id is '<bundle>/<id>' (e.g. bundle='core', id='long_running_action' -> 'core/long_running_action')."
+			},
+			"turn_rule": {
+				"type": "string",
+				"description": "session_definitions.turn_rule. Omit for 'Sequential' (smart default — the only rule `r_session_open`/`r_advance_turn` schedule today; other values pass through verbatim)."
+			},
+			"round_duration_ms": {
+				"type": "number",
+				"description": "session_definitions.round_duration_ms (ADR-0037 D-5). Omit for the schema default (0 = unbound). Set 6000 for a default-tick-paced session whose termination_pred should be re-evaluated every world tick (the `core/long_running_action` shape)."
+			},
+			"termination_pred": {
+				"type": "string",
+				"description": "session_definitions.termination_pred — DSL predicate evaluated after every turn advance; on match the session terminates 'completed'. For a time-bound session use \"world.tick - session.stat('opened_at') >= session.stat('promoted_duration_ticks')\". Omit for none (schema default: empty)."
+			},
+			"winner_predicate": {
+				"type": "string",
+				"description": "session_definitions.winner_predicate. Omit for the schema default (empty)."
+			},
+			"on_terminate": {
+				"type": "string",
+				"description": "session_definitions.on_terminate — a consequence_templates id applied on 'completed' termination, before the originating action's own on_success (#2022 binding order). Omit for none (schema default: empty)."
+			},
+			"participants_pred": {
+				"type": "string",
+				"description": "session_definitions.participants_pred. Omit for the schema default (empty; currently not validated at open — architecture Phase E/F)."
+			},
+			"busy_allow_pred": {
+				"type": "string",
+				"description": "session_definitions.busy_allow_pred (#2022) — actions matching this DSL predicate (attempted action tags via target.has_tag(...), id via target.text('action_id')) stay ALLOWED while a participant is busy in this session. Omit for none (with busy_break_pred also absent: full block)."
+			},
+			"busy_break_pred": {
+				"type": "string",
+				"description": "session_definitions.busy_break_pred (#2022) — actions matching this predicate ABANDON the session (abort semantics: on_failure + progress record), then proceed. Omit for none."
+			},
+			"legal_moves_csv": {
+				"type": "string",
+				"description": "session_definitions.legal_moves_csv — comma-separated move-template ids `r_session_move` accepts. Omit for the schema default (empty)."
+			},
+			"initial_state": {
+				"type": "string",
+				"description": "session_definitions.initial_state (JSON). Omit for the schema default (empty)."
+			},
+			"visibility_policy": {
+				"type": "string",
+				"description": "session_definitions.visibility_policy. Omit for 'Public' (smart default)."
+			},
+			"stakes_required": {
+				"type": "string",
+				"description": "session_definitions.stakes_required. Omit for the schema default (empty)."
+			},
+			"turn_scheduler_id": {
+				"type": "string",
+				"description": "session_definitions.turn_scheduler_id — FK into an ALREADY-authored turn_scheduler row (ADR-0037 D-3/D-4, e.g. a RolledOrder d20 initiative). Omit for the world-active scheduler (schema default: empty)."
+			},
+			"auto_join_on_targeting": {
+				"type": "boolean",
+				"description": "session_definitions.auto_join_on_targeting (ADR-0037 D-7). Omit for the schema default (false)."
+			},
+			"combat_grid_blueprint_id": {
+				"type": "string",
+				"description": "session_definitions.combat_grid_blueprint_id — FK into an ALREADY-authored combat_grid_blueprint row (ADR-0045/0052 tactical grid). Omit for no automatic grid (schema default: empty)."
+			},
+			"grid_edge_affordance_template_id": {
+				"type": "string",
+				"description": "session_definitions.grid_edge_affordance_template_id. Omit for the schema default (empty)."
+			},
+			"grid_edge_affordance_bindings_json": {
+				"type": "string",
+				"description": "session_definitions.grid_edge_affordance_bindings_json. Omit for the schema default (empty)."
+			},
+			"turn_eligibility_pred": {
+				"type": "string",
+				"description": "session_definitions.turn_eligibility_pred (ADR-0143) — Bool DSL predicate evaluated per participant as `actor` when the turn advances; a false result skips that participant without removing it (it stays targetable and counted). Actor-subject reads only (MF-VAL-334), e.g. \"actor.status('<condition_id>') == false\" or a Bool macro. Omit to hand every participant the turn."
+			},
+			"description": {
+				"type": "string",
+				"description": "session_definitions.description (#1968 first-class column)."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

@@ -1,0 +1,59 @@
+{
+	"name": "spellkave_render_scene",
+	"label": "Render scene",
+	"description": "Render a spellkave-scene/v1 data package, values and dependency TOML payloads into validated ordinary manifests and deterministic setup keys. Offline render never mutates or proves live admission. On a caller connection, preview pins a complete empty blueprint and the selected caller/world. Hosted calls accept payloads, never filesystem paths or executable packages.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"package",
+			"values",
+			"setup_name",
+			"dependencies"
+		],
+		"properties": {
+			"package": {
+				"type": "object",
+				"patternProperties": {
+					"^.*$": {}
+				},
+				"description": "Resolved spellkave-scene/v1 data package; no executable templates or filesystem paths."
+			},
+			"values": {
+				"type": "object",
+				"patternProperties": {
+					"^.*$": {}
+				},
+				"description": "Data values: anchor_id, optional bearing_deg and counts."
+			},
+			"setup_name": {
+				"type": "string",
+				"pattern": "^[a-z0-9][a-z0-9._-]{0,63}$"
+			},
+			"dependencies": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"maxItems": 32,
+				"description": "Resolved dependency TOML payloads for offline validation."
+			}
+		},
+		"additionalProperties": false
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "prefix",
+				"prefix": "frontier."
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

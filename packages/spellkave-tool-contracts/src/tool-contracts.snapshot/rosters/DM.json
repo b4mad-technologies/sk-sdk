@@ -1,0 +1,19 @@
+[
+	"spellkave_status",
+	"spellkave_events",
+	"spellkave_suggest_next_action",
+	"spellkave_entity",
+	"spellkave_entity_container",
+	"spellkave_observer_knowledge",
+	"spellkave_observer_place_knowledge",
+	"spellkave_observer_trace_knowledge",
+	"spellkave_entity_body",
+	"spellkave_actor_principals",
+	"spellkave_session_open",
+	"spellkave_session_close",
+	"spellkave_session_move",
+	"spellkave_release_claim",
+	"spellkave_wake_up",
+	"spellkave_take_npc_control",
+	"spellkave_return_npc_control"
+]

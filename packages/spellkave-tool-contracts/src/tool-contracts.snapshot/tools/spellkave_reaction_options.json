@@ -1,0 +1,32 @@
+{
+	"name": "spellkave_reaction_options",
+	"label": "Spellkave Reaction Options",
+	"description": "List the connected actor's open reaction seats with deadline and originating context. Uses revision-bound reaction handles; raw pending ids are never exposed.",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"limit": {
+				"type": "number",
+				"minimum": 1,
+				"maximum": 100,
+				"description": "Rows per page."
+			},
+			"cursor": {
+				"type": "string",
+				"description": "Opaque next_cursor from the prior page."
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			}
+		],
+		"ports": []
+	}
+}

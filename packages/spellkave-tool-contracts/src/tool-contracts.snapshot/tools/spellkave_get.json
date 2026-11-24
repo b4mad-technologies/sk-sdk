@@ -1,0 +1,87 @@
+{
+	"name": "spellkave_get",
+	"label": "Get",
+	"description": "Read running-world instance rows from the publisher owner cache or a separate caller-scoped reader. Scoped reads support entities, actors, actor_spatial_locations, actor_capabilities, actor_equipment_slots, entity_containment, entity_tag and object_state with binding-held Hidden/Internal read authority. Answers include caller/world source epochs and complete, masked or incomplete coverage; inaccessible keys report not_found_in_scope. Does not read files or workspace scratch.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"kind"
+		],
+		"properties": {
+			"kind": {
+				"type": "string",
+				"description": "Instance row kind: entities, actors, actor_spatial_locations, actor_capabilities, actor_equipment_slots, entity_containment, entity_tag, or object_state."
+			},
+			"key": {
+				"type": "string",
+				"description": "Key field values joined with :: in schema natural- or storage-key order. Omit to list."
+			},
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id. Omit when the authored key is unique."
+			},
+			"pattern": {
+				"type": "string",
+				"description": "Substring filter on key fields for listings."
+			},
+			"fields": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"description": "Listing columns. Omit for the compact preferred set. Key fields are always kept. Keyed get ignores this (whole row)."
+			},
+			"limit": {
+				"type": "integer",
+				"minimum": 0,
+				"description": "Listing cap (default 50)."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"promptSnippet": "Read instance rows from the running world by kind and authored key",
+	"cli": {
+		"positionals": [
+			"kind",
+			"key"
+		],
+		"examples": [
+			{
+				"command": "sk get entities elven_mini/adventure/item/loft_chest_1",
+				"description": "read the loft chest by authored key"
+			},
+			{
+				"command": "sk get entities --bundle elven_mini",
+				"description": "list authored entities in the bundle"
+			}
+		]
+	},
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.read_hidden"
+				]
+			},
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.read_internal"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"readInstance"
+		],
+		"limitations": [
+			"Only scoped comparable instance kinds; explicit incomplete coverage."
+		]
+	}
+}

@@ -1,0 +1,15 @@
+// What `pnpm typecheck` (tsc --noEmit) checks: every file under src/, tests
+// included, with the strict flags of the repository base config. `pnpm
+// build` emits the same sources to dist/.
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"rootDir": "src",
+		"outDir": "dist",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"exactOptionalPropertyTypes": false,
+		"types": ["node"]
+	},
+	"include": ["src/**/*"]
+}

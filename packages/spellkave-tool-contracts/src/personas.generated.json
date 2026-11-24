@@ -1,0 +1,47 @@
+{
+	"version": "personas/0.6",
+	"source": "specifications/prd/personas.md#42-personas--roles",
+	"personas": [
+		{
+			"id": "publisher",
+			"name": "Publisher",
+			"roles": [],
+			"extent": "world",
+			"presentation": "all"
+		},
+		{
+			"id": "game-system-author",
+			"name": "Game System Author",
+			"roles": [
+				"system-author"
+			],
+			"extent": "bundle",
+			"presentation": "AUTHOR"
+		},
+		{
+			"id": "adventure-author",
+			"name": "Adventure Author",
+			"roles": [
+				"adventure-author"
+			],
+			"extent": "bundle",
+			"presentation": "AUTHOR"
+		},
+		{
+			"id": "dungeon-master",
+			"name": "Dungeon Master",
+			"roles": [
+				"dm"
+			],
+			"extent": "place graph or party",
+			"presentation": "PLAYER + DM"
+		},
+		{
+			"id": "elevated-player",
+			"name": "Elevated Player",
+			"roles": [],
+			"extent": "party or place",
+			"presentation": "PLAYER + the few tools the role admits"
+		}
+	]
+}

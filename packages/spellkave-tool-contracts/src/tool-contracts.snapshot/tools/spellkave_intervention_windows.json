@@ -1,0 +1,32 @@
+{
+	"name": "spellkave_intervention_windows",
+	"label": "Spellkave Intervention Windows",
+	"description": "List the connected actor's OPEN post-roll intervention windows — a time-boxed pause after one of the actor's own stochastic actions, before the outcome commits. `faces` are the already-drawn, already-visible die face(s) for that action (two faces when the roll had Advantage/Disadvantage, otherwise one). The window closes on its own (equivalent to declining) if not answered before window_closes_at_micros. Respond with spellkave_react_option using this listing's handle: omit selected_draw_index to decline (the original result stands, nothing is spent), or pass the index of one listed face to accept (spends this window's fuel resource and replaces exactly that face — the new roll must then be used).",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"limit": {
+				"type": "number",
+				"minimum": 1,
+				"maximum": 100,
+				"description": "Rows per page."
+			},
+			"cursor": {
+				"type": "string",
+				"description": "Opaque next_cursor from the prior page."
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			}
+		],
+		"ports": []
+	}
+}

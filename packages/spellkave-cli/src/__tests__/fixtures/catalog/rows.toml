@@ -1,0 +1,33 @@
+[[entity_definitions]]
+entity_def_id = "demo/torch"
+bundle_id = "demo"
+display_name = "Torch"
+
+[[capability_definitions]]
+capability_id = "demo/inspect"
+bundle_id = "demo"
+display_name = "Inspect"
+actor_kind = "entity"
+default_visibility = "Public"
+description = "Test capability"
+
+[[roll_tables]]
+bundle_id = "demo"
+display_name = "Severity"
+description = "Test roll table"
+result_kind = "int"
+roll_table_id = "demo/severity"
+
+[[roll_table_entries]]
+authored_order = 1
+result_ref = "1"
+roll_table_entry_id = "demo/severity:1"
+roll_table_id = "demo/severity"
+weight = 1
+
+[[roll_table_entries]]
+authored_order = 2
+result_ref = "3"
+roll_table_entry_id = "demo/severity:2"
+roll_table_id = "demo/severity"
+weight = 1

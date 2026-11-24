@@ -1,0 +1,30 @@
+{
+	"name": "spellkave_offer_control",
+	"label": "Offer Control",
+	"description": "Offer consent for an authorized identity to steer your primary Person body. Consent grants no direct control or sight.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"identity"
+		],
+		"properties": {
+			"identity": {
+				"type": "string",
+				"minLength": 1,
+				"description": "Login identity to consent to steering this primary body; authority is still required."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			}
+		],
+		"ports": []
+	}
+}

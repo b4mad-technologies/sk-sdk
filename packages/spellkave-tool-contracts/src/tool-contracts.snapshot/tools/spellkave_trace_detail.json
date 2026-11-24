@@ -1,0 +1,36 @@
+{
+	"name": "spellkave_trace_detail",
+	"label": "Spellkave Trace Detail",
+	"description": "Read one currently perceived trace by its OWN rev+handle (copy both verbatim from that trace's own row — not the listing envelope's top-level `rev`). The handle is the trace's stable identity: the SAME trace keeps the SAME handle across re-reads, for as long as it stays perceivable, regardless of what else was inscribed since. Returns parsed payload, never the raw payload JSON carrier.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"rev",
+			"handle"
+		],
+		"properties": {
+			"rev": {
+				"type": "string",
+				"minLength": 1,
+				"description": "The trace's OWN rev, copied verbatim from its row in spellkave_traces — not the listing envelope's top-level rev (stable per-trace handles, freshness gated per trace)."
+			},
+			"handle": {
+				"type": "string",
+				"minLength": 2,
+				"description": "Stable trace handle, e.g. t:4 — copied from spellkave_traces."
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			}
+		],
+		"ports": []
+	}
+}

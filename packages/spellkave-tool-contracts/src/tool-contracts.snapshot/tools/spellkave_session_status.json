@@ -1,0 +1,41 @@
+{
+	"name": "spellkave_session_status",
+	"label": "Spellkave Session Status",
+	"description": "Summarize the connected actor's in-world turn/scene (not the MCP connection): lifecycle, roster order, and whose turn it is. Accepts no session or actor id. `no_session` still allows exploration. The orientation tool also includes this in-world session state.",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"limit": {
+				"type": "integer",
+				"minimum": 1,
+				"maximum": 100,
+				"description": "Ongoing sessions per page; implies detail."
+			},
+			"cursor": {
+				"type": "string",
+				"description": "Continuation from ongoing.next_cursor; implies detail. Restart without cursor if the list changes."
+			},
+			"detail": {
+				"type": "boolean",
+				"description": "Include authorized operation details and world-tick timing, including initiated and external-wait phases."
+			},
+			"session_id": {
+				"type": "string",
+				"pattern": "^[0-9]+$",
+				"description": "Read details for a previously observed session, including its terminal state. Requires participation; implies detail."
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			}
+		],
+		"ports": []
+	}
+}

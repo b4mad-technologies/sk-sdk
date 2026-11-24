@@ -1,0 +1,392 @@
+{
+	"format": "spellkave-tool-contracts/breaking-change-acknowledgements/v1",
+	"entries": [
+		{
+			"tool": "spellkave_set_metadata",
+			"field": "parameters.properties.updates.items.anyOf",
+			"from": [
+				{
+					"type": "object",
+					"required": ["target", "key", "value"],
+					"properties": {
+						"target": {
+							"type": "string",
+							"const": "manifest"
+						},
+						"key": {
+							"type": "string",
+							"description": "Top-level [metadata] key to replace."
+						},
+						"value": {
+							"description": "A JSON-compatible scalar, array, or object. Open metadata has no shared docs/UI schema."
+						}
+					},
+					"additionalProperties": false
+				},
+				{
+					"type": "object",
+					"required": ["target", "key", "value"],
+					"properties": {
+						"target": {
+							"type": "string",
+							"const": "namespace"
+						},
+						"key": {
+							"type": "string",
+							"description": "Namespace to register, e.g. 'mymod.hints'."
+						},
+						"value": {
+							"type": "object",
+							"required": ["audience"],
+							"properties": {
+								"audience": {
+									"type": "string",
+									"description": "Explicit namespace audience; no implicit default."
+								},
+								"description": {
+									"type": "string"
+								}
+							},
+							"additionalProperties": false
+						}
+					},
+					"additionalProperties": false
+				},
+				{
+					"type": "object",
+					"required": ["target", "key", "value"],
+					"properties": {
+						"target": {
+							"type": "object",
+							"required": ["kind", "ref"],
+							"properties": {
+								"kind": {
+									"type": "string",
+									"description": "An admitted metadata target kind. The shared manifest validator owns the current vocabulary; unsupported values fail at commit."
+								},
+								"ref": {
+									"type": "string",
+									"description": "The admitted target's stable id/ref."
+								}
+							},
+							"additionalProperties": false
+						},
+						"key": {
+							"type": "string",
+							"description": "Registered metadata namespace for this annotation."
+						},
+						"value": {
+							"type": "object",
+							"patternProperties": {
+								"^.*$": {}
+							},
+							"description": "An open JSON-compatible metadata object. Values are authored unchanged: this shared tool does not reserve a docs, UI, or ruleset schema."
+						},
+						"source": {
+							"type": "string",
+							"description": "Attachment source; defaults to 'manifest'."
+						},
+						"audience": {
+							"type": "string",
+							"description": "Registers an absent namespace in this atomic call; never defaults."
+						},
+						"description": {
+							"type": "string",
+							"description": "Optional description when this call registers the namespace."
+						}
+					},
+					"additionalProperties": false
+				}
+			],
+			"to": [
+				{
+					"type": "object",
+					"required": ["target", "key", "value"],
+					"properties": {
+						"target": {
+							"type": "string",
+							"const": "manifest"
+						},
+						"key": {
+							"type": "string",
+							"description": "Top-level [metadata] key to replace."
+						},
+						"value": {
+							"description": "A JSON-compatible scalar, array, or object. Open metadata has no shared docs/UI schema."
+						}
+					},
+					"additionalProperties": false
+				},
+				{
+					"type": "object",
+					"required": ["target", "key", "value"],
+					"properties": {
+						"target": {
+							"type": "string",
+							"const": "namespace"
+						},
+						"key": {
+							"type": "string",
+							"description": "Namespace to register, e.g. 'mymod.hints'."
+						},
+						"value": {
+							"type": "object",
+							"required": ["audience"],
+							"properties": {
+								"audience": {
+									"type": "string",
+									"description": "Explicit namespace audience; no implicit default."
+								},
+								"description": {
+									"type": "string"
+								},
+								"on_demand": {
+									"type": "boolean",
+									"description": "ADR-0130: reference content (rules text, creation data, docs) delivered only to a client that subscribes public_reference_metadata, never to a play session on connect. Defaults to false (kernel default) when omitted."
+								}
+							},
+							"additionalProperties": false
+						}
+					},
+					"additionalProperties": false
+				},
+				{
+					"type": "object",
+					"required": ["target", "key", "value"],
+					"properties": {
+						"target": {
+							"type": "object",
+							"required": ["kind", "ref"],
+							"properties": {
+								"kind": {
+									"type": "string",
+									"description": "An admitted metadata target kind. The shared manifest validator owns the current vocabulary; unsupported values fail at commit."
+								},
+								"ref": {
+									"type": "string",
+									"description": "The admitted target's stable id/ref."
+								}
+							},
+							"additionalProperties": false
+						},
+						"key": {
+							"type": "string",
+							"description": "Registered metadata namespace for this annotation."
+						},
+						"value": {
+							"type": "object",
+							"patternProperties": {
+								"^.*$": {}
+							},
+							"description": "An open JSON-compatible metadata object. Values are authored unchanged: this shared tool does not reserve a docs, UI, or ruleset schema."
+						},
+						"source": {
+							"type": "string",
+							"description": "Attachment source; defaults to 'manifest'."
+						},
+						"audience": {
+							"type": "string",
+							"description": "Registers an absent namespace in this atomic call; never defaults."
+						},
+						"description": {
+							"type": "string",
+							"description": "Optional description when this call registers the namespace."
+						}
+					},
+					"additionalProperties": false
+				}
+			],
+			"reason": "ADR-0130: adds optional on_demand boolean to the namespace target's value object (backward-compatible additive field)",
+			"acknowledgedAt": "2026-09-11T17:54:19.845Z"
+		},
+		{
+			"tool": "spellkave_manipulate",
+			"field": "roles.DM",
+			"from": "DM",
+			"reason": "ADR-0140 promotes direct factored manipulation from the DM extension to the PLAYER MCP roster; reset-only cutover has no shipped compatibility obligation.",
+			"acknowledgedAt": "2026-09-19T21:19:29.531Z"
+		},
+		{
+			"tool": "spellkave_affordance_actions",
+			"field": "parameters.properties.participant_entity_id",
+			"from": {
+				"type": "string",
+				"description": "Optional entity id of an item already bound as a participant on a current action. When set without target_ref, list those actions.",
+				"minLength": 1
+			},
+			"reason": "ADR-0140 reset-only cutover removes the retired participant_entity_id pair reader",
+			"acknowledgedAt": "2026-09-19T22:47:56.431Z"
+		},
+		{
+			"tool": "spellkave_communicate",
+			"field": "roles.DM",
+			"from": "DM",
+			"reason": "ADR-0141 reset-only cutover promotes direct communication to the PLAYER surface before retiring the handle dispatcher.",
+			"acknowledgedAt": "2026-09-20T08:18:58.395Z"
+		},
+		{
+			"tool": "spellkave_affordances",
+			"field": "<tool>",
+			"from": "spellkave_affordances",
+			"reason": "ADR-0140 and ADR-0141 reset-only cutover retire the generic Affordance cache, its handle dispatcher, and cache subscription; reset deployments replace affected clients with direct factual discovery and typed attempts.",
+			"acknowledgedAt": "2026-09-20T12:01:28.462Z"
+		},
+		{
+			"tool": "spellkave_affordance_verbs",
+			"field": "<tool>",
+			"from": "spellkave_affordance_verbs",
+			"reason": "ADR-0140 and ADR-0141 reset-only cutover retire the generic Affordance cache, its handle dispatcher, and cache subscription; reset deployments replace affected clients with direct factual discovery and typed attempts.",
+			"acknowledgedAt": "2026-09-20T12:01:28.462Z"
+		},
+		{
+			"tool": "spellkave_affordance_targets",
+			"field": "<tool>",
+			"from": "spellkave_affordance_targets",
+			"reason": "ADR-0140 and ADR-0141 reset-only cutover retire the generic Affordance cache, its handle dispatcher, and cache subscription; reset deployments replace affected clients with direct factual discovery and typed attempts.",
+			"acknowledgedAt": "2026-09-20T12:01:28.462Z"
+		},
+		{
+			"tool": "spellkave_affordance_actions",
+			"field": "<tool>",
+			"from": "spellkave_affordance_actions",
+			"reason": "ADR-0140 and ADR-0141 reset-only cutover retire the generic Affordance cache, its handle dispatcher, and cache subscription; reset deployments replace affected clients with direct factual discovery and typed attempts.",
+			"acknowledgedAt": "2026-09-20T12:01:28.462Z"
+		},
+		{
+			"tool": "spellkave_act_affordance",
+			"field": "<tool>",
+			"from": "spellkave_act_affordance",
+			"reason": "ADR-0140 and ADR-0141 reset-only cutover retire the generic Affordance cache, its handle dispatcher, and cache subscription; reset deployments replace affected clients with direct factual discovery and typed attempts.",
+			"acknowledgedAt": "2026-09-20T12:01:28.462Z"
+		},
+		{
+			"tool": "spellkave_subscribe_affordance_cache",
+			"field": "<tool>",
+			"from": "spellkave_subscribe_affordance_cache",
+			"reason": "ADR-0140 and ADR-0141 reset-only cutover retire the generic Affordance cache, its handle dispatcher, and cache subscription; reset deployments replace affected clients with direct factual discovery and typed attempts.",
+			"acknowledgedAt": "2026-09-20T12:01:28.462Z"
+		},
+		{
+			"tool": "spellkave_affordance_verbs",
+			"field": "roles.PLAYER",
+			"from": "PLAYER",
+			"reason": "ADR-0140 and ADR-0141 reset-only cutover retire the generic Affordance cache, its handle dispatcher, and cache subscription; reset deployments replace affected clients with direct factual discovery and typed attempts.",
+			"acknowledgedAt": "2026-09-20T12:01:28.462Z"
+		},
+		{
+			"tool": "spellkave_affordance_targets",
+			"field": "roles.PLAYER",
+			"from": "PLAYER",
+			"reason": "ADR-0140 and ADR-0141 reset-only cutover retire the generic Affordance cache, its handle dispatcher, and cache subscription; reset deployments replace affected clients with direct factual discovery and typed attempts.",
+			"acknowledgedAt": "2026-09-20T12:01:28.462Z"
+		},
+		{
+			"tool": "spellkave_affordance_actions",
+			"field": "roles.PLAYER",
+			"from": "PLAYER",
+			"reason": "ADR-0140 and ADR-0141 reset-only cutover retire the generic Affordance cache, its handle dispatcher, and cache subscription; reset deployments replace affected clients with direct factual discovery and typed attempts.",
+			"acknowledgedAt": "2026-09-20T12:01:28.462Z"
+		},
+		{
+			"tool": "spellkave_act_affordance",
+			"field": "roles.PLAYER",
+			"from": "PLAYER",
+			"reason": "ADR-0140 and ADR-0141 reset-only cutover retire the generic Affordance cache, its handle dispatcher, and cache subscription; reset deployments replace affected clients with direct factual discovery and typed attempts.",
+			"acknowledgedAt": "2026-09-20T12:01:28.462Z"
+		},
+		{
+			"tool": "spellkave_affordances",
+			"field": "roles.DM",
+			"from": "DM",
+			"reason": "ADR-0140 and ADR-0141 reset-only cutover retire the generic Affordance cache, its handle dispatcher, and cache subscription; reset deployments replace affected clients with direct factual discovery and typed attempts.",
+			"acknowledgedAt": "2026-09-20T12:01:28.462Z"
+		},
+		{
+			"tool": "spellkave_subscribe_affordance_cache",
+			"field": "roles.DM",
+			"from": "DM",
+			"reason": "ADR-0140 and ADR-0141 reset-only cutover retire the generic Affordance cache, its handle dispatcher, and cache subscription; reset deployments replace affected clients with direct factual discovery and typed attempts.",
+			"acknowledgedAt": "2026-09-20T12:01:28.462Z"
+		},
+		{
+			"tool": "spellkave_get",
+			"field": "parameters.properties.limit.type",
+			"from": "number",
+			"to": "integer",
+			"reason": "get/describe limit is a non-negative integer (D-6); negative/fractional values sliced incorrectly",
+			"acknowledgedAt": "2026-09-30T14:18:38.927Z"
+		},
+		{
+			"tool": "spellkave_get",
+			"field": "parameters.properties.limit.minimum",
+			"to": 0,
+			"reason": "get/describe limit is a non-negative integer (D-6); negative/fractional values sliced incorrectly",
+			"acknowledgedAt": "2026-09-30T14:18:38.927Z"
+		},
+		{
+			"tool": "spellkave_describe",
+			"field": "parameters.properties.limit.type",
+			"from": "number",
+			"to": "integer",
+			"reason": "get/describe limit is a non-negative integer (D-6); negative/fractional values sliced incorrectly",
+			"acknowledgedAt": "2026-09-30T14:18:38.927Z"
+		},
+		{
+			"tool": "spellkave_describe",
+			"field": "parameters.properties.limit.minimum",
+			"to": 0,
+			"reason": "get/describe limit is a non-negative integer (D-6); negative/fractional values sliced incorrectly",
+			"acknowledgedAt": "2026-09-30T14:18:38.927Z"
+		},
+		{
+			"tool": "spellkave_define_consequence",
+			"field": "parameters.properties.frame_writes.items.type",
+			"from": "object",
+			"reason": "Authoring frame-write items retain every previously accepted object and additionally accept the BreakPlaceSeal unit string; existing objects, arguments, reducers, and clients are unchanged. The structural detector classifies the widened union as breaking.",
+			"acknowledgedAt": "2026-10-05T05:17:32.283Z"
+		},
+		{
+			"tool": "spellkave_define_consequence",
+			"field": "parameters.properties.frame_writes.items.anyOf",
+			"to": [
+				{
+					"type": "object",
+					"patternProperties": {
+						"^.*$": {}
+					}
+				},
+				{
+					"type": "string",
+					"const": "BreakPlaceSeal"
+				}
+			],
+			"reason": "Authoring frame-write items retain every previously accepted object and additionally accept the BreakPlaceSeal unit string; existing objects, arguments, reducers, and clients are unchanged. The structural detector classifies the widened union as breaking.",
+			"acknowledgedAt": "2026-10-05T05:17:32.283Z"
+		},
+		{
+			"tool": "spellkave_define_action_verb",
+			"field": "parameters.properties.consequence.properties.frame_writes.items.type",
+			"from": "object",
+			"reason": "Authoring frame-write items retain every previously accepted object and additionally accept the BreakPlaceSeal unit string; existing objects, arguments, reducers, and clients are unchanged. The structural detector classifies the widened union as breaking.",
+			"acknowledgedAt": "2026-10-05T05:17:32.283Z"
+		},
+		{
+			"tool": "spellkave_define_action_verb",
+			"field": "parameters.properties.consequence.properties.frame_writes.items.anyOf",
+			"to": [
+				{
+					"type": "object",
+					"patternProperties": {
+						"^.*$": {}
+					}
+				},
+				{
+					"type": "string",
+					"const": "BreakPlaceSeal"
+				}
+			],
+			"reason": "Authoring frame-write items retain every previously accepted object and additionally accept the BreakPlaceSeal unit string; existing objects, arguments, reducers, and clients are unchanged. The structural detector classifies the widened union as breaking.",
+			"acknowledgedAt": "2026-10-05T05:17:32.283Z"
+		}
+	]
+}

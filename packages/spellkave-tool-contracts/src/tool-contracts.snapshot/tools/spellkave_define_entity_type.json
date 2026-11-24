@@ -1,0 +1,199 @@
+{
+	"name": "spellkave_define_entity_type",
+	"label": "Define Entity Type (verb)",
+	"description": "Author ONE entity_definitions catalog blueprint (+ its entity_definition_tag/initial_state/initial_capability/initial_condition/initial_containment/initial_equipment satellites) in a single call — the #1968 53%-of-authored-rows cluster, folding what would otherwise be a per-tag/per-seed spellkave_write_rows call each. Self-scaffolds the [[bundles]] header if `bundle` has none yet. This authors the CATALOG blueprint only (placement tools instantiate entities that may reference it via entity_def). #1968 workspace idempotency: re-authoring the SAME bundle+id REPLACES the row + EVERY satellite wholesale (fewer tags/seeds on a re-run means the stale ones are gone, not left behind). initial_containment/initial_equipment are structural (each spawns a child instance), not a flat-value copy like the other three satellites — the equipment/containment graph is cycle-checked server-side (MF-VAL-314) at admission, not re-validated here.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"id"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id stamped on every generated row. Omit to fall back to `context.defaultBundle` (#1968 smart default)."
+			},
+			"id": {
+				"type": "string",
+				"description": "Local entity_def_id stem; the full id is '<bundle>/<id>' (e.g. bundle='core', id='item/sword' -> 'core/item/sword'). May itself contain '/' for sub-namespacing (matches the corpus convention, e.g. 'npc/caravan', 'class/barbarian')."
+			},
+			"display_name": {
+				"type": "string",
+				"description": "entity_definitions.display_name. Omit to derive a title-cased `id` (#1968 smart default)."
+			},
+			"description": {
+				"type": "string",
+				"description": "entity_definitions.description (#1968 first-class column). PLAYER-REACHABLE: `readAuthorizedItemDetail` (@spellkave/sdk item_detail reader) falls back to this column whenever a placed instance has no per-instance `entity_description` row, so it must hold only what any observer may plausibly know on sight — never stat-block numbers, hidden mechanics, or spoilers. Stat-block/rules prose belongs in an `srd.text` `metadata_attachments` row instead, which keeps it out of description-reading tool responses — but that is not an access-control boundary today (audience enforcement doesn't exist yet, see metadata-attachments.md)."
+			},
+			"tags": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"description": "One entity_definition_tag row per tag."
+			},
+			"stackable": {
+				"type": "boolean",
+				"description": "entity_definitions.stackable — may authored instances use quantity>1 (default false)."
+			},
+			"lineage_id": {
+				"type": "string",
+				"description": "entity_definitions.lineage_id (default '')."
+			},
+			"affordance_seed_id": {
+				"type": "string",
+				"description": "entity_definitions.affordance_seed_id (default '')."
+			},
+			"on_consume_consequence_id": {
+				"type": "string",
+				"description": "entity_definitions.on_consume_consequence_id (default '')."
+			},
+			"on_destroy_consequence_id": {
+				"type": "string",
+				"description": "entity_definitions.on_destroy_consequence_id (default '')."
+			},
+			"grants_capability_while_equipped": {
+				"type": "string",
+				"description": "CSV capability ids granted to the bearer while it equips an entity of this definition (default '')."
+			},
+			"grants_capability_while_present_in_location": {
+				"type": "string",
+				"description": "CSV capability ids granted to entities at locations where an entity of this definition is present (default '')."
+			},
+			"slot_compatibility_predicate": {
+				"type": "string",
+				"description": "Closed three-form slot-compatibility grammar (not spellkave-dsl); '' or 'true' means any slot, 'false' means none, slot_id == <quoted id> means only that slot."
+			},
+			"initial_states": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"required": [
+						"state"
+					],
+					"properties": {
+						"state": {
+							"type": "string",
+							"description": "object_state_definitions OR resource_definitions state_id (MF-VAL-253 accepts either catalog) seeded as an object_state row onto every placed instance of this entity_def. Visibility caveat: a resource-only id has no default_visibility authoring surface, so the seeded row falls back to Public — author a parallel object_state_definitions row when Local/Hidden visibility is wanted."
+						},
+						"value_bool": {
+							"type": "boolean",
+							"description": "Bool carrier (schema default true when neither value_int nor value_text is set). Carrier precedence at commit: value_int > value_text > value_bool."
+						},
+						"value_int": {
+							"type": "number",
+							"description": "Int carrier — highest commit precedence."
+						},
+						"value_text": {
+							"type": "string",
+							"description": "Text carrier — commit precedence between value_int and value_bool."
+						}
+					}
+				},
+				"description": "entity_definition_initial_state rows — seeded onto every placed instance at admission/spawn."
+			},
+			"initial_capabilities": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"required": [
+						"capability"
+					],
+					"properties": {
+						"capability": {
+							"type": "string",
+							"description": "capability_definitions capability_id granted unconditionally to every placed instance of this entity_def (an entity_definition_initial_capability seed row)."
+						},
+						"extent_kind_ref": {
+							"type": "string",
+							"description": "Authored extent kind for this innate grant; preserve the same paired kind/ref contract as actor_capabilities. Omit both fields for an unscoped grant."
+						},
+						"extent_ref": {
+							"type": "string",
+							"description": "Extent reference paired with extent_kind_ref, copied to every spawned instance's innate capability grant."
+						}
+					}
+				},
+				"description": "entity_definition_initial_capability rows — innate capability grants."
+			},
+			"initial_conditions": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"required": [
+						"condition"
+					],
+					"properties": {
+						"condition": {
+							"type": "string",
+							"description": "condition_definitions condition_definition_id seeded onto every placed instance of this entity_def."
+						},
+						"duration_ticks": {
+							"type": "number",
+							"description": "Ticks until auto-expiry; 0 or omitted = permanent (schema default 0)."
+						}
+					}
+				},
+				"description": "entity_definition_initial_condition rows — conditions born active on every placed instance."
+			},
+			"initial_containment": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"required": [
+						"contained_entity_def_id"
+					],
+					"properties": {
+						"contained_entity_def_id": {
+							"type": "string",
+							"description": "entity_def_id of the child instance spawned and carried loose (entity_containment, slot_id = '') on every placed/spawned instance of this entity_def (an entity_definition_initial_containment seed row). Structural, not a flat-value copy: the child's OWN initial_* seeds apply to it first (recursion). The containment/equipment graph is cycle-checked server-side (MF-VAL-314) at admission."
+						},
+						"quantity": {
+							"type": "number",
+							"description": "Stack-vs-instance-count rule (ADR-0028 D-6): when the contained definition is stackable, ONE instance is spawned carrying this as its stack count; otherwise this many separate instances are spawned. Default 1."
+						}
+					}
+				},
+				"description": "entity_definition_initial_containment rows — each spawns a child instance carried loose (no equipment slot) on every placed/spawned instance. Structural, not a flat-value copy; MF-VAL-314 cycle-checked server-side at admission (not duplicated here)."
+			},
+			"initial_equipment": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"required": [
+						"equipped_entity_def_id",
+						"slot_id"
+					],
+					"properties": {
+						"equipped_entity_def_id": {
+							"type": "string",
+							"description": "entity_def_id of the child instance spawned and equipped into `slot_id` on every placed/spawned instance of this entity_def (an entity_definition_initial_equipment seed row) — a child, one slot, implicit quantity 1. The containment/equipment graph is cycle-checked server-side (MF-VAL-314) at admission, and the equipped definition's slot_compatibility_predicate is checked at commit (MF-VAL-311/-312/-313)."
+						},
+						"slot_id": {
+							"type": "string",
+							"description": "equipment_slot_definitions slot_id the spawned child is equipped into."
+						}
+					}
+				},
+				"description": "entity_definition_initial_equipment rows — each spawns a child instance and equips it into the named slot on every placed/spawned instance. Structural, not a flat-value copy; MF-VAL-314 cycle-checked server-side at admission (not duplicated here)."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

@@ -1,0 +1,66 @@
+{
+	"name": "spellkave_apply_manifest_delta",
+	"label": "Apply Manifest Delta",
+	"description": "Commit/flush authored rows to the ACTIVE connection-level target (#1968 'connection-level target' decision): default (no params) reads the workspace scratch and flushes it — the transaction end after write verbs (author_place/spawn/define_*). Optional `toml` is an escape hatch for an external delta string. `live` dispatches through r_apply_manifest_delta (upsert semantics, ADR-0085); `local` renders/merges into the target folder's manifest.toml. Falls back to the legacy `context.applyDelta` live port when no `target` is wired (back-compat). Requires EITHER to be wired — throws if neither is (offline authoring with no target has no flush destination). A live apply waits for a subscribed outcome: a new digest seal (ok) or a manifest_apply_outcome row (MF-APPLY code). A mid-segment commit error rolls the world back but may publish no failure row; the waiter then hits the scheduler watchdog, not a short poll.",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"toml": {
+				"type": "string",
+				"description": "Optional escape hatch: a full manifest-delta TOML string to flush. Omit to commit the active workspace scratch (workspace.readToml) — the normal transaction end after write verbs. Pass only when applying an external/ad-hoc delta that is not the scratch pad."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"promptSnippet": "Commit the workspace scratch (or an optional toml escape hatch) to the active live/local authoring target",
+	"promptGuidelines": [
+		"After write verbs have built the scratch you want live, call spellkave_apply_manifest_delta with NO args to commit that scratch — do not re-read or paste the TOML.",
+		"spellkave_apply_manifest_delta: pass `toml` only for an external/ad-hoc delta that is not the workspace scratch.",
+		"spellkave_apply_manifest_delta: requires an active connection-level target or legacy applyDelta port.",
+		"spellkave_apply_manifest_delta: live apply blocks until a digest seal or a failure outcome is pushed; ok means sealed, not merely enqueued.",
+		"spellkave_apply_manifest_delta: a mid-write drain crash rolls the world back (one transaction) but may not push a failure row — a long watchdog then means no outcome, not still applying."
+	],
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			},
+			{
+				"kind": "prefix",
+				"prefix": "frontier.bind."
+			},
+			{
+				"kind": "role-capabilities"
+			},
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.escalate"
+				]
+			}
+		],
+		"ports": [
+			"applyDelta"
+		],
+		"inputModes": [
+			"inline TOML",
+			"workspace"
+		],
+		"limitations": [
+			"Scoped prospective-write preflight; binding-only D-6 lane remains separate."
+		],
+		"argumentGates": [
+			"Binding-only payloads retain D-6 server admission; mixed writes require readable prospective state.",
+			"Role widening still checks all-contained capabilities or frontier.escalate on the server; unsupported comparison kinds refuse."
+		]
+	}
+}

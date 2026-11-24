@@ -1,0 +1,109 @@
+{
+	"name": "spellkave_map",
+	"label": "Map",
+	"description": "Render the connected actor's OWN known map as the shared spatial view — fog-of-war scoped by the module's visible_place_* views (known places plus the current place's exit frontier). Routes admitted by the module are drawn; spellkave_scene stays the authority on what exits exist from the CURRENT place. output_type picks the ONE artifact computed and returned: 'utf8' box-drawing text, 'ascii' 7-bit text, 'braille' dense-dot text, 'inventory' the place/route listing alone, 'svg' (default) the raw picture (plus an inline picture for hosts that render tool images), 'jpg' a backdrop-composed map-art JPEG written to disk (details.jpg_path). On the hosted PLAYER MCP gateway, results may also include one text line linking to the interactive browser map (maps.spellkave.com/?world=<slug>) for this world. While you are in a fight with a tactical grid drawn, the response also carries session_tokens: one row per roster participant placed on a drawn cell (node_id, actor_id, name, and is_me for your own row) — absent outside a fight, an empty list the moment the fight opens but before anyone has taken a cell.",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"graph": {
+				"type": "string",
+				"description": "Optional map id — when set, draw that map restricted to places the connected actor has already seen. Omit and the map picks for you: while you are in a fight that opened a tactical grid, it draws THAT grid composed over the location you are fighting in (backdrop art plus the room's own layout, combat cells on top); otherwise it composes every known outdoor map. Naming a map explicitly always wins — pass the location's own id to see the region while a fight is open, or compose_parent=false for the bare grid."
+			},
+			"slice": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "elevation_band"
+					},
+					{
+						"type": "string",
+						"const": "all_floors_offset"
+					},
+					{
+						"type": "string",
+						"const": "topology_only"
+					},
+					{
+						"type": "string",
+						"const": "metric"
+					},
+					{
+						"type": "string",
+						"const": "h3_world"
+					}
+				],
+				"description": "How to project multi-floor / unpositioned maps: elevation_band (one floor), all_floors_offset (floors side-by-side), topology_only (adjacency layout), metric (all z in one plane), h3_world (outdoor maps laid out geographically). Omit for auto."
+			},
+			"compose_parent": {
+				"type": "boolean",
+				"description": "Default true. When the selected map is a battle grid (including an automatically selected one), the grid draws composed over its parent location's own known layout (and, for output_type='jpg', the parent's backdrop art too) — one picture, the battle grid in room context. Has no effect for a non-grid map. Set false for the grid alone when you specifically want just the battle grid with no surrounding room."
+			},
+			"z": {
+				"type": "number",
+				"description": "Elevation for slice=elevation_band. Omit to use the anchor floor for a battle grid composed over its parent location; otherwise defaults to 0. An explicit z always wins."
+			},
+			"z_tolerance": {
+				"type": "number",
+				"description": "Half-width of elevation_band in elevation units (default 0.5)."
+			},
+			"output_type": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "utf8"
+					},
+					{
+						"type": "string",
+						"const": "ascii"
+					},
+					{
+						"type": "string",
+						"const": "braille"
+					},
+					{
+						"type": "string",
+						"const": "inventory"
+					},
+					{
+						"type": "string",
+						"const": "svg"
+					},
+					{
+						"type": "string",
+						"const": "jpg"
+					}
+				],
+				"description": "Which single artifact to render — the engine computes ONLY this one. 'utf8' box-drawing text, 'ascii' 7-bit text, 'braille' dense-dot text — each returned in the like-named details field. 'inventory' skips the picture entirely, details.inventory only. 'svg' (default) returns the raw SVG string in details.svg (and, when the host renders tool-result images, an inline picture). 'jpg' writes a backdrop-composed JPEG to output_dir/output_name and returns its path as details.jpg_path — no svg/ascii/utf8/braille text in the response at all."
+			},
+			"output_dir": {
+				"type": "string",
+				"minLength": 1,
+				"description": "output_type='jpg' only; ignored otherwise. Host-supplied directory to write the map-art JPEG into — absolute, or RELATIVE to the host process's own cwd. A relative value resolves against process.cwd() for the write, and is echoed back UNCHANGED — never resolved — in details.jpg_path, so a caller recording a portable artifact never leaks its own machine-local checkout path. Optional: omit for a fresh temp directory — a caller that just wants 'a JPEG, anywhere' does not have to invent a path. Backdrop art is drawn in full (the map on top stays scoped to places already seen, but the backdrop itself is NOT masked, so it may show rooms not yet discovered)."
+			},
+			"output_name": {
+				"type": "string",
+				"minLength": 1,
+				"description": "output_type='jpg' only; ignored otherwise. Base filename (no extension) for the JPEG written under output_dir, e.g. 'arrival'. Optional: omit for a name derived from graph, or 'map' when graph itself is also omitted."
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"promptSnippet": "Draw the places you have already seen (fog of war)",
+	"promptGuidelines": [
+		"Shows places and routes the module admits for this caller (known + current exit frontier) — spellkave_scene stays the source of truth for what's here RIGHT NOW and which exits the CURRENT place has.",
+		"Indoor/multi-floor: pass graph= and slice=elevation_band with z= (default auto z=0), or slice=all_floors_offset for side-by-side floors.",
+		"Omit graph to compose every known outdoor map.",
+		"The default (svg) gives an inline picture where the host renders tool images; output_type=jpg saves a map-art file; output_type=utf8/ascii/braille/inventory are the cheap text reads — pick one of those when a picture would be wasted."
+	],
+	"roles": [
+		"PLAYER"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "character"
+			}
+		],
+		"ports": []
+	}
+}

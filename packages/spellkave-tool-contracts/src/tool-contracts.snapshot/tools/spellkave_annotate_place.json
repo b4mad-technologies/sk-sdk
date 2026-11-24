@@ -1,0 +1,82 @@
+{
+	"name": "spellkave_annotate_place",
+	"label": "Annotate Place",
+	"description": "Attach inert metadata (terrain.hint / custom) to a place_graph, place_node, or place_edge, and/or stamp demo H3 origin cells on a graph. Does not create playable niches yet — tags are the authoring vocabulary for later niche wiring (E prep).",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"target_kind",
+			"target_ref"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string"
+			},
+			"target_kind": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "place_graph"
+					},
+					{
+						"type": "string",
+						"const": "place_node"
+					},
+					{
+						"type": "string",
+						"const": "place_edge"
+					}
+				],
+				"description": "What the annotation attaches to."
+			},
+			"target_ref": {
+				"type": "string",
+				"description": "place_graph_id / node_id / edge_key."
+			},
+			"terrain": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"description": "Tags e.g. [\"road\",\"difficult\",\"hazard_slime\"] → namespace terrain.hint"
+			},
+			"payload": {
+				"type": "object",
+				"patternProperties": {
+					"^.*$": {}
+				}
+			},
+			"namespace": {
+				"type": "string",
+				"description": "Override namespace (default terrain.hint when terrain set, else \"place.note\")."
+			},
+			"h3_origin_res10": {
+				"type": "number",
+				"description": "When target_kind=place_graph, stamp origin_cell_res10 (and anchor node cell_res10 if anchor known). Must be within Number.MAX_SAFE_INTEGER. Real H3 encoding later."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"promptSnippet": "Stamp terrain tags or H3 origin on place rows",
+	"promptGuidelines": [
+		"terrain tags are metadata only until a niche/affordance reads them.",
+		"h3_origin_res10 is a safe-int demo stamp — not a full H3 library encode."
+	],
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

@@ -1,0 +1,143 @@
+{
+	"name": "spellkave_map_graph",
+	"label": "Map Graph",
+	"description": "Render the authored place-graph as the shared spatial-graph view. Sources rows only through the same workspace/target/live resolution as spellkave_query (place_graphs, place_nodes, place_edges, actor_spatial_locations). output_type picks the ONE artifact computed and returned: 'svg' (default) — this tool's picture-first interactive use case: the raw SVG in details.svg plus an ImageContent PNG for hosts that render tool images (Pi TUI / Ghostty Kitty). 'utf8'/'ascii'/'braille' return that text variant in the like-named details field instead (no image). 'inventory' skips the graph picture entirely, details.inventory only. 'jpg' writes a backdrop-composed JPEG to output_dir/output_name and returns its path as details.jpg_path — no svg/ascii/utf8/braille text in the response.",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"graph": {
+				"type": "string",
+				"description": "Optional place_graph_id filter — when set, draw that graph (any substrate). Omit to compose every outdoor positioned graph (world map)."
+			},
+			"slice": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "elevation_band"
+					},
+					{
+						"type": "string",
+						"const": "all_floors_offset"
+					},
+					{
+						"type": "string",
+						"const": "topology_only"
+					},
+					{
+						"type": "string",
+						"const": "metric"
+					},
+					{
+						"type": "string",
+						"const": "h3_world"
+					}
+				],
+				"description": "How to project multi-floor / unpositioned graphs: elevation_band (one floor), all_floors_offset (floors side-by-side), topology_only (adjacency layout), metric (all z in one plane), h3_world (outdoor multi-graph from cell_res10 — same plane idea as web WorldMapView). Omit for auto (indoor multi-z → elevation_band at z=0; outdoor compose uses h3 when cells present)."
+			},
+			"z": {
+				"type": "number",
+				"description": "Elevation for slice=elevation_band (default 0). Matches pose_elevation."
+			},
+			"z_tolerance": {
+				"type": "number",
+				"description": "Half-width of elevation_band in elevation units (default 0.5)."
+			},
+			"lod": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "structure"
+					},
+					{
+						"type": "string",
+						"const": "furnished"
+					}
+				],
+				"description": "structure = rooms/routes only (no occupancy badges); furnished = + actor counts (default)."
+			},
+			"output_type": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "utf8"
+					},
+					{
+						"type": "string",
+						"const": "ascii"
+					},
+					{
+						"type": "string",
+						"const": "braille"
+					},
+					{
+						"type": "string",
+						"const": "inventory"
+					},
+					{
+						"type": "string",
+						"const": "svg"
+					},
+					{
+						"type": "string",
+						"const": "jpg"
+					}
+				],
+				"description": "Which single artifact to render — the engine computes ONLY this one (bead sk-due: the old `terminal` param picked the text body while the engine rendered svg + utf8 + ascii + braille + inventory regardless, every call). 'svg' (default) — this tool's own interactive picture-first use case: the raw SVG in details.svg plus an ImageContent PNG for hosts that render tool images (Pi TUI / Ghostty Kitty). 'utf8'/'ascii'/'braille' return that text variant in the like-named details field instead (no image). 'inventory' skips the graph picture entirely, details.inventory only. 'jpg' writes a backdrop-composed JPEG to output_dir/output_name and returns its path as details.jpg_path — no svg/ascii/utf8/braille text in the response."
+			},
+			"output_dir": {
+				"type": "string",
+				"minLength": 1,
+				"description": "output_type='jpg' only; ignored otherwise. Directory to write the map-art JPEG into — absolute, or RELATIVE to the host process's own cwd. Optional: omit for a fresh temp directory (mkdtemp). Resolves this graph's authored [[map_layers]] backdrop (unmasked — same drawn-in-full contract every backdrop render in this package follows), rasterizes via resvg then encodes via ffmpeg -q:v 4, skipping the rewrite when an unchanged render already sits there (deterministic churn guard)."
+			},
+			"output_name": {
+				"type": "string",
+				"minLength": 1,
+				"description": "output_type='jpg' only; ignored otherwise. Base filename (no extension) for the JPEG written under output_dir. Optional: omit for a name derived from graph, or 'map' when graph itself is also omitted (a world-compose call)."
+			},
+			"target": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "workspace"
+					},
+					{
+						"type": "string",
+						"const": "local"
+					},
+					{
+						"type": "string",
+						"const": "live"
+					}
+				],
+				"description": "Same read-only source override as spellkave_query (`workspace` | `local` | `live`). Omit for the default workspace+configured-target union."
+			}
+		}
+	},
+	"executionMode": "parallel",
+	"promptSnippet": "Draw the place-graph from existing query sources",
+	"promptGuidelines": [
+		"Prefer spellkave_map_graph when you need a picture of place connectivity; badges are occupancy counts only.",
+		"Indoor/multi-floor: pass graph= and slice=elevation_band with z= (default auto z=0), or slice=all_floors_offset for side-by-side floors; topology_only when nodes lack positions.",
+		"Place graph + people: after spellkave_map_graph, call spellkave_query kind=entities fields=preferred and group by place_node_id (usually two calls). Optional third: place_nodes fields=preferred for labels.",
+		"Pass graph=<place_graph_id> to draw one graph; omit to compose every outdoor positioned graph (H3 plane when cell_res10 present). Deeper playbook only if needed: spellkave_docs doc=place-graph-occupancy.",
+		"Outdoor world: omit graph (or slice=h3_world) so CLI/agent map_graph matches web outdoor H3 placement methodology.",
+		"output_type=jpg to save a map-art file instead of an inline picture; utf8/ascii/braille/inventory are cheaper text-only reads when you don't need a picture at all."
+	],
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "prefix",
+				"prefix": "frontier."
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"node"
+		]
+	}
+}

@@ -1,0 +1,4 @@
+behaviour/**/.results/
+behaviour/**/.report/
+runtime/
+behaviour/.bin/

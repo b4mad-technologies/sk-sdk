@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-label="Spellkave spatial graph">
+<style>
+svg{background:#eef2f1;font-family:Inter,Arial,sans-serif}.route{stroke:#b97012;stroke-width:3;stroke-linecap:round;opacity:.86}.place{fill:#148284;stroke:#fff;stroke-width:2}.actor{fill:#245ebe;stroke:#fff;stroke-width:2}.label{fill:#1d2428;font-size:12px;font-weight:700;text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round}.actor-label{fill:#fff;font-size:9px;font-weight:800;text-anchor:middle}</style>
+
+<line data-from="region/phandalin_village" data-to="region/cragmaw_hideout_trail" x1="369.81" y1="594.04" x2="296.68" y2="569.67" class="route" />
+<line data-from="region/phandalin_village" data-to="region/wave_echo_cave_approach" x1="369.81" y1="594.04" x2="418.56" y2="618.42" class="route" />
+<line data-from="region/phandalin_village" data-to="region/conyberry_agatha" x1="369.81" y1="594.04" x2="491.69" y2="423.40" class="route" />
+<line data-from="region/conyberry_agatha" data-to="region/old_owl_well_approach" x1="491.69" y1="423.40" x2="540.45" y2="496.54" class="route" />
+<line data-from="region/conyberry_agatha" data-to="region/wyvern_tor_slopes" x1="491.69" y1="423.40" x2="540.45" y2="545.29" class="route" />
+<line data-from="region/old_owl_well_approach" data-to="region/wyvern_tor_slopes" x1="540.45" y1="496.54" x2="540.45" y2="545.29" class="route" />
+<line data-from="region/thundertree_lane" data-to="region/conyberry_agatha" x1="272.30" y1="374.65" x2="491.69" y2="423.40" class="route" />
+<line data-from="region/cragmaw_hideout_trail" data-to="region/cragmaw_castle_approach" x1="296.68" y1="569.67" x2="345.43" y2="496.54" class="route" />
+<line data-from="region/wave_echo_cave_approach" data-to="region/zorzulas_rest" x1="418.56" y1="618.42" x2="442.94" y2="594.04" class="route" />
+<line data-from="region/zorzulas_rest" data-to="region/gibbet_crossing" x1="442.94" y1="594.04" x2="564.83" y2="374.65" class="route" />
+<line data-from="region/gibbet_crossing" data-to="region/talhundereth" x1="564.83" y1="374.65" x2="540.45" y2="325.89" class="route" />
+<line data-from="region/talhundereth" data-to="region/crypt_of_talhund" x1="540.45" y1="325.89" x2="540.45" y2="350.27" class="route" />
+<g data-node-id="region/phandalin_village"><circle cx="369.81" cy="594.04" r="6" class="place" /><text x="369.81" y="613.04" class="label">Phandalin</text></g>
+<g data-node-id="region/thundertree_lane"><circle cx="272.30" cy="374.65" r="6" class="place" /><text x="272.30" y="393.65" class="label">Thundertree</text></g>
+<g data-node-id="region/conyberry_agatha"><circle cx="491.69" cy="423.40" r="6" class="place" /><text x="491.69" y="442.40" class="label">Conyberry and Agatha's Lair</text></g>
+<g data-node-id="region/old_owl_well_approach"><circle cx="540.45" cy="496.54" r="6" class="place" /><text x="540.45" y="515.54" class="label">Old Owl Well Approach</text></g>
+<g data-node-id="region/wyvern_tor_slopes"><circle cx="540.45" cy="545.29" r="6" class="place" /><text x="540.45" y="564.29" class="label">Wyvern Tor Slopes</text></g>
+<g data-node-id="region/cragmaw_hideout_trail"><circle cx="296.68" cy="569.67" r="6" class="place" /><text x="296.68" y="588.67" class="label">Cragmaw Hideout Trail</text></g>
+<g data-node-id="region/cragmaw_castle_approach"><circle cx="345.43" cy="496.54" r="6" class="place" /><text x="345.43" y="515.54" class="label">Cragmaw Castle Approach</text></g>
+<g data-node-id="region/wave_echo_cave_approach"><circle cx="418.56" cy="618.42" r="6" class="place" /><text x="418.56" y="637.42" class="label">Wave Echo Cave Approach</text></g>
+<g data-node-id="region/zorzulas_rest"><circle cx="442.94" cy="594.04" r="6" class="place" /><text x="442.94" y="613.04" class="label">Zorzula's Rest</text></g>
+<g data-node-id="region/gibbet_crossing"><circle cx="564.83" cy="374.65" r="6" class="place" /><text x="564.83" y="393.65" class="label">Gibbet Crossing</text></g>
+<g data-node-id="region/talhundereth"><circle cx="540.45" cy="325.89" r="6" class="place" /><text x="540.45" y="344.89" class="label">Talhundereth</text></g>
+<g data-node-id="region/crypt_of_talhund"><circle cx="540.45" cy="350.27" r="6" class="place" /><text x="540.45" y="369.27" class="label">Crypt of the Talhund</text></g>
+</svg>

@@ -1,0 +1,56 @@
+{
+	"name": "spellkave_list_grants",
+	"label": "List grants",
+	"description": "List only subject-owned or D-6-manageable bindings; filters narrow the authorized set.",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"subject": {
+				"type": "string"
+			},
+			"role": {
+				"type": "string"
+			},
+			"extent": {
+				"type": "string"
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"cli": {
+		"positionals": [],
+		"examples": [
+			{
+				"command": "sk grants list",
+				"description": "List grants"
+			}
+		]
+	},
+	"roles": [
+		"AUTHOR"
+	],
+	"authority": {
+		"kind": "role-binding",
+		"readSubject": true
+	},
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "publisher"
+			},
+			{
+				"kind": "prefix",
+				"prefix": "frontier.bind."
+			},
+			{
+				"kind": "role-capabilities"
+			}
+		],
+		"ports": [
+			"grants"
+		],
+		"argumentGates": [
+			"Actual role, old/new binding coverage, batch bounds and destination-instance guards are checked by D-6 on the server."
+		]
+	}
+}

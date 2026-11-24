@@ -1,0 +1,215 @@
+{
+	"name": "spellkave_define_action_verb",
+	"label": "Define Action Verb (verb)",
+	"description": "Author ONE action-verb chain — action_definitions + outcome_templates + affordance_templates + consequence_templates (+ optional consequence_frame_writes) — in a single call, with NO actor grant (contrast spellkave_define_behavior, which always binds its generated cluster to a `grant_to` caster). The composite fold for the action/affordance/outcome/consequence chain (executable finding #40): `required_capability`/`niche_id` must already resolve (workspace, live, or the active target) — this verb never auto-creates either (use spellkave_define_capability first; `niche_id` needs no niche_definitions row at all for the two common synthetic-niche shapes, see this verb's own file-header note). Omit `consequence.frame_writes` entirely for MF-VAL-222's own no-op consequence shape. Self-scaffolds the [[bundles]] header if `bundle` has none yet. #1968 workspace idempotency: re-authoring the SAME bundle+id REPLACES all four rows + every satellite wholesale.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"id",
+			"niche_id"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id stamped on every generated row. Omit to fall back to `context.defaultBundle` (#1968 smart default)."
+			},
+			"id": {
+				"type": "string",
+				"description": "Local id stem every derived id qualifies against '<bundle>/<id>': action_id itself, plus '<action_id>/outcome' (outcome_templates), '<action_id>/affordance' (affordance_templates), and '<action_id>/success' (consequence_templates, also `action_definitions.on_success`) — matches both grounding call sites' own naming convention verbatim, never a caller override."
+			},
+			"required_capability": {
+				"type": "string",
+				"description": "An ALREADY-authored capability_definitions id (workspace, live, or the active target, e.g. via spellkave_define_capability) this call never creates — reused for BOTH action_definitions.required_capability AND affordance_templates.capability_id (this verb's own grounding call sites always use the SAME id in both places), UNLESS `affordance_capability_id` overrides the affordance half (see that param). sk-9ll.6: omit (or pass '') for an UNGATED verb — some authored chains (e.g. an always-hit attack with no gating capability at all) need no capability row, matching the schema's own empty-string default; an empty value is never existence-checked — only a non-empty value still requires a matching capability_definitions row."
+			},
+			"affordance_capability_id": {
+				"type": "string",
+				"description": "actor-carried-verbs D6: overrides affordance_templates.capability_id independently of action_definitions.required_capability — for the creature-carried-statblock shape, where the ACTION stays keyed on a shared discriminator (e.g. 'srd/action/attack', an initiative-watch read site) while the AFFORDANCE's actual admission gate is a per-creature capability (e.g. 'srd/creature/black-bear/action') granted only to that creature. An ALREADY-authored capability_definitions id (workspace, live, or the active target) this call never creates — same existence-check posture as `required_capability` (a non-empty value is checked; '' is not). Omit for the verb's original single-id posture (default: `required_capability`'s own value)."
+			},
+			"niche_id": {
+				"type": "string",
+				"description": "affordance_templates.niche_id. NOT existence-checked against niche_definitions (see this verb's own file-header note) — a bare entity_definition_tag value (e.g. 'creature') or the 'capability:<capability_id>' synthetic-niche convention are both LEGAL here despite authoring no niche_definitions row of their own, but a bare entity_definition_tag with no niche_definitions row resolves to the 'place' provider's fail-closed default (requires_spatial_attachment: true) and REJECTS every dispatch with attachment_presence — an actor-carried tag has no place attachment to satisfy it. Pair the tag with an explicit spellkave_write_rows niche_definitions row (provider = 'entity') whenever the niche is entity-provided, not place-attached. An authored niche_definitions id (via spellkave_define_niche) works too."
+			},
+			"display_name": {
+				"type": "string",
+				"description": "Overrides the derived title-cased `id` for the action/outcome/affordance rows alike (mirrors spellkave_define_affordance's own shared display_name). Omit for the smart default (#1968)."
+			},
+			"description": {
+				"type": "string",
+				"description": "action_definitions.description (#1968 first-class column)."
+			},
+			"predicate_source": {
+				"type": "string",
+				"description": "affordance_templates.predicate_source — the deterministic ELIGIBILITY gate for whether this affordance offers. A stochastic comparison here (e.g. 'd20 >= 13') is treated as satisfied at materialise time and never gates offer (#1891) — use this verb's own resolution_predicate_source (with resolution_mode = 'Stochastic') for dice instead. Omit for an ungated trigger (predicate_bool = true) — mirrors spellkave_define_affordance's identical omit-for-ungated convention."
+			},
+			"range_m": {
+				"type": "number",
+				"description": "affordance_templates.range_m (ADR-0053 metric embedding). Default 0."
+			},
+			"accepts_global_storm": {
+				"type": "boolean",
+				"description": "affordance_templates.accepts_global_storm — modder opt-in acknowledging this template's predicate classifies as Global. Default false."
+			},
+			"cost_time_ms": {
+				"type": "number",
+				"description": "action_definitions.cost_time_ms in fiction milliseconds. With spends_channel, omit or set 0 to spend one full channel pool; without a channel, 0 is unmetered."
+			},
+			"on_failure": {
+				"type": "string",
+				"description": "action_definitions.on_failure — the consequence_templates id applied on failure. Omit for none (schema default: empty string) — this verb only ever AUTHORS the on_success consequence, never an on_failure one (neither grounding call site needs one; author it separately, e.g. via spellkave_define_consequence, if wanted)."
+			},
+			"outcome_expression_source": {
+				"type": "string",
+				"description": "outcome_templates.outcome_expression_source (playable-fighter-l1-20 D-1) — e.g. \"invoke_outcome_graph('<bundle>/<id>/graph')\" to ALSO fire a pre-authored outcome graph, in addition to this action's own `consequence` (independent, sequential — the action runs first, followed by the expression in the same binding context). Every prior corpus example (`srd/acid_arrow`, `srd/outcome_guard_state_branch`) sets this INSTEAD of `consequence` (an empty-consequence, graph-only action) — setting BOTH on this verb's own generated outcome row is new with this field, structurally supported (no validator or runtime exclusivity found), used to bolt a defeat-consequence (e.g. an XP credit) onto an action whose own damage/ condition writes are unchanged. Omit for '' (schema default) — today's byte-identical behavior."
+			},
+			"resolution_mode": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "Deterministic"
+					},
+					{
+						"type": "string",
+						"const": "Stochastic"
+					},
+					{
+						"type": "string",
+						"const": "Deferred"
+					}
+				],
+				"description": "action_definitions.resolution_mode. Omit for the schema default ('Deterministic')."
+			},
+			"resolution_predicate_source": {
+				"type": "string",
+				"description": "action_definitions.resolution_predicate_source — authored boolean DSL for Stochastic resolution. Omit for empty (Deterministic/Deferred)."
+			},
+			"resolution_scope": {
+				"type": "string",
+				"description": "action_definitions.resolution_scope — open authored id selecting scoped actor-side roll modifiers. Omit for no narrow scope."
+			},
+			"non_steering": {
+				"type": "boolean",
+				"description": "Explicit author assertion that target effects are cooperative/non-steering and need no target claim. Omit/false for conservative automatic classification; marking a hostile effect true is a content bug."
+			},
+			"session_def_id": {
+				"type": "string",
+				"description": "action_definitions.session_def_id. Omit for the schema default (empty string)."
+			},
+			"self_eligible": {
+				"type": "boolean",
+				"description": "action_definitions.self_eligible. Omit for the schema default (false)."
+			},
+			"self_only": {
+				"type": "boolean",
+				"description": "action_definitions.self_only (ADR-0075). Omit for the schema default (false)."
+			},
+			"spends_channel": {
+				"type": "string",
+				"description": "action_definitions.spends_channel — an open FK into economy_channel_definitions.id (action-economy budgeting). Omit for unmetered (schema default: absent)."
+			},
+			"reaction_eligibility": {
+				"type": "string",
+				"description": "action_definitions.reaction_eligibility — a DSL predicate over a candidate reactor (§8.4 WHO axis). Omit for not-a-reaction-candidate (schema default: absent)."
+			},
+			"reaction_window_ms": {
+				"type": "number",
+				"description": "action_definitions.reaction_window_ms. Omit for an implementation default when `reaction_eligibility` is set."
+			},
+			"reaction_trigger": {
+				"type": "string",
+				"description": "action_definitions.reaction_trigger — a DSL predicate over the triggering event (§8.4 WHAT axis). Omit to provoke on every co-located trigger (schema default: absent)."
+			},
+			"tags": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"description": "One action_definition_tag row per tag."
+			},
+			"consequence": {
+				"type": "object",
+				"properties": {
+					"effect_ref": {
+						"type": "string",
+						"description": "consequence_templates.effect_refs_csv — an already-authored effect_definitions id this consequence invokes. Omit for a consequence with no effect_definitions reference (the common case for a check-shaped action)."
+					},
+					"description": {
+						"type": "string",
+						"description": "consequence_templates.description (#1968 first-class column)."
+					},
+					"frame_writes": {
+						"type": "array",
+						"items": {
+							"anyOf": [
+								{
+									"type": "object",
+									"patternProperties": {
+										"^.*$": {}
+									}
+								},
+								{
+									"type": "string",
+									"const": "BreakPlaceSeal"
+								}
+							]
+						},
+						"description": "consequence_frame_writes rows, in AUTHORED order — each a raw FrameWriteOp body object or the unit string BreakPlaceSeal, mirroring spellkave_define_consequence's own `frame_writes` param verbatim. Omit entirely for MF-VAL-222's own documented no-op shape: a manipulation-dispatchable action needs a non-empty `on_success`, and a consequence_templates row with NO frame_writes at all is the validator-sanctioned way to satisfy that with no actual effect (both this verb's grounding call sites use exactly this shape for most of their generated checks)."
+					}
+				}
+			},
+			"outcome_id_suffix": {
+				"type": "string",
+				"description": "sk-9ll.6: the local suffix qualifying the generated outcome_templates id as '<action_id>/<outcome_id_suffix>' (also `affordance_templates.outcome_template_id`). Omit for the legacy default 'outcome'. Raw write_rows chains this verb is meant to fold use several different suffixes here (e.g. 'hit') — set this to match an existing convention instead of falling back to spellkave_write_rows."
+			},
+			"consequence_id_suffix": {
+				"type": "string",
+				"description": "sk-9ll.6: the local suffix qualifying the generated consequence_templates id (and `action_definitions.on_success`) as '<action_id>/<consequence_id_suffix>'. Omit for the legacy default 'success'. Raw write_rows chains this verb is meant to fold use several different suffixes here (e.g. 'consequence') — set this to match an existing convention instead of falling back to spellkave_write_rows."
+			},
+			"spends_channel_placement": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "affordance"
+					},
+					{
+						"type": "string",
+						"const": "action"
+					},
+					{
+						"type": "string",
+						"const": "both"
+					}
+				],
+				"description": "sk-9ll.6: where a set `spends_channel` value is written. Default 'both' (this verb's original mirrored behavior) — the server reads `spends_channel` off BOTH rows for DIFFERENT purposes: an on-turn action reads the resolved affordance template, while an off-turn reaction uses the originating action definition. A reaction action with no action-row spends_channel is UNMETERED (free). Pass 'affordance' to write it only on affordance_templates (a non-reaction, on-turn-only verb where the action-row copy is genuinely dead), or 'action' to write it only on action_definitions. Ignored when `spends_channel` itself is omitted."
+			},
+			"composes": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"description": "sk-9ll.6: affordance_templates.composes — child affordance_template ids this template unrolls into on a successful manipulate (the action-composition slice, `r_manipulate`'s own composition unroll). Pass-through, verbatim, in AUTHORED order. Omit for the schema default (no composition, this verb's own consequence fires alone)."
+			},
+			"communication_speech_act_id": {
+				"type": "string",
+				"description": "sk-9ll.6: outcome_templates.communication_speech_act_id — when set, the generated outcome surfaces as a communication speech act (mirrors spellkave_define_behavior's own identical pass-through) while r_manipulate still EXECUTES the gated consequence normally. Omit for the legacy default: no speech-act framing."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "all",
+				"capabilities": [
+					"frontier.apply_manifest"
+				]
+			},
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": []
+	}
+}

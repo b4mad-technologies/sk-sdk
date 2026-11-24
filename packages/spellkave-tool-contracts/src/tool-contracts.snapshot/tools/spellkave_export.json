@@ -1,0 +1,66 @@
+{
+	"name": "spellkave_export",
+	"label": "Export Manifest",
+	"description": "Reconstruct a live bundle via r_export_manifest (ADR-0086 snapshot semantics, ADR-0149 publisher only) and write TOML. The caller must be the module publisher; any other caller is refused with MF-EXPORT-001. Optional actor= keeps only that entity and what hangs off it (containment, owned_by, equipment). Requires a live connection. Pass exactly one of out= or out_dir=.",
+	"parameters": {
+		"type": "object",
+		"required": [
+			"bundle"
+		],
+		"properties": {
+			"bundle": {
+				"type": "string",
+				"description": "bundle_id to reconstruct via r_export_manifest (ADR-0086)."
+			},
+			"actor": {
+				"type": "string",
+				"description": "entity_key of the hero to keep. When set, only that actor and what hangs off it remain."
+			},
+			"out": {
+				"type": "string",
+				"description": "Write the rendered TOML to this file path."
+			},
+			"out_dir": {
+				"type": "string",
+				"description": "Write <slug>.toml into this directory (slug from --actor, else the bundle id)."
+			}
+		}
+	},
+	"executionMode": "sequential",
+	"promptSnippet": "Export a live bundle (optionally one actor) to TOML via r_export_manifest",
+	"promptGuidelines": [
+		"spellkave_export: call with bundle= and out= (or out_dir=) after --live is wired.",
+		"spellkave_export: pass actor= to keep only that hero and hanging items/tags/state."
+	],
+	"cli": {
+		"positionals": [
+			"bundle"
+		],
+		"examples": [
+			{
+				"command": "sk --live export elven_mini --actor elven_mini/adventure/hero_1 --out hero.toml",
+				"description": "export the staged hero as a standalone TOML save"
+			}
+		]
+	},
+	"roles": [
+		"AUTHOR"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"exportManifest",
+			"node"
+		],
+		"inputModes": [
+			"local"
+		],
+		"limitations": [
+			"Publisher whole-world export; unavailable on hosted user routes."
+		]
+	}
+}

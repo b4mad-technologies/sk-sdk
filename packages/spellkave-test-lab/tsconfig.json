@@ -1,0 +1,15 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"noEmit": true,
+		// Same source-import boundary as `@spellkave/sdk`: the SDK and the
+		// generated bindings are consumed as TypeScript source, so bundler
+		// resolution and the relaxed exactOptionalPropertyTypes follow
+		// packages/spellkave-sdk/tsconfig.json.
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"exactOptionalPropertyTypes": false,
+		"types": ["node"]
+	},
+	"include": ["src/**/*"]
+}

@@ -1,0 +1,23 @@
+{
+	"name": "spellkave_actor_principals",
+	"label": "Spellkave Actor Principals",
+	"description": "Read all actor-to-body bindings: who is currently inhabiting each body. Returns actor_id, name, and current_body (entity id) for every registered actor. Use to observe intermediate state during possession handoffs (e.g. verify the steward moved into the hero body).",
+	"parameters": {
+		"type": "object",
+		"properties": {}
+	},
+	"executionMode": "parallel",
+	"roles": [
+		"DM"
+	],
+	"admission": {
+		"anyOf": [
+			{
+				"kind": "publisher"
+			}
+		],
+		"ports": [
+			"publisherRead"
+		]
+	}
+}
