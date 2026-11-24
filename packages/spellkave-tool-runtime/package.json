@@ -1,6 +1,6 @@
 {
 	"name": "@spellkave/tool-runtime",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"private": true,
 	"description": "Browser-safe transport-neutral binding, validation, dispatch, result shaping, and capability-port coordination for Spellkave tool contracts.",
 	"type": "module",

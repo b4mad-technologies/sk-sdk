@@ -80,7 +80,7 @@ try {
 					&& !/\.(test|spec)\./.test(entry) && !entry.endsWith(".map");
 			},
 		});
-		prepareEsmDirectory(dist);
+		prepareEsmDirectory(dist, manifest);
 		for (const conditions of Object.values(manifest.exports)) {
 			for (const path of Object.values(conditions)) {
 				if (!existsSync(join(staged, path))) throw new Error(`Missing ${manifest.name} build output ${path}`);
@@ -96,6 +96,7 @@ try {
 					.replace(/\.\.\/src\/([^"]+)\.ts"/g, "../dist/$1.js\"");
 				writeFileSync(path, launcher);
 			}
+			prepareEsmDirectory(bin, manifest);
 			manifest.files.push("bin");
 		}
 		for (const file of ["LICENSE", "NOTICE"]) {

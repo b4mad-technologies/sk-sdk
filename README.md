@@ -42,8 +42,10 @@ declarations, including the generated authoring corpus.
 | `@spellkave/agent-observability`, `@spellkave/sdk`, `@spellkave/session`, `@spellkave/tool-authoring`, `@spellkave/tool-node`, `@spellkave/world-author`, `@spellkave/world-map` | `@spellkave/tool-contracts`, `@spellkave/tool-player`, `@spellkave/tool-runtime`, `@spellkave/world-events` |
 
 The SDK npm workflow builds and tests the workspace on pull requests and
-pushes. It installs the tarballs into an empty project, imports every entry
-point with plain Node, and typechecks a consumer with TypeScript. For
+pushes. It installs each package separately in an empty project, using a
+local registry to resolve the unpublished tarballs. It imports the public
+entry points with plain Node and typechecks a consumer with TypeScript.
+The terminal entry is checked with its optional TUI peer installed. For
 TypeScript consumers, use `moduleResolution: "Bundler"` and `skipLibCheck: true`
 with the current SpacetimeDB declarations. A release tag publishes the
 tested tarballs with provenance through npm Trusted Publishing.

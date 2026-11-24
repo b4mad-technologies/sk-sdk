@@ -1,6 +1,6 @@
 {
 	"name": "@spellkave/world-map",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"private": true,
 	"description": "One geometry, three outputs: OSM export, MVT/MapLibre tiles, SVG/ASCII/braille spatial-graph. No HTTP \u2014 the gateway keeps routing/auth/CORS/assets.",
 	"type": "module",

@@ -289,6 +289,9 @@ importers:
 
   packages/spellkave-sdk:
     dependencies:
+      '@spellkave/agent-observability':
+        specifier: workspace:*
+        version: link:../spellkave-agent-observability
       '@spellkave/bindings':
         specifier: 2.1.0
         version: 2.1.0
@@ -302,9 +305,6 @@ importers:
         specifier: 2.14.1
         version: 2.14.1
     devDependencies:
-      '@spellkave/agent-observability':
-        specifier: workspace:*
-        version: link:../spellkave-agent-observability
       '@spellkave/validate-wasm':
         specifier: 0.1.0
         version: 0.1.0

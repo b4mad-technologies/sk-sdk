@@ -1,6 +1,6 @@
 {
 	"name": "@spellkave/world-author",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"private": true,
 	"description": "Typed world-manifest authoring surface \u2014 builds manifest rows -> TOML for agent/code authors, plus optional pre-flight validation. Validation is NOT a client-side reimplementation: it calls the SAME Rust validator (crates/spellkave-validate) compiled to wasm, so that crate stays the single source of truth (ADR-0009 D-2 preserved). Tracker: #504.",
 	"type": "module",
