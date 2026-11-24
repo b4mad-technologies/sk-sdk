@@ -67,8 +67,11 @@ function bootstrap() {
 async function trust() {
 	const options = { cwd: root, env: { ...process.env } };
 	delete options.env.NPM_TOKEN;
-	for (const [index, name] of packages.entries()) {
-		if (index > 0) await setTimeout(2000);
+	// npm needs a terminal on both stdin and stdout to complete web 2FA.
+	const first = run("npm", ["trust", "list", packages[0], "--registry", registry], options);
+	if (first.status !== 0) throw new Error(`Interactive npm trust list failed for ${packages[0]}`);
+	for (const name of packages) {
+		await setTimeout(2000);
 		const existing = run("npm", ["trust", "list", name, "--json", "--registry", registry], {
 			...options,
 			stdio: ["inherit", "pipe", "inherit"],

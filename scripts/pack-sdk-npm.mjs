@@ -5,12 +5,14 @@ import {
 	mkdirSync,
 	mkdtempSync,
 	readFileSync,
+	readdirSync,
 	rmSync,
 	writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { basename, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { prepareEsmDirectory } from "./lib/npm-esm.mjs";
 import { sdkNpmPackages } from "./lib/sdk-npm-packages.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
@@ -58,16 +60,42 @@ try {
 		}
 
 		mkdirSync(staged);
-		manifest.files = ["src"];
-		cpSync(join(source, "src"), join(staged, "src"), {
+		manifest.main = emittedPath(manifest.main);
+		manifest.types = emittedPath(manifest.types, ".d.ts");
+		manifest.exports = Object.fromEntries(Object.entries(manifest.exports).map(([entry, value]) => {
+			const conditions = typeof value === "string" ? { types: value, default: value } : value;
+			return [entry, Object.fromEntries(Object.entries(conditions).map(([condition, path]) => [
+				condition, emittedPath(path, condition === "types" ? ".d.ts" : ".js"),
+			]))];
+		}));
+		manifest.files = ["dist"];
+		const dist = join(staged, "dist");
+		const buildOutput = join(source, "dist");
+		if (!existsSync(buildOutput)) throw new Error(`Run pnpm build before packing ${manifest.name}`);
+		cpSync(buildOutput, dist, {
 			recursive: true,
 			filter: (path) => {
 				const entry = basename(path);
-				return entry !== "__tests__" && entry !== "test" && !/\.(test|spec)\.[cm]?[jt]sx?$/.test(entry);
+				return path !== join(buildOutput, "live") && entry !== "__tests__" && entry !== "test"
+					&& !/\.(test|spec)\./.test(entry) && !entry.endsWith(".map");
 			},
 		});
+		prepareEsmDirectory(dist);
+		for (const conditions of Object.values(manifest.exports)) {
+			for (const path of Object.values(conditions)) {
+				if (!existsSync(join(staged, path))) throw new Error(`Missing ${manifest.name} build output ${path}`);
+			}
+		}
 		if (existsSync(join(source, "bin"))) {
-			cpSync(join(source, "bin"), join(staged, "bin"), { recursive: true });
+			const bin = join(staged, "bin");
+			cpSync(join(source, "bin"), bin, { recursive: true });
+			for (const name of readdirSync(bin)) {
+				const path = join(bin, name);
+				const launcher = readFileSync(path, "utf8")
+					.replace(/^#!\/usr\/bin\/env tsx$/m, "#!/usr/bin/env node")
+					.replace(/\.\.\/src\/([^"]+)\.ts"/g, "../dist/$1.js\"");
+				writeFileSync(path, launcher);
+			}
 			manifest.files.push("bin");
 		}
 		for (const file of ["LICENSE", "NOTICE"]) {
@@ -90,3 +118,10 @@ try {
 }
 
 process.stdout.write(`${JSON.stringify(tarballs)}\n`);
+
+function emittedPath(path, extension = ".js") {
+	if (!path.startsWith("./src/") || !path.endsWith(".ts")) {
+		throw new Error(`Expected a TypeScript source export, found ${path}`);
+	}
+	return path.replace("./src/", "./dist/").slice(0, -3) + extension;
+}

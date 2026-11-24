@@ -347,9 +347,6 @@ importers:
       '@spellkave/world-map':
         specifier: workspace:*
         version: link:../spellkave-world-map
-      tsx:
-        specifier: ^4.19.2
-        version: 4.23.15
     devDependencies:
       '@spellkave/test-lab':
         specifier: workspace:*
@@ -360,6 +357,9 @@ importers:
       esbuild:
         specifier: 0.28.1
         version: 0.28.1
+      tsx:
+        specifier: ^4.19.2
+        version: 4.23.15
       typebox:
         specifier: 1.1.38
         version: 1.1.38
@@ -530,6 +530,9 @@ importers:
       '@spellkave/world-map':
         specifier: workspace:*
         version: link:../spellkave-world-map
+      spacetimedb:
+        specifier: 2.14.1
+        version: 2.14.1
       typebox:
         specifier: 1.1.38
         version: 1.1.38
@@ -617,6 +620,9 @@ importers:
       '@spellkave/sdk':
         specifier: workspace:*
         version: link:../spellkave-sdk
+      '@types/geojson-vt':
+        specifier: 3.2.5
+        version: 3.2.5
       geojson-vt:
         specifier: 4.0.2
         version: 4.0.2
@@ -629,9 +635,6 @@ importers:
       termdot:
         specifier: ^0.1.13
         version: 0.1.13
-      tsx:
-        specifier: ^4.19.2
-        version: 4.23.15
       vt-pbf:
         specifier: 3.1.3
         version: 3.1.3
@@ -645,9 +648,6 @@ importers:
       '@spellkave/behaviour':
         specifier: workspace:*
         version: link:../spellkave-behaviour
-      '@types/geojson-vt':
-        specifier: 3.2.5
-        version: 3.2.5
       '@types/node':
         specifier: ^24.12.4
         version: 24.19.2
@@ -666,6 +666,9 @@ importers:
       quickpickle:
         specifier: 1.11.2
         version: 1.11.2(vitest@3.2.7(@types/node@24.19.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
+      tsx:
+        specifier: ^4.19.2
+        version: 4.23.15
       typescript:
         specifier: ~5.9.3
         version: 5.9.3

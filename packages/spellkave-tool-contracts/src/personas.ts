@@ -1,4 +1,4 @@
-import mapping from "./personas.generated.json";
+import mapping from "./personas.generated.json" with { type: "json" };
 
 export const PERSONA_DOCUMENTATION_VERSION = mapping.version;
 export const PERSONA_MAPPINGS = mapping.personas;
