@@ -1,6 +1,6 @@
 {
 	"name": "@spellkave/tool-player",
-	"version": "0.0.0",
+	"version": "0.1.1",
 	"private": true,
 	"type": "module",
 	"main": "./src/index.ts",
@@ -12,6 +12,7 @@
 		}
 	},
 	"scripts": {
+		"build": "tsc",
 		"test": "vitest run",
 		"test:browser-gate": "node scripts/check-browser-resolution.mjs",
 		"typecheck": "tsc --noEmit"
@@ -23,6 +24,7 @@
 		"@spellkave/world-events": "workspace:*",
 		"@spellkave/world-author": "workspace:*",
 		"@spellkave/world-map": "workspace:*",
+		"spacetimedb": "2.14.1",
 		"typebox": "1.1.38"
 	},
 	"devDependencies": {

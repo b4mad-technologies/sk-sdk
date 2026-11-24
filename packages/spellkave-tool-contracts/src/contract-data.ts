@@ -1,4 +1,4 @@
-import contractDataJson from "./contracts-metadata.json";
+import contractDataJson from "./contracts-metadata.json" with { type: "json" };
 
 export const TOOL_ROLES = ["PLAYER", "DM", "AUTHOR"] as const;
 export type ToolRole = (typeof TOOL_ROLES)[number];

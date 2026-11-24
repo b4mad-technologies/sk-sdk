@@ -2,6 +2,9 @@
 // (authoring-doc-evidence D1) — same identity-in-test-name / round-trip-parse
 // shape, generalized authoring axes. srd-cc keeps its own machinery untouched.
 
+import type { DocEvidenceState } from "../../scenario-guidance";
+export type { DocEvidenceState } from "../../scenario-guidance";
+
 export const DOC_EVIDENCE_PREFIX = "[doc-evidence:";
 
 /**
@@ -13,14 +16,6 @@ export const DOC_EVIDENCE_PREFIX = "[doc-evidence:";
  * "T0".
  */
 export type DocEvidenceTier = "offline" | "live-preseeded" | "live-self-seeding";
-
-export type DocEvidenceState =
-	| "proven"
-	| "reproduced"
-	| "unencoded"
-	| "not-run"
-	| "failed"
-	| "not-applicable";
 
 export interface DocEvidenceIdentity {
 	/**

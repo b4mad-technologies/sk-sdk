@@ -1,4 +1,10 @@
-import type { DocEvidenceState } from "./test/doc-evidence/protocol";
+export type DocEvidenceState =
+	| "proven"
+	| "reproduced"
+	| "unencoded"
+	| "not-run"
+	| "failed"
+	| "not-applicable";
 
 /** Captured artifacts supplied by feature owners, using existing evidence states. */
 export interface ScenarioCapture {

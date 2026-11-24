@@ -1,6 +1,6 @@
 {
 	"name": "@spellkave/session",
-	"version": "0.0.0",
+	"version": "0.1.1",
 	"private": true,
 	"description": "Binding-keyed live Spellkave session core + daemon host (#1990) \u2014 one connect/subscribe-on-connect lifecycle shared by the daemon, the Pi extension, and future browser hosts.",
 	"type": "module",
@@ -51,7 +51,6 @@
 		"@spellkave/tool-runtime": "workspace:*",
 		"@spellkave/world-author": "workspace:*",
 		"@spellkave/world-map": "workspace:*",
-		"tsx": "^4.19.2",
 		"@spellkave/bindings": "2.1.0"
 	},
 	"peerDependencies": {
@@ -61,6 +60,7 @@
 		"@spellkave/test-lab": "workspace:*",
 		"@types/node": "^24.12.4",
 		"esbuild": "0.28.1",
+		"tsx": "^4.19.2",
 		"typebox": "1.1.38",
 		"vitest": "^3.2.6"
 	},
