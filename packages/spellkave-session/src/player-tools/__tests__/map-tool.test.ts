@@ -10,7 +10,7 @@ import { describe, expect, it, vi } from "vitest";
 import { createMapTool } from "../tools";
 
 // Smallest valid 1x1 transparent PNG (well-known minimal fixture bytes) —
-// stands in for a real ccc3-maps/elven-tower asset without depending on a
+// stands in for a real map backdrop asset without depending on a
 // sibling package's committed art.
 const TINY_PNG_BASE64 =
 	"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=";

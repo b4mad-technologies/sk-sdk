@@ -2725,12 +2725,12 @@ _Requires an active connection — no offline example; this tool cannot be demon
 
 **Attach Map Layer** — execution mode `sequential`.
 
-Author a [[map_layers]] backdrop pointer for a place_graph (Phandelver parity). Does NOT vendor the image — asset_path resolves at map_graph time via CCC3_MAPS_ROOT or FVTT_DATA_ROOT. Optionally stamps provenance metadata on the graph. When the file is present, image_width/height are filled from PNG IHDR if unset.
+Author a [[map_layers]] backdrop pointer for a place_graph. Does NOT vendor the image — asset_path resolves at map_graph time via SPELLKAVE_MAP_ASSETS_ROOT/<asset_module> or FVTT_DATA_ROOT. The caller names asset_module, source_kind and posture; nothing is assumed. Optionally stamps provenance metadata on the graph. When the file is present, image_width/height are filled from PNG IHDR if unset.
 
 | Field | Required | Type | Default | Description |
 |---|---:|---|---|---|
-| `asset_module` | no | string |  | Asset root module id (default "ccc3-maps"). Also resolves FVTT_DATA_ROOT/<module>. |
-| `asset_path` | yes | string |  | Relative path under asset root, e.g. "maps/306 Fortified Hamlet.jpg" for ccc3-maps. |
+| `asset_module` | yes | string |  | Asset module id: the folder that holds the image. Resolves SPELLKAVE_MAP_ASSETS_ROOT/<module> and FVTT_DATA_ROOT/<module>. No default. |
+| `asset_path` | yes | string |  | Relative path under the asset module, e.g. "maps/hamlet.jpg". |
 | `bundle` | no | string |  |  |
 | `display_name` | no | string |  |  |
 | `grid_distance_m` | no | number |  |  |
@@ -2739,17 +2739,17 @@ Author a [[map_layers]] backdrop pointer for a place_graph (Phandelver parity). 
 | `image_origin_x` | no | number |  |  |
 | `image_origin_y` | no | number |  |  |
 | `image_width_px` | no | number |  |  |
-| `license_url` | no | string |  |  |
+| `license_url` | no | string |  | License text URL for the provenance payload. No default. |
 | `local_height_cells` | no | number |  |  |
 | `local_width_cells` | no | number |  |  |
 | `map_id` | no | string |  | Catalog map id for provenance payload. |
 | `map_layer_id` | no | string |  | Defaults to <place_graph_id>/backdrop. |
 | `place_graph_id` | yes | string |  | place_graph this backdrop belongs to. |
-| `posture` | no | string |  | License posture stamp (default "cc-by-4.0" for ccc3). |
+| `posture` | yes | string |  | License posture stamp of the image, e.g. "cc-by-4.0" or "proprietary". No default. |
 | `provenance` | no | boolean |  |  |
 | `rotation_deg` | no | number |  |  |
-| `source_kind` | no | string |  | Default "elven-tower-ccc". |
-| `source_url` | no | string |  |  |
+| `source_kind` | yes | string |  | Where the image comes from, e.g. "first-party" or a named map source. No default. |
+| `source_url` | no | string |  | Source page URL for the provenance payload. No default. |
 | `state` | no | string |  | aligned \| provisional \| unmatched \| template (default "template"). |
 
 ## `spellkave_annotate_place`

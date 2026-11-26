@@ -27,7 +27,7 @@ const catalog: WorldCatalog = parseWorldCatalog({
 			slug: "kavemouth-1",
 			display_name: "Kavemouth",
 			adventure: "kavemouth",
-			db: "db-elven",
+			db: "db-kavemouth",
 			status: "running",
 			visibility: "public",
 			owner: "o",
@@ -78,7 +78,7 @@ describe("parseSeatClaim", () => {
 
 describe("resolveClaimedSeatRoute", () => {
 	const held = { actorId: "107", boundAtTick: 3, role: "primary" };
-	const elven = { slug: "kavemouth-1", actorId: "9" };
+	const kavemouth = { slug: "kavemouth-1", actorId: "9" };
 
 	/** A world fake: `heldBy` = actors this caller holds, `free` = offered unclaimed seats. */
 	function ports(options: {
@@ -130,7 +130,7 @@ describe("resolveClaimedSeatRoute", () => {
 
 	it("claims an offered free seat once on first use, then routes it", async () => {
 		const world = ports({ free: ["9"] });
-		const route = await resolveClaimedSeatRoute(catalog, "user_1", "tok", elven, world.ports);
+		const route = await resolveClaimedSeatRoute(catalog, "user_1", "tok", kavemouth, world.ports);
 		expect(world.calls).toEqual(["find:9", "offered:9", "claim:9", "find:9"]);
 		expect(route).toMatchObject({ kind: "seat", hit: { actorId: "109" } });
 	});
@@ -152,14 +152,14 @@ describe("resolveClaimedSeatRoute", () => {
 	it("refuses, never falling back to another hero, when the world refuses the claim", async () => {
 		const world = ports({ heldBy: ["7"], free: ["9"], claimFails: true });
 		await expect(
-			resolveClaimedSeatRoute(catalog, "user_1", "tok", elven, world.ports),
+			resolveClaimedSeatRoute(catalog, "user_1", "tok", kavemouth, world.ports),
 		).rejects.toBeInstanceOf(SeatClaimUnavailableError);
 	});
 
 	it("treats a failed world read as transient and never claims", async () => {
 		const world = ports({ free: ["9"], probeFails: true });
 		await expect(
-			resolveClaimedSeatRoute(catalog, "user_1", "tok", elven, world.ports),
+			resolveClaimedSeatRoute(catalog, "user_1", "tok", kavemouth, world.ports),
 		).rejects.toBeInstanceOf(SeatClaimProbeError);
 		expect(world.calls).toEqual(["find:9"]);
 	});

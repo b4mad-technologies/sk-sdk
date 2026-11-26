@@ -45,7 +45,7 @@ export const sampleWorldRows: WorldOsmInput = {
 		}],
 		map_layers: [{
 			map_layer_id: "demo/yard/art", place_graph_id: "demo/yard", display_name: "Yard map",
-			asset_module: "ccc3-maps", asset_path: "maps/sample.jpg", state: "ready",
+			asset_module: "sample-maps", asset_path: "maps/sample.jpg", state: "ready",
 			image_width_px: 40, image_height_px: 40, grid_size_px: 10, grid_distance_m: 1,
 			image_origin_x: 20, image_origin_y: 20,
 		}],

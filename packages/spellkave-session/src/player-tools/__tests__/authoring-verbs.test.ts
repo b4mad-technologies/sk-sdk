@@ -12546,9 +12546,11 @@ describe("spatial toolbox — link / map_layer / annotate", () => {
 			{
 				bundle: "tb",
 				place_graph_id: "tb/g",
-				asset_module: "ccc3-maps",
-				asset_path: "maps/306 Fortified Hamlet.jpg",
-				map_id: "306",
+				asset_module: "sample-maps",
+				asset_path: "maps/hamlet.jpg",
+				posture: "cc-by-4.0",
+				source_kind: "first-party",
+				map_id: "hamlet",
 			},
 			"layer",
 			{ node: nodeToolCapability },
@@ -12569,12 +12571,48 @@ describe("spatial toolbox — link / map_layer / annotate", () => {
 		const manifest = inspectManifest(workspace.current() ?? "").manifest as Record<string, unknown>;
 		expect(tableRows(manifest, "map_layers")[0]).toMatchObject({
 			place_graph_id: "tb/g",
-			asset_module: "ccc3-maps",
+			asset_module: "sample-maps",
+			posture: "cc-by-4.0",
+			source_kind: "first-party",
 		});
 		expect(Number(tableRows(manifest, "place_graphs")[0]?.origin_cell_res10)).toBe(4242424242424);
 		const meta = tableRows(manifest, "metadata_attachments");
 		expect(meta.some((m) => m.namespace === "terrain.hint")).toBe(true);
-		expect(meta.some((m) => m.namespace === "provenance.source")).toBe(true);
+		// The provenance stamp carries only what the caller gave: no built-in
+		// source or licence URL stands in for a missing one.
+		const provenance = meta.find((m) => m.namespace === "provenance.source");
+		expect(JSON.parse(String(provenance?.payload_json))).toEqual({
+			map_id: "hamlet",
+			file: "maps/hamlet.jpg",
+			module: "sample-maps",
+			license: "cc-by-4.0",
+			license_url: "",
+			source_url: "",
+		});
+	});
+
+	it("attach_map_layer refuses a blank asset_module, source_kind or posture", async () => {
+		const workspace = fakeWorkspace(null);
+		await authorPlaceToolDef.run(
+			contextWith({ workspace }),
+			{ bundle: "tb", nodes: [{ id: "tb/g/a", name: "A", x: 0, y: 0 }], edges: [] },
+			"g",
+		);
+		const complete = {
+			bundle: "tb",
+			place_graph_id: "tb/g",
+			asset_module: "sample-maps",
+			asset_path: "maps/hamlet.jpg",
+			posture: "cc-by-4.0",
+			source_kind: "first-party",
+		};
+		for (const name of ["asset_module", "source_kind", "posture"] as const) {
+			await expect(
+				attachMapLayerToolDef.run(contextWith({ workspace }), { ...complete, [name]: " " }, "layer", {
+					node: nodeToolCapability,
+				}),
+			).rejects.toThrow(new RegExp(`${name} is required and has no default`));
+		}
 	});
 });
 

@@ -410,13 +410,13 @@ const FIXTURE: SnapshotDb = {
 	]),
 	visible_map_layer: fakeHandle([
 		{
-			mapLayerId: "kavemouth/inn/elven_tower_backdrop",
+			mapLayerId: "kavemouth/inn/backdrop",
 			bundleId: "kavemouth",
 			placeGraphId: "kavemouth/inn",
 			displayName: "Lamp and Ladle",
-			assetModule: "ccc3-maps",
-			assetPath: "maps/267 Lamp and Ladle-notitle.jpg",
-			sourceKind: "elven-tower-ccc",
+			assetModule: "sample-maps",
+			assetPath: "maps/Lamp and Ladle.jpg",
+			sourceKind: "first-party",
 			state: "aligned",
 			posture: "cc-by-4.0",
 			imageWidthPx: 2000,

@@ -1,6 +1,7 @@
 /**
  * Resolve authored [[map_layers]] rows to SpatialGraphBackdrop for SVG overlay.
- * Assets stay out-of-repo (ccc3-maps / FVTT_DATA_ROOT); missing files → skip.
+ * Assets stay out-of-repo (SPELLKAVE_MAP_ASSETS_ROOT / FVTT_DATA_ROOT); missing
+ * files → skip.
  */
 import { execSync } from "node:child_process";
 import { existsSync, readFileSync, statSync } from "node:fs";
@@ -23,9 +24,17 @@ function gitSibling(name: string): string | null {
 	}
 }
 
-export function resolveCcc3MapsRoot(env: NodeJS.ProcessEnv = process.env): string | null {
-	if (env.CCC3_MAPS_ROOT?.trim()) return env.CCC3_MAPS_ROOT.trim();
-	return gitSibling("ccc3-maps");
+/**
+ * Root that holds one folder per asset module (`<root>/<asset_module>/...`).
+ * Set by `SPELLKAVE_MAP_ASSETS_ROOT`; there is no built-in module or folder name.
+ */
+export function resolveMapAssetsRoot(env: NodeJS.ProcessEnv = process.env): string | null {
+	return env.SPELLKAVE_MAP_ASSETS_ROOT?.trim() || null;
+}
+
+/** One path segment, so a module id cannot point outside the sibling folder. */
+function isPlainModuleName(module: string): boolean {
+	return module !== "" && module !== "." && module !== ".." && !/[\\/]/.test(module);
 }
 
 export function resolveFvttDataRoot(env: NodeJS.ProcessEnv = process.env): string | null {
@@ -57,9 +66,15 @@ export function resolveMapLayerAssetPath(
 	if (isAbsolute(assetPath) && existsSync(assetPath)) return assetPath;
 
 	const roots: string[] = [];
-	if (module === "ccc3-maps" || module === "elven-tower" || module === "") {
-		const ccc3 = resolveCcc3MapsRoot(env);
-		if (ccc3) roots.push(ccc3);
+	const assetsRoot = resolveMapAssetsRoot(env);
+	if (assetsRoot) {
+		if (module) roots.push(join(assetsRoot, module));
+		roots.push(assetsRoot);
+	}
+	// A checkout named like the module, next to this repository.
+	if (isPlainModuleName(module)) {
+		const sibling = gitSibling(module);
+		if (sibling) roots.push(sibling);
 	}
 	const fvtt = resolveFvttDataRoot(env);
 	if (fvtt) {
@@ -103,7 +118,7 @@ export function backdropAssetDataHref(backdrop: SpatialGraphBackdrop): string | 
 
 /**
  * Build backdrop descriptors from map_layers rows. Only layers whose asset
- * resolves on disk are included (CI-safe when ccc3-maps absent).
+ * resolves on disk are included (CI-safe when the assets are absent).
  */
 export function mapLayersToBackdrops(
 	layers: readonly Record<string, unknown>[],
@@ -153,7 +168,7 @@ export function mapLayersToBackdrops(
 		backdrops.push({
 			graph_id: graphId,
 			scene: typeof row.display_name === "string" ? row.display_name : graphId,
-			module: typeof row.asset_module === "string" ? row.asset_module : "ccc3-maps",
+			module: typeof row.asset_module === "string" ? row.asset_module : "",
 			asset: pathToFileURL(abs).href,
 			width_cells: widthCells,
 			height_cells: heightCells,
