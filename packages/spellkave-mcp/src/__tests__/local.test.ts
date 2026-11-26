@@ -151,11 +151,11 @@ describe("createGhFeedbackSink", () => {
 	it("files the hosted issue shape through gh with a local provenance section", async () => {
 		const seen: string[][] = [];
 		const sink = createGhFeedbackSink(
-			"b4arena/spellkave",
+			"example/repo",
 			{ worktreeRoot: "/wt", url: "http://127.0.0.1:11502", db: "spellkave-dev" },
 			async (args) => {
 				seen.push([...args]);
-				return "https://github.com/b4arena/spellkave/issues/1\n";
+				return "https://github.com/example/repo/issues/1\n";
 			},
 		);
 		const { reference } = await sink.submit({
@@ -164,10 +164,10 @@ describe("createGhFeedbackSink", () => {
 			seat: { actor_id: "1", world_slug: "elven-mini-local" },
 			submitted_at: "2026-09-25T00:00:00.000Z",
 		});
-		expect(reference).toBe("https://github.com/b4arena/spellkave/issues/1");
+		expect(reference).toBe("https://github.com/example/repo/issues/1");
 		expect(seen[0]?.slice(0, 3)).toEqual(["label", "create", "feedback:local"]);
 		const args = seen[1] as string[];
-		expect(args.slice(0, 4)).toEqual(["issue", "create", "--repo", "b4arena/spellkave"]);
+		expect(args.slice(0, 4)).toEqual(["issue", "create", "--repo", "example/repo"]);
 		expect(args[args.indexOf("--title") + 1]).toBe(
 			"feedback(elven-mini-local): the torch cannot be picked up",
 		);
@@ -182,14 +182,14 @@ describe("createGhFeedbackSink", () => {
 	it("retries with the guaranteed labels when world:/seat: labels do not exist", async () => {
 		const seen: string[][] = [];
 		const sink = createGhFeedbackSink(
-			"b4arena/spellkave",
+			"example/repo",
 			{ worktreeRoot: "/wt", url: "u", db: "d" },
 			async (args) => {
 				seen.push([...args]);
 				if (args[0] === "issue" && args.includes("world:elven-mini-local")) {
 					throw new Error("could not add label: 'world:elven-mini-local' not found");
 				}
-				return "https://github.com/b4arena/spellkave/issues/2";
+				return "https://github.com/example/repo/issues/2";
 			},
 		);
 		const { reference } = await sink.submit({
@@ -197,7 +197,7 @@ describe("createGhFeedbackSink", () => {
 			seat: { actor_id: "1", world_slug: "elven-mini-local" },
 			submitted_at: "2026-09-25T00:00:00.000Z",
 		});
-		expect(reference).toBe("https://github.com/b4arena/spellkave/issues/2");
+		expect(reference).toBe("https://github.com/example/repo/issues/2");
 		const retry = seen[2] as string[];
 		expect(retry.filter((_, i) => retry[i - 1] === "--label")).toEqual([
 			"feedback",
@@ -211,7 +211,7 @@ describe("createGhFeedbackSink", () => {
 		const jsonl = createLocalFeedbackSink(root);
 		const sink = withJsonlFallback(
 			createGhFeedbackSink(
-				"b4arena/spellkave",
+				"example/repo",
 				{ worktreeRoot: root, url: "u", db: "d" },
 				async () => {
 					throw new Error("gh: not logged in");
