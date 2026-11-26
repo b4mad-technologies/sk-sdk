@@ -1,7 +1,7 @@
 /**
  * Churn-guarded JPEG write for a caller-supplied output directory — the SAME
  * sha256(svg + width) provenance-sidecar pattern
- * `packages/spellkave-srd-cc/src/author/elven-mini/renders.ts` established
+ * `packages/spellkave-srd-cc/src/author/kavemouth/renders.ts` established
  * for the AUTHOR-side "with-map" product renders, generalized into a small
  * reusable helper so `spellkave_map`'s (and `spellkave_map_graph`'s)
  * `output_type: "jpg"` mode (shared tool runtime `tools.ts`/`authoring-verbs.ts`)
@@ -18,14 +18,14 @@
  *
  * ffmpeg on CI (sk-zgbj, corrects this header's earlier "never on a CI
  * runner" claim): srd-integration.yml's story job DOES re-record the
- * elven-mini playthrough on a runner, and #2442's first execution died on
+ * kavemouth playthrough on a runner, and #2442's first execution died on
  * `spawnSync ffmpeg ENOENT` there. The churn guard below hides that whenever
  * the committed art is current — an unchanged source skips rasterize+encode
  * entirely — so the ENOENT only appears once the source actually drifts,
  * which is the worst possible moment for a confusing error. `textOnly` (see
  * `writeJpegWithChurnGuard`) is the CI answer, mirroring the author-side
  * `SRD_CC_AUTHOR_CHECK_TEXT_ONLY` idiom in
- * `packages/spellkave-srd-cc/src/author/elven-mini/renders.ts` — it produces
+ * `packages/spellkave-srd-cc/src/author/kavemouth/renders.ts` — it produces
  * nothing AND compares nothing.
  *
  * Why a hash sidecar and not a byte-diff: encoded bytes are host-dependent
@@ -213,8 +213,8 @@ export async function writeJpegWithChurnGuard(
 	return { path, written };
 }
 
-/** `graph` (a place_graph_id) -> a filesystem-safe stem, e.g. "elven_mini/inn"
- * -> "elven-mini-inn". Falls back to "map" for a world-compose call (no graph
+/** `graph` (a place_graph_id) -> a filesystem-safe stem, e.g. "kavemouth/inn"
+ * -> "kavemouth-inn". Falls back to "map" for a world-compose call (no graph
  * filter) or a graph id with no alphanumerics at all. */
 function defaultMapName(graph: string | undefined): string {
 	const trimmed = graph?.trim();

@@ -24,7 +24,7 @@ describe("Node world-actor exporter bootstrap", () => {
 			OTEL_EXPORTER_OTLP_ENDPOINT: "http://collector.local:4318",
 			OTEL_RESOURCE_ATTRIBUTES:
 				"deployment.environment.name=production,spellkave.world_slug=wrong-world",
-			SPELLKAVE_WORLD_SLUG: " elven-mini-1 ",
+			SPELLKAVE_WORLD_SLUG: " kavemouth-1 ",
 		};
 
 		const metrics = createWorldActorMetricsFromEnv(env, {
@@ -42,7 +42,7 @@ describe("Node world-actor exporter bootstrap", () => {
 		]);
 		for (const request of requests) {
 			expect(request.body).toContain("spellkave.world_slug");
-			expect(request.body).toContain("elven-mini-1");
+			expect(request.body).toContain("kavemouth-1");
 			expect(request.body).not.toContain("wrong-world");
 		}
 	});
@@ -58,7 +58,7 @@ describe("Node world-actor exporter bootstrap", () => {
 		);
 		const env = {
 			OTEL_EXPORTER_OTLP_ENDPOINT: "http://collector.local:4318",
-			SPELLKAVE_WORLD_SLUG: "elven-mini-1",
+			SPELLKAVE_WORLD_SLUG: "kavemouth-1",
 			SPELLKAVE_IMAGE_TAG: " sha-919f9ae5 ",
 		};
 		const metrics = createWorldActorMetricsFromEnv(env, {
@@ -112,7 +112,7 @@ describe("Node world-actor exporter bootstrap", () => {
 		const env = {
 			OTEL_EXPORTER_OTLP_ENDPOINT: "http://collector.local:4318",
 			OTEL_RESOURCE_ATTRIBUTES: "deployment.environment=local-x",
-			SPELLKAVE_WORLD_SLUG: "elven-mini-1",
+			SPELLKAVE_WORLD_SLUG: "kavemouth-1",
 		};
 
 		const metrics = createWorldActorMetricsFromEnv(env, { allowedToolNames: ["spellkave_scene"] });

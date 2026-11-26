@@ -83,14 +83,14 @@ describe("PLAYER session daemon MCP handler", () => {
 			observeToolCall: async (
 				_tool: string,
 				operation: (context: { correlation_id: string; world_slug: string }) => Promise<unknown>,
-			) => operation({ correlation_id: "corr-daemon", world_slug: "elven-mini" }),
+			) => operation({ correlation_id: "corr-daemon", world_slug: "kavemouth" }),
 		};
 		const secretArgs = { speech: "SECRET-CANARY" };
 		await createSessionToolHandler(client, observer as never)("spellkave_scene", secretArgs);
 		expect(calls[0]).toEqual([
 			"spellkave_scene",
 			secretArgs,
-			{ correlation_id: "corr-daemon", world_slug: "elven-mini" },
+			{ correlation_id: "corr-daemon", world_slug: "kavemouth" },
 		]);
 		expect(JSON.stringify(calls[0]?.[2])).not.toContain("SECRET-CANARY");
 	});
@@ -523,9 +523,9 @@ describe("spellkave_map interactive deep link", () => {
 			content: [{ type: "text" as const, text: "map" }],
 		};
 		expect(
-			withMapDeepLink(base, "spellkave_scene", "https://maps.spellkave.com", "elven-mini"),
+			withMapDeepLink(base, "spellkave_scene", "https://maps.spellkave.com", "kavemouth"),
 		).toEqual(base);
-		expect(withMapDeepLink(base, "spellkave_map", undefined, "elven-mini")).toEqual(base);
+		expect(withMapDeepLink(base, "spellkave_map", undefined, "kavemouth")).toEqual(base);
 		expect(withMapDeepLink(base, "spellkave_map", "https://maps.spellkave.com", undefined)).toEqual(
 			base,
 		);
@@ -534,7 +534,7 @@ describe("spellkave_map interactive deep link", () => {
 				{ ...base, isError: true },
 				"spellkave_map",
 				"https://maps.spellkave.com",
-				"elven-mini",
+				"kavemouth",
 			),
 		).toEqual({ ...base, isError: true });
 	});
@@ -557,7 +557,7 @@ describe("spellkave_map interactive deep link", () => {
 			undefined,
 			{
 				mapsBaseUrl: "https://maps.spellkave.com/",
-				resolveWorldSlug: () => "elven-mini",
+				resolveWorldSlug: () => "kavemouth",
 			},
 		);
 		await expect(handler("spellkave_map", {})).resolves.toEqual({
@@ -565,7 +565,7 @@ describe("spellkave_map interactive deep link", () => {
 				{ type: "text", text: "utf8 map" },
 				{
 					type: "text",
-					text: "Interactive map: https://maps.spellkave.com/w/elven-mini",
+					text: "Interactive map: https://maps.spellkave.com/w/kavemouth",
 				},
 			],
 			structuredContent: { places: 3 },
@@ -612,7 +612,7 @@ describe("spellkave_map interactive deep link", () => {
 			undefined,
 			{
 				mapsBaseUrl: "https://maps.spellkave.com",
-				resolveWorldSlug: () => "elven-mini",
+				resolveWorldSlug: () => "kavemouth",
 			},
 		);
 		await expect(handler("spellkave_scene", {})).resolves.toEqual({
@@ -633,7 +633,7 @@ describe("spellkave_map interactive deep link", () => {
 			undefined,
 			undefined,
 			undefined,
-			{ resolveWorldSlug: () => "elven-mini" },
+			{ resolveWorldSlug: () => "kavemouth" },
 		);
 		await expect(handler("spellkave_map", {})).resolves.toEqual({
 			content: [{ type: "text", text: "map" }],

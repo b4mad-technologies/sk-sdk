@@ -78,7 +78,7 @@ export type SpatialTerminalMode = "utf8" | "ascii" | "braille";
  * A single computable artifact off the shared model+layout. `buildSpatialGraphView`
  * used to render all four unconditionally on every call regardless of what a
  * caller actually wanted — the direct cost behind bead sk-due (18 unread SVG
- * payloads bloating the elven-mini story JSONL 286 KB -> 380 KB). `renderOnly`
+ * payloads bloating the kavemouth story JSONL 286 KB -> 380 KB). `renderOnly`
  * below is the opt-in fix; `inventory`/`model`/`hasLayout` are not artifacts in
  * this sense — they are the cheap part and stay unconditional.
  */

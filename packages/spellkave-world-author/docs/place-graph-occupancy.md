@@ -91,12 +91,12 @@ Beyond `author_place` + `map_graph`:
 | Tool | Purpose |
 |---|---|
 | `spellkave_link_places` | Portal between two existing nodes (cross-graph OK; auto `substrate_crossing`; optional `door` metadata) |
-| `spellkave_attach_map_layer` | `[[map_layers]]` pointer + provenance; image stays in `ccc3-maps` / `FVTT_DATA_ROOT` |
+| `spellkave_attach_map_layer` | `[[map_layers]]` pointer + provenance; image stays under `SPELLKAVE_MAP_ASSETS_ROOT` / `FVTT_DATA_ROOT` |
 | `spellkave_annotate_place` | `terrain.hint` metadata and/or demo `h3_origin_res10` on a graph |
 
 `map_graph` overlays resolved `map_layers` when the asset file is on disk
-(`CCC3_MAPS_ROOT` or git-sibling `ccc3-maps/`). Missing assets are skipped
-(CI-safe). details.backdrops_resolved / backdrops_skipped report counts.
+(`SPELLKAVE_MAP_ASSETS_ROOT/<asset_module>/` or a git-sibling
+`<asset_module>/`). Missing assets are skipped (CI-safe). details.backdrops_resolved / backdrops_skipped report counts.
 
 An [operable-door pattern](./patterns/operable-door.md) composes open/closed
 and locked traversal with authored spatial states and edge gates; its live

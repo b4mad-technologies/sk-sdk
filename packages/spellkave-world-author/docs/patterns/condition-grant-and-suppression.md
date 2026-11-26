@@ -88,7 +88,7 @@ Persistence and authorized-read proof:
   `expires_at_boundary` (`{ boundary_id, owner_actor }`, worked example in
   [`action-economy.md`](../action-economy.md)); omit it and the condition
   persists until something explicitly removes it. That is correct for a
-  condition its subject can end, and a trap for one it cannot. Elven-mini
+  condition its subject can end, and a trap for one it cannot. Kavemouth
   shipped a Prone that lasted forever — inflictable on a player by a monster,
   via the Topple weapon-mastery rider, with no save and no Stand Up authored
   (`sk-0m4.120.50`). Before authoring a condition, name the thing that ends

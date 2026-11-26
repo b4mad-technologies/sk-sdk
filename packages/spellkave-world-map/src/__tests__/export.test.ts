@@ -4,7 +4,7 @@
 // helpers the SVG renderer and map-canvas share, and the GeoJSON writer that
 // only the tile gateway calls. What an export writes is proved by the
 // behaviour scenarios in behaviour/export-*.feature. Reads the committed
-// elven-mini bundle; no node. Spec: ADR-0123 (D-1 to D-5).
+// kavemouth bundle; no node. Spec: ADR-0123 (D-1 to D-5).
 import { describe, expect, it } from "vitest";
 
 import {
@@ -80,7 +80,7 @@ describe("coordinate_kind_id class resolution", () => {
 });
 
 describe("storey height (D-2)", () => {
-	// keep(K1): elven-mini's -3/0/3 m round to the same levels at other storey heights; this pins 3 m
+	// keep(K1): kavemouth's -3/0/3 m round to the same levels at other storey heights; this pins 3 m
 	it("a level is round(elevation / 3 m)", () => {
 		expect(LEVEL_HEIGHT_M).toBe(3.0);
 		expect(levelIndex(true, -3, "indoor")).toBe(-1);

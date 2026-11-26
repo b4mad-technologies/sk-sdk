@@ -19,7 +19,7 @@ import {
 	publicWorldSlugs,
 } from "../transcript.ts";
 
-const PUBLIC_SLUGS = new Set(["elven-mini-1"]);
+const PUBLIC_SLUGS = new Set(["kavemouth-1"]);
 const SUBJECT = "player:workos-sub-demo";
 
 function worlds(map: Record<string, { slug: string; actorId: string }>) {
@@ -40,8 +40,8 @@ describe("public transcript recorder", () => {
 			directory: root,
 			publicSlugs: PUBLIC_SLUGS,
 			worldForSubject: worlds({
-				[SUBJECT]: { slug: "elven-mini-1", actorId: "elven_mini/adventure/hero_1" },
-				"player:private": { slug: "invite-only", actorId: "elven_mini/adventure/hero_2" },
+				[SUBJECT]: { slug: "kavemouth-1", actorId: "kavemouth/adventure/hero_1" },
+				"player:private": { slug: "invite-only", actorId: "kavemouth/adventure/hero_2" },
 			}),
 			now: () => new Date("2026-08-18T20:00:00.000Z"),
 		});
@@ -59,14 +59,14 @@ describe("public transcript recorder", () => {
 		withRemoteMcpRequestSubject("player:private", () => recorder.record(call));
 		recorder.record(call);
 
-		const file = join(root, "elven-mini-1", PUBLIC_TRANSCRIPT_FILENAME);
+		const file = join(root, "kavemouth-1", PUBLIC_TRANSCRIPT_FILENAME);
 		const lines = (await readFile(file, "utf8")).trimEnd().split("\n");
 		expect(lines).toHaveLength(1);
 		expect(JSON.parse(lines[0]!)).toEqual({
 			v: "agent-run-events/v1",
-			run_id: "public-elven-mini-1",
+			run_id: "public-kavemouth-1",
 			run_kind: "public_transcript",
-			actor_id: "elven_mini/adventure/hero_1",
+			actor_id: "kavemouth/adventure/hero_1",
 			role: "PLAYER",
 			controller_kind: "llm_player",
 			driver: "remote-mcp",
@@ -86,7 +86,7 @@ describe("public transcript recorder", () => {
 		});
 		expect(lines[0]).not.toContain(SUBJECT);
 		expect((await stat(file)).mode & 0o777).toBe(0o644);
-		expect((await stat(join(root, "elven-mini-1"))).mode & 0o777).toBe(0o755);
+		expect((await stat(join(root, "kavemouth-1"))).mode & 0o777).toBe(0o755);
 		await expect(stat(join(root, "invite-only"))).rejects.toMatchObject({ code: "ENOENT" });
 	});
 
@@ -96,10 +96,10 @@ describe("public transcript recorder", () => {
 			v: PLAYER_WORLD_CATALOG_VERSION,
 			worlds: [
 				{
-					slug: "elven-mini-1",
-					display_name: "Elven Mini",
-					adventure: "elven-mini",
-					db: "spellkave-elven-mini-1",
+					slug: "kavemouth-1",
+					display_name: "Kavemouth",
+					adventure: "kavemouth",
+					db: "spellkave-kavemouth-1",
 					status: "running",
 					visibility: "public",
 					owner: "user_operator",
@@ -109,7 +109,7 @@ describe("public transcript recorder", () => {
 				{
 					slug: "invite-only",
 					display_name: "Invite",
-					adventure: "elven-mini",
+					adventure: "kavemouth",
 					db: "spellkave-invite",
 					status: "running",
 					visibility: "private",
@@ -119,7 +119,7 @@ describe("public transcript recorder", () => {
 				},
 			],
 		});
-		expect([...slugs]).toEqual(["elven-mini-1"]);
+		expect([...slugs]).toEqual(["kavemouth-1"]);
 	});
 
 	it("drops a line that would leak the raw subject", () => {
@@ -127,7 +127,7 @@ describe("public transcript recorder", () => {
 		const recorder = createPublicTranscriptRecorder({
 			directory: root,
 			publicSlugs: PUBLIC_SLUGS,
-			worldForSubject: () => ({ slug: "elven-mini-1", actorId: SUBJECT }),
+			worldForSubject: () => ({ slug: "kavemouth-1", actorId: SUBJECT }),
 			append: (_file, line) => lines.push(line),
 		});
 		withRemoteMcpRequestSubject(SUBJECT, () =>
@@ -146,7 +146,7 @@ describe("public transcript recorder", () => {
 		const recorder = createPublicTranscriptRecorder({
 			directory: root,
 			publicSlugs: PUBLIC_SLUGS,
-			worldForSubject: () => ({ slug: "elven-mini-1", actorId: "a" }),
+			worldForSubject: () => ({ slug: "kavemouth-1", actorId: "a" }),
 			append: () => {
 				throw new Error("disk full");
 			},
@@ -167,7 +167,7 @@ describe("public transcript recorder", () => {
 		const bounded = createPublicTranscriptRecorder({
 			directory: root,
 			publicSlugs: PUBLIC_SLUGS,
-			worldForSubject: () => ({ slug: "elven-mini-1", actorId: "a" }),
+			worldForSubject: () => ({ slug: "kavemouth-1", actorId: "a" }),
 			append: (_file, line) => lines.push(line),
 		});
 		withRemoteMcpRequestSubject(SUBJECT, () =>
@@ -208,7 +208,7 @@ describe("public transcript recorder", () => {
 		const recorder = createPublicTranscriptRecorder({
 			directory: root,
 			publicSlugs: PUBLIC_SLUGS,
-			worldForSubject: () => ({ slug: "elven-mini-1", actorId: "hero" }),
+			worldForSubject: () => ({ slug: "kavemouth-1", actorId: "hero" }),
 			append: (_file, line) => lines.push(line),
 		});
 		const client: PlayerSessionClient = {

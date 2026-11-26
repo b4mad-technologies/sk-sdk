@@ -77,15 +77,15 @@ Feature: Call the gateway from a browser
 
       Examples:
         | case                | slug         | who                | status | body          |
-        | without a token     | elven-mini-1 | anonymously        | 401    | invalid_token |
-        | with a token        | elven-mini-1 | with a valid token | 200    | tool_call     |
+        | without a token     | kavemouth-1 | anonymously        | 401    | invalid_token |
+        | with a token        | kavemouth-1 | with a valid token | 200    | tool_call     |
         | for a private world | private-1    | with a valid token | 404    | Not found     |
 
     @code:src/transcript-http.ts:servePublicTranscript
     Example: The website's transcript preflight needs no token
       Transcripts have their own CORS policy: only the website's hosts, and
       `authorization` as the one request header, not the MCP allowlist.
-      When I send "OPTIONS /transcripts/elven-mini-1" from "https://spellkave.com" asking for "authorization"
+      When I send "OPTIONS /transcripts/kavemouth-1" from "https://spellkave.com" asking for "authorization"
       Then the answer is 204
       And the header "access-control-allow-headers" contains "authorization"
 
@@ -98,5 +98,5 @@ Feature: Call the gateway from a browser
 
       Examples:
         | case                           | slug         | who                | status |
-        | without a token                | elven-mini-1 | anonymously        | 401    |
+        | without a token                | kavemouth-1 | anonymously        | 401    |
         | for a world not in the catalog | nope         | with a valid token | 404    |

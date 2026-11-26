@@ -11,8 +11,8 @@ const LAYER_ROWS = [
 	{
 		place_graph_id: "town",
 		display_name: "Town backdrop",
-		asset_module: "ccc3-maps",
-		asset_path: "131 The Windmill Cult-DM.jpg",
+		asset_module: "sample-maps",
+		asset_path: "maps/Sample Map.jpg",
 		image_width_px: 100,
 		image_height_px: 100,
 		grid_size_px: 50,
@@ -33,11 +33,11 @@ describe("provenanceHash (sk-h5tv)", () => {
 		const fingerprint = mapLayerFingerprint(LAYER_ROWS);
 		const fromPrimary =
 			SVG_PREFIX +
-			"file:///tmp/example-checkout/example-content/assets/ccc3-maps/maps/Sample%20Map.jpg" +
+			"file:///tmp/example-checkout/example-content/assets/sample-maps/maps/Sample%20Map.jpg" +
 			SVG_SUFFIX;
 		const fromSibling =
 			SVG_PREFIX +
-			"file:///tmp/example-checkout/.local/repo-symlink/example-content/assets/ccc3-maps/maps/Sample%20Map.jpg" +
+			"file:///tmp/example-checkout/.local/repo-symlink/example-content/assets/sample-maps/maps/Sample%20Map.jpg" +
 			SVG_SUFFIX;
 
 		expect(provenanceHash(fromPrimary, 900, fingerprint)).toBe(

@@ -3135,7 +3135,7 @@ const CONFIG_COMMON_CHANGES = `Common changes:
 
   Make that bundle the project default:
     sk config set --project author.target ./adventure/manifest.toml
-    sk config set --project author.default-bundle elven_mini
+    sk config set --project author.default-bundle kavemouth
 
   Override a dependency (this checkout's .spellkave/defaults.toml maps srd and dm):
     sk config set --project author.dependencies.srd ./rules/manifest.toml

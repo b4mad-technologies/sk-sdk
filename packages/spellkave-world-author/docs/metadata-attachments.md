@@ -90,7 +90,7 @@ targets refuse except the explicitly reviewed missing-flag set tied to
 `tests/offline/npc-quest-documents.test.ts` pins that exception set so it can only
 shrink. This is the initial quest-giver protocol, not an arbitrary scripting surface.
 The canonical authored example is the repository source file
-`packages/spellkave-adventure-elven-mini/author/quests.toml`.
+`packages/spellkave-adventure-kavemouth/author/quests.toml`.
 The repository test `packages/spellkave-world-author/src/__tests__/npc-quests.test.ts`
 pins compilation, dependency closure, canonical hashing and tamper refusal.
 
@@ -705,7 +705,7 @@ It may attach to every admitted target kind that can carry a description
 (`entity`, `entity_definition`, `item_definition`, `affordance_template`,
 `place_graph`, `place_node`, `place_edge`, `resource_definition`, `capability_definition`) and projects
 only `path`, `hash` (lowercase SHA-256), and `license`. The namespace prefix must
-match the attachment's bundle. For example, `elven_mini.art.image` and
+match the attachment's bundle. For example, `kavemouth.art.image` and
 `orbital.art.image` share a payload convention without sharing ownership or
 encoding a particular application's layout. SRD catalog entries attach the
 same way: a spell, feat, or class sprite lands on that entry's
@@ -713,7 +713,7 @@ same way: a spell, feat, or class sprite lands on that entry's
 The existing `frontier.apply_manifest`-gated `art.image` registration and
 annotations remain unchanged. See ADR-0073 (2026-09-07 postscript) and the
 executable
-[Elven Mini example](../../spellkave-adventure-elven-mini/docs/public-subject-art.md)
+[Kavemouth example](../../spellkave-adventure-kavemouth/docs/public-subject-art.md)
 for asset validation, precedence, compatibility and consumer fallback rules.
 
 For verbatim CC-BY SRD prose, register `srd.text` (`public` audience,

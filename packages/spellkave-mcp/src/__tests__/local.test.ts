@@ -161,7 +161,7 @@ describe("createGhFeedbackSink", () => {
 		const { reference } = await sink.submit({
 			message: "the torch cannot be picked up",
 			category: "bug",
-			seat: { actor_id: "1", world_slug: "elven-mini-local" },
+			seat: { actor_id: "1", world_slug: "kavemouth-local" },
 			submitted_at: "2026-09-25T00:00:00.000Z",
 		});
 		expect(reference).toBe("https://github.com/example/repo/issues/1");
@@ -169,14 +169,14 @@ describe("createGhFeedbackSink", () => {
 		const args = seen[1] as string[];
 		expect(args.slice(0, 4)).toEqual(["issue", "create", "--repo", "example/repo"]);
 		expect(args[args.indexOf("--title") + 1]).toBe(
-			"feedback(elven-mini-local): the torch cannot be picked up",
+			"feedback(kavemouth-local): the torch cannot be picked up",
 		);
 		const body = args[args.indexOf("--body") + 1] as string;
 		expect(body).toMatch(/## Player feedback/);
 		expect(body).toMatch(/### Local provenance/);
 		expect(body).toMatch(/127\.0\.0\.1:11502 db=spellkave-dev/);
 		const labels = args.filter((_, i) => args[i - 1] === "--label");
-		expect(labels).toEqual(["feedback", "world:elven-mini-local", "seat:1", "feedback:local"]);
+		expect(labels).toEqual(["feedback", "world:kavemouth-local", "seat:1", "feedback:local"]);
 	});
 
 	it("retries with the guaranteed labels when world:/seat: labels do not exist", async () => {
@@ -186,15 +186,15 @@ describe("createGhFeedbackSink", () => {
 			{ worktreeRoot: "/wt", url: "u", db: "d" },
 			async (args) => {
 				seen.push([...args]);
-				if (args[0] === "issue" && args.includes("world:elven-mini-local")) {
-					throw new Error("could not add label: 'world:elven-mini-local' not found");
+				if (args[0] === "issue" && args.includes("world:kavemouth-local")) {
+					throw new Error("could not add label: 'world:kavemouth-local' not found");
 				}
 				return "https://github.com/example/repo/issues/2";
 			},
 		);
 		const { reference } = await sink.submit({
 			message: "x",
-			seat: { actor_id: "1", world_slug: "elven-mini-local" },
+			seat: { actor_id: "1", world_slug: "kavemouth-local" },
 			submitted_at: "2026-09-25T00:00:00.000Z",
 		});
 		expect(reference).toBe("https://github.com/example/repo/issues/2");

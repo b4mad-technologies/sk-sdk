@@ -77,7 +77,7 @@ describe("WorkOS-protected PLAYER gateway", () => {
 			operationNow: () => new Date(now * 1000),
 			operationLogger,
 			runObserver: createRemoteMcpRunObserver({
-				actorId: "elven_mini/adventure/hero_1",
+				actorId: "kavemouth/adventure/hero_1",
 				sinks: [runEvents],
 				logger: operationLogger,
 				now: () => new Date(now * 1000),
@@ -616,7 +616,7 @@ describe("gateway /mcp request rate limits (sk-pzaq.5)", () => {
 	// share ONE SerializedPlayerSessionClient with a cap of 2. Two in-flight
 	// calls of player A made player B's next call fail in 1-2 ms with a plain
 	// Error -> `internal_error`, and the call never reached B's session daemon
-	// (OpenObserve rows 2026-08-29 16:48-16:52 UTC, elven-mini-2 / elven-mini-4).
+	// (OpenObserve rows 2026-08-29 16:48-16:52 UTC, kavemouth-2 / kavemouth-4).
 	it("gives each subject its own seat queue even without resolveClient (sk-0m4.120.36)", async () => {
 		const gate = gatedInvoke();
 		const gateway = isolatedGateway({
@@ -707,7 +707,7 @@ describe("login-gated public transcripts", () => {
 		signer = await createTestSigner();
 		now = Math.floor(Date.now() / 1000);
 		files.clear();
-		files.set("/public/transcripts/elven-mini-1/agent-run-events.jsonl", '{"type":"tool_call"}\n');
+		files.set("/public/transcripts/kavemouth-1/agent-run-events.jsonl", '{"type":"tool_call"}\n');
 		gateway = createPlayerMcpGateway({
 			resourceConfig: {
 				canonicalOrigin: origin,
@@ -720,7 +720,7 @@ describe("login-gated public transcripts", () => {
 			now: () => now * 1000,
 			allowedOriginHostnames: ["mcp.example.test", "spellkave.com", "localhost"],
 			transcriptDirectory: "/public/transcripts",
-			publicTranscriptSlugs: new Set(["elven-mini-1"]),
+			publicTranscriptSlugs: new Set(["kavemouth-1"]),
 			readTranscriptFile: async (path) => files.get(path) ?? null,
 		});
 	});
@@ -753,12 +753,12 @@ describe("login-gated public transcripts", () => {
 			transcriptRequestRateLimit: { maxRequests: 3, windowMs: 60_000 },
 			requestRateLimit: { maxRequests: 50, windowMs: 60_000 },
 			transcriptDirectory: "/public/transcripts",
-			publicTranscriptSlugs: new Set(["elven-mini-1"]),
+			publicTranscriptSlugs: new Set(["kavemouth-1"]),
 			readTranscriptFile: async (path) => files.get(path) ?? null,
 		});
 		const bearer = await token();
 		const transcriptReq = () =>
-			new Request(`${origin}/transcripts/elven-mini-1`, {
+			new Request(`${origin}/transcripts/kavemouth-1`, {
 				headers: {
 					host: "mcp.example.test",
 					authorization: `Bearer ${bearer}`,

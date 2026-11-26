@@ -80,7 +80,7 @@ resource = "srd/hp"
 
 ## Proof
 
-- `packages/spellkave-adventure-elven-mini/tests/offline/elven-mini-class-features-actor-carried.test.ts`
+- `packages/spellkave-adventure-kavemouth/tests/offline/kavemouth-class-features-actor-carried.test.ts`
 - `packages/spellkave-srd-cc/src/test/offline/caster-features-units.test.ts`
 - `packages/spellkave-srd-cc/src/test/live-self-seeding/mechanics/second-wind.ts`,
   `…/channel-divinity.test.ts`

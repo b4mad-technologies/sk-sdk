@@ -32,7 +32,7 @@ one verb per item that every creature sees whether or not it holds the item.
   being the seal), remove it with
   `RemoveItem { source: { ActorInventoryItem: { actor_ref: "Actor", item_def_id } } }`
   instead: its prevalidate rejects the attempt atomically when the actor holds
-  none, so that verb needs no separate possession check (elven-mini's
+  none, so that verb needs no separate possession check (kavemouth's
   `author/tomb-key.ts`).
 - The kernel derives target niches for an item, among them its
   `entity_def_id`, its home state (`core/owned`, `core/contained`,

@@ -9,8 +9,8 @@ export {
 	backdropAssetDataHref,
 	mapLayersToBackdrops,
 	readPngSize,
-	resolveCcc3MapsRoot,
 	resolveFvttDataRoot,
+	resolveMapAssetsRoot,
 	resolveMapLayerAssetPath,
 } from "./backdrop-resolve.ts";
 export {

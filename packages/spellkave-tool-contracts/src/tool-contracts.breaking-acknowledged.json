@@ -387,6 +387,51 @@
 			],
 			"reason": "Authoring frame-write items retain every previously accepted object and additionally accept the BreakPlaceSeal unit string; existing objects, arguments, reducers, and clients are unchanged. The structural detector classifies the widened union as breaking.",
 			"acknowledgedAt": "2026-10-05T05:17:32.283Z"
+		},
+		{
+			"tool": "spellkave_attach_map_layer",
+			"field": "parameters.required.asset_module",
+			"from": false,
+			"to": true,
+			"reason": "attach_map_layer no longer assumes a built-in asset module, source kind or licence posture: asset_module, source_kind and posture are required, non-empty caller inputs. A call that relied on the removed defaults must add the three fields; calls that already pass them are unchanged.",
+			"acknowledgedAt": "2026-11-26T22:24:53.945Z"
+		},
+		{
+			"tool": "spellkave_attach_map_layer",
+			"field": "parameters.required.posture",
+			"from": false,
+			"to": true,
+			"reason": "attach_map_layer no longer assumes a built-in asset module, source kind or licence posture: asset_module, source_kind and posture are required, non-empty caller inputs. A call that relied on the removed defaults must add the three fields; calls that already pass them are unchanged.",
+			"acknowledgedAt": "2026-11-26T22:24:53.945Z"
+		},
+		{
+			"tool": "spellkave_attach_map_layer",
+			"field": "parameters.required.source_kind",
+			"from": false,
+			"to": true,
+			"reason": "attach_map_layer no longer assumes a built-in asset module, source kind or licence posture: asset_module, source_kind and posture are required, non-empty caller inputs. A call that relied on the removed defaults must add the three fields; calls that already pass them are unchanged.",
+			"acknowledgedAt": "2026-11-26T22:24:53.945Z"
+		},
+		{
+			"tool": "spellkave_attach_map_layer",
+			"field": "parameters.properties.asset_module.minLength",
+			"to": 1,
+			"reason": "attach_map_layer no longer assumes a built-in asset module, source kind or licence posture: asset_module, source_kind and posture are required, non-empty caller inputs. A call that relied on the removed defaults must add the three fields; calls that already pass them are unchanged.",
+			"acknowledgedAt": "2026-11-26T22:24:53.945Z"
+		},
+		{
+			"tool": "spellkave_attach_map_layer",
+			"field": "parameters.properties.posture.minLength",
+			"to": 1,
+			"reason": "attach_map_layer no longer assumes a built-in asset module, source kind or licence posture: asset_module, source_kind and posture are required, non-empty caller inputs. A call that relied on the removed defaults must add the three fields; calls that already pass them are unchanged.",
+			"acknowledgedAt": "2026-11-26T22:24:53.945Z"
+		},
+		{
+			"tool": "spellkave_attach_map_layer",
+			"field": "parameters.properties.source_kind.minLength",
+			"to": 1,
+			"reason": "attach_map_layer no longer assumes a built-in asset module, source kind or licence posture: asset_module, source_kind and posture are required, non-empty caller inputs. A call that relied on the removed defaults must add the three fields; calls that already pass them are unchanged.",
+			"acknowledgedAt": "2026-11-26T22:24:53.945Z"
 		}
 	]
 }

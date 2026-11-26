@@ -81,9 +81,9 @@ export interface Point2D {
  * `SpatialGraphBackdrop.image_origin_cells` directly to node `x`/`y` with no
  * scale factor in between, i.e. the renderer already treats "one graph-local
  * unit" and "one map_layer-declared grid square" as the SAME unit. Checked
- * against real content: elven-mini's `tomb`/`inn` place_graph_definition
+ * against real content: kavemouth's `tomb`/`inn` place_graph_definition
  * rows both carry `metres_per_unit = 1.0` (packages/spellkave-srd-cc/
- * fixtures/elven-mini/{tomb,inn}.manifest.toml) — an unmaintained default —
+ * fixtures/kavemouth/{tomb,inn}.manifest.toml) — an unmaintained default —
  * while their node `pos_x`/`pos_y` run up to 46/54 (tomb) and their OWN
  * map_layer rows declare `local_width_cells = 54`/`grid_distance_m = 1.524`
  * (adventure.manifest.toml:1016-1037) — i.e. positions are backdrop-cell

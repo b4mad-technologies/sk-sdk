@@ -27,7 +27,7 @@ export const getToolDef = defineTool<AuthorToolContext, typeof GET_PARAMS, Owner
 	schema: GET_PARAMS,
 	exampleParams: {
 		kind: "entities",
-		key: "elven_mini/adventure/item/loft_chest_1",
+		key: "kavemouth/adventure/item/loft_chest_1",
 	},
 	run: async (context, params: Static<typeof GET_PARAMS>) => {
 		const port = context.readInstance;
@@ -63,7 +63,7 @@ export const describeToolDef = defineTool<
 	schema: DESCRIBE_PARAMS,
 	exampleParams: {
 		kind: "entities",
-		key: "elven_mini/adventure/item/loft_chest_1",
+		key: "kavemouth/adventure/item/loft_chest_1",
 	},
 	run: async (context, params: Static<typeof DESCRIBE_PARAMS>) => {
 		const port = context.readInstance;

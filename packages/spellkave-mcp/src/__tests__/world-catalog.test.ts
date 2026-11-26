@@ -27,7 +27,7 @@ describe("parseWorldCatalog", () => {
 				{
 					slug: "open-world",
 					display_name: "Open World",
-					adventure: "elven-mini",
+					adventure: "kavemouth",
 					db: "spellkave-open",
 					status: "running",
 					visibility: "public",
@@ -40,7 +40,7 @@ describe("parseWorldCatalog", () => {
 		expect(parsed.worlds[0]).toEqual({
 			slug: "open-world",
 			display_name: "Open World",
-			adventure: "elven-mini",
+			adventure: "kavemouth",
 			db: "spellkave-open",
 			status: "running",
 			visibility: "public",
@@ -59,7 +59,7 @@ describe("parseWorldCatalog", () => {
 				{
 					slug: "open-world",
 					display_name: "Open World",
-					adventure: "elven-mini",
+					adventure: "kavemouth",
 					db: "spellkave-open",
 					status: "running",
 					visibility: "public",
@@ -84,7 +84,7 @@ describe("parseWorldCatalog", () => {
 				{
 					slug: "invite-world",
 					display_name: "Invite World",
-					adventure: "elven-mini",
+					adventure: "kavemouth",
 					db: "spellkave-invite",
 					status: "running",
 					visibility: "public",
@@ -95,7 +95,7 @@ describe("parseWorldCatalog", () => {
 		expect(parsed.worlds[0]).toEqual({
 			slug: "invite-world",
 			display_name: "Invite World",
-			adventure: "elven-mini",
+			adventure: "kavemouth",
 			db: "spellkave-invite",
 			status: "running",
 			visibility: "public",
@@ -114,7 +114,7 @@ describe("parseWorldCatalog", () => {
 					{
 						slug: "missing-owner-world",
 						display_name: "Missing Owner",
-						adventure: "elven-mini",
+						adventure: "kavemouth",
 						db: "spellkave-missing",
 						status: "running",
 						visibility: "public",
@@ -130,7 +130,7 @@ describe("parseWorldCatalog", () => {
 					{
 						slug: "empty-owner-world",
 						display_name: "Empty Owner",
-						adventure: "elven-mini",
+						adventure: "kavemouth",
 						db: "spellkave-empty",
 						status: "running",
 						visibility: "public",
@@ -149,7 +149,7 @@ describe("parseWorldCatalog", () => {
 					{
 						slug: "bad-members",
 						display_name: "Bad Members",
-						adventure: "elven-mini",
+						adventure: "kavemouth",
 						db: "spellkave-bad",
 						status: "running",
 						visibility: "public",
@@ -167,7 +167,7 @@ describe("parseWorldCatalog", () => {
 					{
 						slug: "bad-member-elem",
 						display_name: "Bad Member Element",
-						adventure: "elven-mini",
+						adventure: "kavemouth",
 						db: "spellkave-bad-elem",
 						status: "running",
 						visibility: "public",
@@ -187,7 +187,7 @@ describe("parseWorldCatalog", () => {
 					{
 						slug: "bad-policy",
 						display_name: "Bad Policy",
-						adventure: "elven-mini",
+						adventure: "kavemouth",
 						db: "spellkave-bad-policy",
 						status: "running",
 						visibility: "public",
@@ -223,7 +223,7 @@ describe("saveWorldCatalog", () => {
 					{
 						slug: "test-world",
 						display_name: "Test World",
-						adventure: "elven-mini",
+						adventure: "kavemouth",
 						db: "spellkave-test",
 						status: "running",
 						visibility: "public",
@@ -259,7 +259,7 @@ describe("canClaimSeat", () => {
 	const baseWorld: CatalogWorld = {
 		slug: "test-world",
 		display_name: "Test World",
-		adventure: "elven-mini",
+		adventure: "kavemouth",
 		db: "spellkave-test",
 		status: "running",
 		visibility: "public",

@@ -144,7 +144,7 @@ const gatedExitContext = { db: gatedExitDb, act: { actorId: "1" } };
 // T2 (operator-review dry-run, 2026-08-04): a node id's first `/`-segment
 // names its graph/session — this fixture models both the same-graph
 // (truncated `to`) and cross-graph (full path kept) cases the truncation
-// rule distinguishes. Elven-mini evidence: ~44/~90 story steps were the
+// rule distinguishes. Kavemouth evidence: ~44/~90 story steps were the
 // scene -> scene_detail (per exit candidate, only to learn to_node_id) -> act
 // triplet; `to_node_id` is not new disclosure (scene_detail already returns
 // it canonically), this only moves the same authorized information a call
@@ -804,7 +804,7 @@ describe("spellkave_scene graph_description suppression (T5 extension)", () => {
 				},
 			],
 			visible_place_graph_definition: [
-				{ placeGraphId: "town", description: "The Mountain View Inn — three creaking floors." },
+				{ placeGraphId: "town", description: "The Lamp and Ladle — three creaking floors." },
 				{ placeGraphId: "dungeon", description: "A dank, cold tomb." },
 			],
 			visible_place_edge: [],
@@ -835,7 +835,7 @@ describe("spellkave_scene graph_description suppression (T5 extension)", () => {
 		const first = await scene.execute("scene-1", {});
 		expect(first.details).toMatchObject({
 			node_id: "town/inn",
-			graph_description: "The Mountain View Inn — three creaking floors.",
+			graph_description: "The Lamp and Ladle — three creaking floors.",
 		});
 
 		const second = await scene.execute("scene-2", {});
@@ -855,7 +855,7 @@ describe("spellkave_scene graph_description suppression (T5 extension)", () => {
 		const fifth = await scene.execute("scene-5", {});
 		expect(fifth.details).toMatchObject({
 			node_id: "town/inn",
-			graph_description: "The Mountain View Inn — three creaking floors.",
+			graph_description: "The Lamp and Ladle — three creaking floors.",
 		});
 	});
 
@@ -868,10 +868,10 @@ describe("spellkave_scene graph_description suppression (T5 extension)", () => {
 		const first = await tool.execute("scene-1", {});
 		const second = await tool.execute("scene-2", {});
 		expect(first.details).toMatchObject({
-			graph_description: "The Mountain View Inn — three creaking floors.",
+			graph_description: "The Lamp and Ladle — three creaking floors.",
 		});
 		expect(second.details).toMatchObject({
-			graph_description: "The Mountain View Inn — three creaking floors.",
+			graph_description: "The Lamp and Ladle — three creaking floors.",
 		});
 	});
 });

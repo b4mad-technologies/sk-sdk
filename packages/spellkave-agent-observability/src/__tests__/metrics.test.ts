@@ -11,7 +11,7 @@ describe("createOtlpHttpMetrics", () => {
 			now: () => 1_700_000_000_000,
 			resourceAttributes: {
 				"deployment.environment.name": "production",
-				"spellkave.world_slug": "elven-mini-1",
+				"spellkave.world_slug": "kavemouth-1",
 				"oauth.subject": "SECRET-SUBJECT",
 			},
 			fetchFn: (async (url: string, init: RequestInit) => {
@@ -36,7 +36,7 @@ describe("createOtlpHttpMetrics", () => {
 			const dataPoint = metric.sum?.dataPoints[0] ?? metric.histogram?.dataPoints[0];
 			expect(dataPoint.attributes).toContainEqual({
 				key: "spellkave.world_slug",
-				value: { stringValue: "elven-mini-1" },
+				value: { stringValue: "kavemouth-1" },
 			});
 		}
 	});

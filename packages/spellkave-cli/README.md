@@ -144,8 +144,8 @@ rows that only mention it elsewhere; equal ranks keep their stable key order), w
 total: 7
 more: showing 5 of 7; the next commands show more
 items[5]{kind,key,label,context}:
-  place_nodes,elven_mini/inn/bar,Bar,place_graphs elven_mini/inn
-  place_nodes,elven_mini/deep_tomb/warden_gate,Warden Gate,place_graphs elven_mini/deep_tomb
+  place_nodes,kavemouth/inn/bar,Bar,place_graphs kavemouth/inn
+  place_nodes,kavemouth/deep_tomb/warden_gate,Warden Gate,place_graphs kavemouth/deep_tomb
   ...
 next[2]{command}:
   sk explore search bar --source local --source-id cc389a60e78b09bd --cursor eyJ2IjoxLC...
@@ -314,8 +314,8 @@ flags > environment > project config > global config > built-ins
 ```
 
 ```bash
-# Configure Elven Mini once from this checkout's root:
-sk config set --project author.target packages/spellkave-adventure-elven-mini/fixtures/adventure.manifest.toml
+# Configure Kavemouth once from this checkout's root:
+sk config set --project author.target packages/spellkave-adventure-kavemouth/fixtures/adventure.manifest.toml
 # srd and dm resolve through the tracked .spellkave/defaults.toml; no mapping needed.
 
 sk explore search --kind place_graphs --limit 20
@@ -535,7 +535,7 @@ entities` without `--live` still does not connect — that path is workspace/
 target catalog, not the owner cache.
 
 Do not use `just sql` or the observability CLI for these instance facts; `sk
-get` / `sk describe` are the publisher read. The loft chest (`elven_mini/adventure/item/loft_chest_1`)
+get` / `sk describe` are the publisher read. The loft chest (`kavemouth/adventure/item/loft_chest_1`)
 is the worked containment example: describe the chest for belonging by authored
 key; after pickup, describe the potion for the hero body and place.
 

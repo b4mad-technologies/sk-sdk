@@ -62,13 +62,13 @@ describe("parseWorldTilesPath", () => {
 		expect(parseWorldTilesPath("/w/demo/satellite.pmtiles")?.kind).toBe("satellite");
 		expect(parseWorldTilesPath("/w/demo/backdrops.json")?.kind).toBe("backdrops");
 		expect(parseWorldTilesPath("/w/demo/maps-demo")?.kind).toBe("maps_demo");
-		expect(parseWorldTilesPath("/w/demo/assets/ccc3-maps/maps/x.jpg")).toEqual({
+		expect(parseWorldTilesPath("/w/demo/assets/sample-maps/maps/x.jpg")).toEqual({
 			kind: "asset",
 			slug: "demo",
-			assetPath: "ccc3-maps/maps/x.jpg",
+			assetPath: "sample-maps/maps/x.jpg",
 		});
 		expect(parseWorldTilesPath("/w/nope")).toEqual({ kind: "root", slug: "nope" });
-		expect(parseWorldTilesPath("/w/Elven")).toBeNull();
+		expect(parseWorldTilesPath("/w/Demo")).toBeNull();
 		expect(parseWorldTilesPath("/tiles.json")).toBeNull();
 	});
 });
@@ -153,21 +153,21 @@ describe("satellite raster pyramid", () => {
 
 describe("asset path traversal", () => {
 	it("rejects .. and unknown modules", () => {
-		expect(resolveAssetOnDisk("ccc3-maps", "../secret", assetsRoot)).toBeNull();
-		expect(resolveAssetOnDisk("ccc3-maps", "maps/../../etc/passwd", assetsRoot)).toBeNull();
+		expect(resolveAssetOnDisk("sample-maps", "../secret", assetsRoot)).toBeNull();
+		expect(resolveAssetOnDisk("sample-maps", "maps/../../etc/passwd", assetsRoot)).toBeNull();
 		expect(resolveAssetOnDisk("evil", "maps/x.jpg", assetsRoot)).toBeNull();
 		expect(resolveAssetOnDisk("Evil", "maps/x.jpg", assetsRoot)).toBeNull();
-		expect(resolveAssetOnDisk("ccc3-maps", "/abs/path.jpg", assetsRoot)).toBeNull();
+		expect(resolveAssetOnDisk("sample-maps", "/abs/path.jpg", assetsRoot)).toBeNull();
 	});
 
 	it("resolves an asset beneath its module directory", () => {
 		const root = mkdtempSync(join(tmpdir(), "tile-asset-"));
 		try {
-			const folder = join(root, "ccc3-maps", "maps");
+			const folder = join(root, "sample-maps", "maps");
 			mkdirSync(folder, { recursive: true });
 			const file = join(folder, "sample.jpg");
 			writeFileSync(file, "fixture bytes");
-			expect(resolveAssetOnDisk("ccc3-maps", "maps/sample.jpg", root)).toBe(file);
+			expect(resolveAssetOnDisk("sample-maps", "maps/sample.jpg", root)).toBe(file);
 		} finally {
 			rmSync(root, { recursive: true, force: true });
 		}
@@ -176,21 +176,21 @@ describe("asset path traversal", () => {
 	it("serves overlay only; missing overlay is no art", () => {
 		const overlay = mkdtempSync(join(tmpdir(), "world-assets-"));
 		try {
-			const moduleDir = join(overlay, "demo", "ccc3-maps", "maps");
+			const moduleDir = join(overlay, "demo", "sample-maps", "maps");
 			mkdirSync(moduleDir, { recursive: true });
 			const overlayFile = join(moduleDir, "overlay.jpg");
 			writeFileSync(overlayFile, "overlay");
-			expect(resolveWorldAsset("ccc3-maps", "maps/overlay.jpg", join(overlay, "demo"))).toBe(
+			expect(resolveWorldAsset("sample-maps", "maps/overlay.jpg", join(overlay, "demo"))).toBe(
 				overlayFile,
 			);
 			expect(
 				resolveWorldAsset(
-					"ccc3-maps",
-					"maps/306 Fortified Hamlet.jpg",
+					"sample-maps",
+					"maps/Sample Hamlet.jpg",
 					join(overlay, "missing-slug"),
 				),
 			).toBeNull();
-			expect(resolveWorldAsset("ccc3-maps", "maps/overlay.jpg")).toBeNull();
+			expect(resolveWorldAsset("sample-maps", "maps/overlay.jpg")).toBeNull();
 		} finally {
 			rmSync(overlay, { recursive: true, force: true });
 		}
@@ -336,7 +336,7 @@ describe("TileJSON + style + backdrops", () => {
 			"demo",
 		);
 		for (const b of resolved) {
-			expect(b.url).toMatch(/^http:\/\/localhost:8080\/w\/demo\/assets\/ccc3-maps\//);
+			expect(b.url).toMatch(/^http:\/\/localhost:8080\/w\/demo\/assets\/sample-maps\//);
 		}
 	});
 });
@@ -408,8 +408,8 @@ describe("HTTP handler", () => {
 		expect(unknown.status).toBe(404);
 
 		const trav = await handleWorldTilesRequest(
-			new Request("http://localhost:8080/w/demo/assets/ccc3-maps/../package.json"),
-			{ kind: "asset", slug: "demo", assetPath: "ccc3-maps/../package.json" },
+			new Request("http://localhost:8080/w/demo/assets/sample-maps/../package.json"),
+			{ kind: "asset", slug: "demo", assetPath: "sample-maps/../package.json" },
 			options,
 		);
 		expect(trav.status).toBe(404);
@@ -476,12 +476,12 @@ describe("HTTP handler", () => {
 
 		const asset = await handleWorldTilesRequest(
 			new Request(
-				"http://localhost:8080/w/demo/assets/ccc3-maps/maps/306%20Fortified%20Hamlet.jpg",
+				"http://localhost:8080/w/demo/assets/sample-maps/maps/Sample%20Hamlet.jpg",
 			),
 			{
 				kind: "asset",
 				slug: "demo",
-				assetPath: "ccc3-maps/maps/306 Fortified Hamlet.jpg",
+				assetPath: "sample-maps/maps/Sample Hamlet.jpg",
 			},
 			options,
 		);
@@ -494,7 +494,7 @@ describe("HTTP handler", () => {
 		store.set(cache);
 		const overlay = mkdtempSync(join(tmpdir(), "world-assets-"));
 		try {
-			const moduleDir = join(overlay, "demo", "ccc3-maps", "maps");
+			const moduleDir = join(overlay, "demo", "sample-maps", "maps");
 			mkdirSync(moduleDir, { recursive: true });
 			writeFileSync(join(moduleDir, "overlay.jpg"), "jpeg-bytes");
 			const options = {
@@ -506,20 +506,20 @@ describe("HTTP handler", () => {
 				knownSlugs: new Set(["demo"]),
 			};
 			const hit = await handleWorldTilesRequest(
-				new Request("http://localhost:8080/w/demo/assets/ccc3-maps/maps/overlay.jpg"),
-				{ kind: "asset", slug: "demo", assetPath: "ccc3-maps/maps/overlay.jpg" },
+				new Request("http://localhost:8080/w/demo/assets/sample-maps/maps/overlay.jpg"),
+				{ kind: "asset", slug: "demo", assetPath: "sample-maps/maps/overlay.jpg" },
 				options,
 			);
 			expect(hit.status).toBe(200);
 			expect(hit.headers.get("content-type")).toBe("image/jpeg");
 			const miss = await handleWorldTilesRequest(
 				new Request(
-					"http://localhost:8080/w/demo/assets/ccc3-maps/maps/306%20Fortified%20Hamlet.jpg",
+					"http://localhost:8080/w/demo/assets/sample-maps/maps/Sample%20Hamlet.jpg",
 				),
 				{
 					kind: "asset",
 					slug: "demo",
-					assetPath: "ccc3-maps/maps/306 Fortified Hamlet.jpg",
+					assetPath: "sample-maps/maps/Sample Hamlet.jpg",
 				},
 				{ ...options, worldAssetsRoot: undefined },
 			);

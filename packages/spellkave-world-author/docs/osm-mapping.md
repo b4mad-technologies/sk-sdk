@@ -69,8 +69,8 @@ pnpm --filter @spellkave/world-map exec tsx src/cli.ts export <bundle> \
 
 The package is `@spellkave/world-map` (ADR-0123 D-1..D-6). Unplaced roots
 (no `origin_cell_res10`) appear in `manifest.json` under `unplaced_graphs`.
-Indoor nest composition (D-1 case 3) is covered by the package's elven-mini
-fixture: `elven_mini/inn/foyer` lands within 2 m of `elven_mini/hamlet/inn_front`.
+Indoor nest composition (D-1 case 3) is covered by the package's kavemouth
+fixture: `kavemouth/inn/foyer` lands within 2 m of `kavemouth/hamlet/inn_front`.
 
 The **outdoor** half also still renders through `spellkave_map_graph` /
 `sk render` (shared tool runtime `h3-layout.ts`); a graph that lands wrong there

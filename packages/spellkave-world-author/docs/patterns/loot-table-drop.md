@@ -24,7 +24,7 @@ rarity/CR guidance — without smuggling free-text item names into
 2. Keep a TypeScript **code → entity_def_id** catalog beside the generator.
 3. At terminal/boss time the host (Aldwin) draws or selects a code, resolves
    the catalog, and **places** the item (or grants quantity) as a computed
-   act — same class of solution as kill XP. **Not wired in elven-mini yet:**
+   act — same class of solution as kill XP. **Not wired in kavemouth yet:**
    `watchForQuestLoot` (`packages/spellkave-adventure-runtime/src/dm/watches/quest-loot-watch.ts`) is exported but
    never started, and `decideBossLootDrop` (`author/loot-drop.ts:194`) is
    called only from tests, so no loot drops at runtime (bug
@@ -80,5 +80,5 @@ Host maps `20` → `srd/magic_item/longsword-plus-1` via `LOOT_CODE_CATALOG`.
 ## SRD features that use this
 
 - Magic item treasure by rarity (magic-items.md).
-- Elven-mini Q3/Q10 rewards and Q4 boss drop (sk-609b.13) — designed and
+- Kavemouth Q3/Q10 rewards and Q4 boss drop (sk-609b.13) — designed and
   tabled, not yet dropped at runtime (see Solution step 3).

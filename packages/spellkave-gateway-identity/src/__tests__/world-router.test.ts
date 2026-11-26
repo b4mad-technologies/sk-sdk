@@ -22,7 +22,7 @@ function catalog(worlds: WorldCatalog["worlds"]): WorldCatalog {
 
 const baseWorld = {
 	display_name: "World",
-	adventure: "elven-mini",
+	adventure: "kavemouth",
 	visibility: "public",
 	join_policy: "invite" as const,
 };
@@ -60,8 +60,8 @@ describe("finding the world that holds a seat (sk-jay0.1.1.13)", () => {
 		const world = catalog([
 			{
 				...baseWorld,
-				slug: "elven-mini-4",
-				db: "spellkave-elven-mini-4",
+				slug: "kavemouth-4",
+				db: "spellkave-kavemouth-4",
 				status: "scheduling",
 				owner: "user_owner",
 				members: ["user_sim1"],
@@ -71,7 +71,7 @@ describe("finding the world that holds a seat (sk-jay0.1.1.13)", () => {
 		const route = await resolveWorldRoute(world, "user_sim1", "token", findSeat);
 		expect(route).toMatchObject({
 			kind: "seat",
-			hit: { world: { slug: "elven-mini-4", status: "scheduling" }, actorId: "9" },
+			hit: { world: { slug: "kavemouth-4", status: "scheduling" }, actorId: "9" },
 		});
 	});
 
@@ -79,8 +79,8 @@ describe("finding the world that holds a seat (sk-jay0.1.1.13)", () => {
 		const world = catalog([
 			{
 				...baseWorld,
-				slug: "elven-mini-4",
-				db: "spellkave-elven-mini-4",
+				slug: "kavemouth-4",
+				db: "spellkave-kavemouth-4",
 				status: "scheduling",
 				owner: "user_owner",
 				members: [],

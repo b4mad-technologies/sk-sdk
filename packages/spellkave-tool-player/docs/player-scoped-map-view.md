@@ -237,8 +237,8 @@ surface, the picture underneath it is not (yet). Three pieces:
   write it to a dot-prefixed temp file, `execFileSync("ffmpeg", ["-y", "-i",
   tmpPng, "-q:v", "4", outPath])`, then delete the temp PNG — same quality
   (`-q:v 4`) the AUTHOR-side product views use, landing in the same ballpark
-  (live-confirmed under the 1024 KB gate — see the elven-mini story's own
-  `fixtures/elven-mini/story/level-1/maps/*.jpg` for the committed sizes).
+  (live-confirmed under the 1024 KB gate — see the kavemouth story's own
+  `fixtures/kavemouth/story/level-1/maps/*.jpg` for the committed sizes).
   ffmpeg is fine here — this render only ever runs during a LIVE local
   recording (`live-preseeded` tier, `SPELLKAVE_LOCAL_NODE=1`-gated), never on
   a CI runner (the SAME sk-dms.42 finding `generate.ts`'s own
@@ -279,7 +279,7 @@ surface, the picture underneath it is not (yet). Three pieces:
   backdrop art with the known-node graph drawn on top) — replacing the old
   raw-SVG embed. Live-verified: two consecutive recordings against a freshly
   wiped+seeded node leave `git status` clean (churn guard proof); AUTHOR's
-  own `fixtures/elven-mini/renders/*` are untouched by any of this.
+  own `fixtures/kavemouth/renders/*` are untouched by any of this.
 
 Canon re-check: still no server change, no new manifest row kind, no
 domain vocabulary — pure rendering/plumbing. Verdict unchanged:
@@ -316,7 +316,7 @@ coupled changes:
   fixtures; the two map tools are the only callers that pass it, deriving
   it 1:1 from `output_type` via the shared `spatialRenderPlanForOutputType`
   helper (so the two tools' semantics can never drift apart). Concrete
-  cost this closes: the elven-mini adventure story recorded TWO
+  cost this closes: the kavemouth adventure story recorded TWO
   `spellkave_map` calls per turn and both used to carry a full SVG payload
   nobody read (286 KB → 380 KB across the story JSONL); the story now
   records `output_type: "ascii"` then `output_type: "jpg"`, and neither

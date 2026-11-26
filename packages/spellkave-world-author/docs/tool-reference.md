@@ -2725,12 +2725,12 @@ _Requires an active connection — no offline example; this tool cannot be demon
 
 **Attach Map Layer** — execution mode `sequential`.
 
-Author a [[map_layers]] backdrop pointer for a place_graph (Phandelver parity). Does NOT vendor the image — asset_path resolves at map_graph time via CCC3_MAPS_ROOT or FVTT_DATA_ROOT. Optionally stamps provenance metadata on the graph. When the file is present, image_width/height are filled from PNG IHDR if unset.
+Author a [[map_layers]] backdrop pointer for a place_graph. Does NOT vendor the image — asset_path resolves at map_graph time via SPELLKAVE_MAP_ASSETS_ROOT/<asset_module> or FVTT_DATA_ROOT. The caller names asset_module, source_kind and posture; nothing is assumed. Optionally stamps provenance metadata on the graph. When the file is present, image_width/height are filled from PNG IHDR if unset.
 
 | Field | Required | Type | Default | Description |
 |---|---:|---|---|---|
-| `asset_module` | no | string |  | Asset root module id (default "ccc3-maps"). Also resolves FVTT_DATA_ROOT/<module>. |
-| `asset_path` | yes | string |  | Relative path under asset root, e.g. "maps/306 Fortified Hamlet.jpg" for ccc3-maps. |
+| `asset_module` | yes | string |  | Asset module id: the folder that holds the image. Resolves SPELLKAVE_MAP_ASSETS_ROOT/<module> and FVTT_DATA_ROOT/<module>. No default. |
+| `asset_path` | yes | string |  | Relative path under the asset module, e.g. "maps/hamlet.jpg". |
 | `bundle` | no | string |  |  |
 | `display_name` | no | string |  |  |
 | `grid_distance_m` | no | number |  |  |
@@ -2739,17 +2739,17 @@ Author a [[map_layers]] backdrop pointer for a place_graph (Phandelver parity). 
 | `image_origin_x` | no | number |  |  |
 | `image_origin_y` | no | number |  |  |
 | `image_width_px` | no | number |  |  |
-| `license_url` | no | string |  |  |
+| `license_url` | no | string |  | License text URL for the provenance payload. No default. |
 | `local_height_cells` | no | number |  |  |
 | `local_width_cells` | no | number |  |  |
 | `map_id` | no | string |  | Catalog map id for provenance payload. |
 | `map_layer_id` | no | string |  | Defaults to <place_graph_id>/backdrop. |
 | `place_graph_id` | yes | string |  | place_graph this backdrop belongs to. |
-| `posture` | no | string |  | License posture stamp (default "cc-by-4.0" for ccc3). |
+| `posture` | yes | string |  | License posture stamp of the image, e.g. "cc-by-4.0" or "proprietary". No default. |
 | `provenance` | no | boolean |  |  |
 | `rotation_deg` | no | number |  |  |
-| `source_kind` | no | string |  | Default "elven-tower-ccc". |
-| `source_url` | no | string |  |  |
+| `source_kind` | yes | string |  | Where the image comes from, e.g. "first-party" or a named map source. No default. |
+| `source_url` | no | string |  | Source page URL for the provenance payload. No default. |
 | `state` | no | string |  | aligned \| provisional \| unmatched \| template (default "template"). |
 
 ## `spellkave_annotate_place`
@@ -3062,7 +3062,7 @@ sk-ntz.2: retag an already-placed entity's INSTANCE-level entity_tag rows from a
 
 | Field | Required | Type | Default | Description |
 |---|---:|---|---|---|
-| `bundle` | no | string |  | bundle_id stamped on every generated entity_tag row. Omit to fall back to `context.defaultBundle` (smart default). NOTE: this is the bundle OWNING the new tag row(s), not necessarily the bundle that placed `entity_key` — a cross-bundle caller stamps ITS own bundle_id here (the elven-mini idiom this verb replaces: crypt-fight.ts/dm-npc.ts tag the hero placed in hero.ts, all three sharing one bundle in that fixture, but nothing requires it). |
+| `bundle` | no | string |  | bundle_id stamped on every generated entity_tag row. Omit to fall back to `context.defaultBundle` (smart default). NOTE: this is the bundle OWNING the new tag row(s), not necessarily the bundle that placed `entity_key` — a cross-bundle caller stamps ITS own bundle_id here (the kavemouth idiom this verb replaces: crypt-fight.ts/dm-npc.ts tag the hero placed in hero.ts, all three sharing one bundle in that fixture, but nothing requires it). |
 | `entity_key` | yes | string |  | entity_key of an already-placed entity (e.g. via spellkave_place_entity/spellkave_place_actor, in THIS bundle or another) — must already carry an entities row (workspace or the active target); this call does not place one. Use this verb instead of re-invoking the placement tool when the entity's placement call lives in a DIFFERENT file/call than the one adding this tag. |
 | `mode` | no | "add" \\| "replace" |  | Default 'add': upsert the listed tags, leaving every OTHER tag already on this entity_key untouched (idempotent — re-listing an already-present tag is a no-op) — the safe default for a cross-file caller that does not own the entity's full tag set (this verb's whole reason to exist: REPLACING would clobber tags the entity's OWN placement call already authored elsewhere). Set 'replace' only when THIS call owns the entity's complete tag set: it clears EVERY existing entity_tag row for `entity_key` first, then reseeds exactly `tags` (a re-run with fewer tags drops the stale ones, mirroring spellkave_place_entity/spellkave_place_actor's own clear-and-reseed). |
 | `tags` | yes | array<string> |  | One INSTANCE-level entity_tag row per tag, mirroring spellkave_place_entity/spellkave_place_actor's own `tags` param exactly (same row shape, same MF-VAL-300 grammar, same tag_capability_grant diagnostic) — the difference is WHEN: this verb runs AFTER the entity already exists, against an entity_key placed by a DIFFERENT call/file. |

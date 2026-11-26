@@ -34,7 +34,7 @@ now, not a machine-checked one:
 
 1. **Forward resolution:** Every `// pattern: <slug>` in TS source and `# pattern: <slug>` in emitted TOML should resolve to a real pattern page under `packages/spellkave-world-author/docs/patterns/<slug>.md`.
 2. **Reverse orphan prevention:** Every pattern page in this catalog (except `index.md` and [`before-filing-a-kernel-gap.md`](./before-filing-a-kernel-gap.md)) should be cited by at least one live implementation (srd-cc, adventure-runtime or an adventure package source) or fixture TOML. A pattern without an implementation is a documentation fiction.
-3. **Complex directory coverage:** Every `.ts` source file across the complex directories (srd-cc `src/chapters/{spells,classes,monsters,magic-items}`, `packages/spellkave-adventure-runtime/src/dm/creation`, `packages/spellkave-adventure-elven-mini/{author,npcs}`) should carry at least one valid pattern citation, or an explicit opt-out comment with an honest reason:
+3. **Complex directory coverage:** Every `.ts` source file across the complex directories (srd-cc `src/chapters/{spells,classes,monsters,magic-items}`, `packages/spellkave-adventure-runtime/src/dm/creation`, `packages/spellkave-adventure-kavemouth/{author,npcs}`) should carry at least one valid pattern citation, or an explicit opt-out comment with an honest reason:
    ```ts
    // pattern: none — barrel export for spells chapter
    ```

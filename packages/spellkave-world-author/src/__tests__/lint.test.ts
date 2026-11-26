@@ -333,7 +333,7 @@ describe("lintManifest — author-time duplication / binding smells (#836 Part C
 		expect(rulesFired(manifest)).not.toContain("dangling-ref-tag");
 	});
 
-	// T3 (elven-mini tool-UX campaign, operator mandate 2026-08-04): the
+	// T3 (kavemouth tool-UX campaign, operator mandate 2026-08-04): the
 	// player-visible exit label is `direction ?? to_node_id`, where `direction`
 	// mirrors `packages/spellkave-sdk/src/core/readers/location_snapshot.ts`'s
 	// `metricDirection` (atan2 -> 8-way compass over authored pos_x/pos_y).

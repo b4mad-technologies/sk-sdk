@@ -29,23 +29,23 @@ describe("INSTANCE_ROW_KINDS", () => {
 
 describe("createOwnerInstanceRead", () => {
 	const maeChest = {
-		manifestKey: "elven_mini:elven_mini/adventure/item/loft_chest_1",
-		bundleId: "elven_mini",
+		manifestKey: "kavemouth:kavemouth/adventure/item/loft_chest_1",
+		bundleId: "kavemouth",
 		entityId: 10n,
 	};
 	const maePotion = {
-		manifestKey: "elven_mini:elven_mini/adventure/item/loft_chest_potion_1",
-		bundleId: "elven_mini",
+		manifestKey: "kavemouth:kavemouth/adventure/item/loft_chest_potion_1",
+		bundleId: "kavemouth",
 		entityId: 11n,
 	};
 	const maeHeroBody = {
-		manifestKey: "elven_mini:elven_mini/hero",
-		bundleId: "elven_mini",
+		manifestKey: "kavemouth:kavemouth/hero",
+		bundleId: "kavemouth",
 		entityId: 20n,
 	};
 	const maeOwned = {
-		manifestKey: "elven_mini:elven_mini/owned",
-		bundleId: "elven_mini",
+		manifestKey: "kavemouth:kavemouth/owned",
+		bundleId: "kavemouth",
 		entityId: 30n,
 	};
 
@@ -60,7 +60,7 @@ describe("createOwnerInstanceRead", () => {
 			readsAsPublisher: false,
 		});
 		expect(port.get({ kind: "entities" })).toMatchObject({ ok: false, code: "not_publisher" });
-		const got = port.get({ kind: "entities", key: "elven_mini/adventure/item/loft_chest_1" });
+		const got = port.get({ kind: "entities", key: "kavemouth/adventure/item/loft_chest_1" });
 		expect(got.ok).toBe(false);
 		if (!got.ok) {
 			expect(got.code).toBe("not_publisher");
@@ -69,7 +69,7 @@ describe("createOwnerInstanceRead", () => {
 		}
 		const described = port.describe({
 			kind: "entities",
-			key: "elven_mini/adventure/item/loft_chest_1",
+			key: "kavemouth/adventure/item/loft_chest_1",
 		});
 		expect(described.ok).toBe(false);
 		if (!described.ok) {
@@ -93,11 +93,11 @@ describe("createOwnerInstanceRead", () => {
 			worldTick: () => 9n,
 			readsAsPublisher: true,
 		});
-		const answer = port.get({ kind: "entities", key: "elven_mini/adventure/item/loft_chest_1" });
+		const answer = port.get({ kind: "entities", key: "kavemouth/adventure/item/loft_chest_1" });
 		expect(answer.ok).toBe(true);
 		if (answer.ok) {
-			expect(answer.row?.entity_key).toBe("elven_mini/adventure/item/loft_chest_1");
-			expect(JSON.stringify(answer)).not.toContain("elven_mini:elven_mini/");
+			expect(answer.row?.entity_key).toBe("kavemouth/adventure/item/loft_chest_1");
+			expect(JSON.stringify(answer)).not.toContain("kavemouth:kavemouth/");
 			expect(answer.tick).toBe("9");
 			expect(answer.labels).toContain("authored_entities_only");
 			expect(answer.row?.place_node_id).toBe("inn/loft");
@@ -139,7 +139,7 @@ describe("createOwnerInstanceRead", () => {
 			worldTick: () => 1n,
 			readsAsPublisher: true,
 		});
-		const hit = port.get({ kind: "actors", key: "elven_mini/hero" });
+		const hit = port.get({ kind: "actors", key: "kavemouth/hero" });
 		expect(hit.ok).toBe(true);
 		if (hit.ok) expect(hit.row?.actor_id).toBe("99");
 		const miss = port.get({ kind: "actors", key: "99" });
@@ -147,8 +147,8 @@ describe("createOwnerInstanceRead", () => {
 	});
 
 	it("after swap, new body key hits and old body key does not", () => {
-		const oldBody = { manifestKey: "elven_mini:old", bundleId: "elven_mini", entityId: 1n };
-		const newBody = { manifestKey: "elven_mini:new", bundleId: "elven_mini", entityId: 2n };
+		const oldBody = { manifestKey: "kavemouth:old", bundleId: "kavemouth", entityId: 1n };
+		const newBody = { manifestKey: "kavemouth:new", bundleId: "kavemouth", entityId: 2n };
 		const port = createOwnerInstanceRead({
 			snapshot: () =>
 				snap({
@@ -209,15 +209,15 @@ describe("createOwnerInstanceRead", () => {
 			worldTick: () => 1n,
 			readsAsPublisher: true,
 		});
-		const described = port.describe({ kind: "entities", key: "elven_mini/owned" });
+		const described = port.describe({ kind: "entities", key: "kavemouth/owned" });
 		expect(described.ok).toBe(true);
 		if (described.ok) expect(described.place).toBe("place/A");
-		const owner = port.describe({ kind: "entities", key: "elven_mini/hero" });
+		const owner = port.describe({ kind: "entities", key: "kavemouth/hero" });
 		expect(owner.ok).toBe(true);
 		if (owner.ok) {
 			expect(
 				owner.belonging.some(
-					(b) => b.relation === "ownership" && b.entity_key === "elven_mini/owned",
+					(b) => b.relation === "ownership" && b.entity_key === "kavemouth/owned",
 				),
 			).toBe(true);
 		}
@@ -225,8 +225,8 @@ describe("createOwnerInstanceRead", () => {
 
 	it("lists authored descendants through an unkeyed intermediate and omits the unkeyed row", () => {
 		const maeInner = {
-			manifestKey: "elven_mini:inner",
-			bundleId: "elven_mini",
+			manifestKey: "kavemouth:inner",
+			bundleId: "kavemouth",
 			entityId: 12n,
 		};
 		const port = createOwnerInstanceRead({
@@ -250,7 +250,7 @@ describe("createOwnerInstanceRead", () => {
 		});
 		const described = port.describe({
 			kind: "entities",
-			key: "elven_mini/adventure/item/loft_chest_1",
+			key: "kavemouth/adventure/item/loft_chest_1",
 		});
 		expect(described.ok).toBe(true);
 		if (described.ok) {
@@ -281,7 +281,7 @@ describe("createOwnerInstanceRead", () => {
 						{
 							entityId: 10n,
 							tag: "srd.item.container",
-							bundleId: "elven_mini",
+							bundleId: "kavemouth",
 							source: "manifest",
 						},
 					],
@@ -291,12 +291,12 @@ describe("createOwnerInstanceRead", () => {
 		});
 		const miss = port.get({
 			kind: "entity_tag",
-			key: "elven_mini/adventure/item/loft_chest_1",
+			key: "kavemouth/adventure/item/loft_chest_1",
 		});
 		expect(miss.ok).toBe(false);
 		const hit = port.get({
 			kind: "entity_tag",
-			key: "elven_mini/adventure/item/loft_chest_1::srd.item.container::elven_mini::manifest",
+			key: "kavemouth/adventure/item/loft_chest_1::srd.item.container::kavemouth::manifest",
 		});
 		expect(hit.ok).toBe(true);
 		if (hit.ok) {
@@ -318,11 +318,11 @@ describe("createOwnerInstanceRead", () => {
 			readsAsPublisher: true,
 		});
 		expect(
-			port.get({ kind: "object_state", key: "elven_mini/adventure/item/loft_chest_1" }).ok,
+			port.get({ kind: "object_state", key: "kavemouth/adventure/item/loft_chest_1" }).ok,
 		).toBe(false);
 		const hit = port.get({
 			kind: "object_state",
-			key: "elven_mini/adventure/item/loft_chest_1::hp",
+			key: "kavemouth/adventure/item/loft_chest_1::hp",
 		});
 		expect(hit.ok).toBe(true);
 		if (hit.ok) expect(hit.row?.state_id).toBe("hp");
@@ -344,17 +344,17 @@ describe("createOwnerInstanceRead", () => {
 			readsAsPublisher: true,
 		});
 		expect(
-			port.get({ kind: "entity_containment", key: "elven_mini/adventure/item/loft_chest_potion_1" })
+			port.get({ kind: "entity_containment", key: "kavemouth/adventure/item/loft_chest_potion_1" })
 				.ok,
 		).toBe(false);
 		const hit = port.get({
 			kind: "entity_containment",
-			key: "elven_mini/adventure/item/loft_chest_1::elven_mini/adventure/item/loft_chest_potion_1",
+			key: "kavemouth/adventure/item/loft_chest_1::kavemouth/adventure/item/loft_chest_potion_1",
 		});
 		expect(hit.ok).toBe(true);
 		if (hit.ok) {
-			expect(hit.row?.entity_key).toBe("elven_mini/adventure/item/loft_chest_potion_1");
-			expect(hit.row?.container_entity_key).toBe("elven_mini/adventure/item/loft_chest_1");
+			expect(hit.row?.entity_key).toBe("kavemouth/adventure/item/loft_chest_potion_1");
+			expect(hit.row?.container_entity_key).toBe("kavemouth/adventure/item/loft_chest_1");
 		}
 	});
 
@@ -372,7 +372,7 @@ describe("createOwnerInstanceRead", () => {
 		});
 		const hit = port.get({
 			kind: "entities",
-			key: "elven_mini/adventure/item/loft_chest_1",
+			key: "kavemouth/adventure/item/loft_chest_1",
 			fields: ["name"],
 		});
 		expect(hit.ok).toBe(true);
@@ -399,7 +399,7 @@ describe("createOwnerInstanceRead", () => {
 							sourceTemplateId: "srd/hp",
 							expiresAtTick: 0n,
 							visibility: { tag: "Public" },
-							bundleId: "elven_mini",
+							bundleId: "kavemouth",
 						},
 					],
 				}),
@@ -408,14 +408,14 @@ describe("createOwnerInstanceRead", () => {
 		});
 		const hit = port.get({
 			kind: "object_state",
-			key: "elven_mini/adventure/item/loft_chest_1::hp",
+			key: "kavemouth/adventure/item/loft_chest_1::hp",
 		});
 		expect(hit.ok).toBe(true);
 		if (hit.ok) {
 			expect(hit.row?.value_int).toBe("12");
 			expect(hit.row?.source_template_id).toBe("srd/hp");
 			expect(hit.row?.visibility).toBe("Public");
-			expect(hit.row?.bundle_id).toBe("elven_mini");
+			expect(hit.row?.bundle_id).toBe("kavemouth");
 		}
 	});
 
@@ -436,7 +436,7 @@ describe("createOwnerInstanceRead", () => {
 							extentRef: "graph/a",
 							extentKindRef: "place_graph",
 							elevationClass: { tag: "Hidden" },
-							bundleId: "elven_mini",
+							bundleId: "kavemouth",
 						},
 					],
 				}),
@@ -445,7 +445,7 @@ describe("createOwnerInstanceRead", () => {
 		});
 		const hit = port.get({
 			kind: "actor_capabilities",
-			key: "elven_mini/hero::core/walk::manifest::",
+			key: "kavemouth/hero::core/walk::manifest::",
 		});
 		expect(hit.ok).toBe(true);
 		if (hit.ok) {
@@ -457,8 +457,8 @@ describe("createOwnerInstanceRead", () => {
 
 	it("describe includes subject slices and bounds belonging", () => {
 		const extras = Array.from({ length: 3 }, (_, i) => ({
-			manifestKey: `elven_mini:kid${i}`,
-			bundleId: "elven_mini",
+			manifestKey: `kavemouth:kid${i}`,
+			bundleId: "kavemouth",
 			entityId: BigInt(40 + i),
 		}));
 		const port = createOwnerInstanceRead({
@@ -478,7 +478,7 @@ describe("createOwnerInstanceRead", () => {
 		});
 		const described = port.describe({
 			kind: "entities",
-			key: "elven_mini/adventure/item/loft_chest_1",
+			key: "kavemouth/adventure/item/loft_chest_1",
 			limit: 1,
 		});
 		expect(described.ok).toBe(true);
@@ -492,8 +492,8 @@ describe("createOwnerInstanceRead", () => {
 	});
 
 	it("queues ownership children so nested authored descendants appear", () => {
-		const maeMid = { manifestKey: "elven_mini:mid", bundleId: "elven_mini", entityId: 50n };
-		const maeLeaf = { manifestKey: "elven_mini:leaf", bundleId: "elven_mini", entityId: 51n };
+		const maeMid = { manifestKey: "kavemouth:mid", bundleId: "kavemouth", entityId: 50n };
+		const maeLeaf = { manifestKey: "kavemouth:leaf", bundleId: "kavemouth", entityId: 51n };
 		const port = createOwnerInstanceRead({
 			snapshot: () =>
 				snap({
@@ -509,7 +509,7 @@ describe("createOwnerInstanceRead", () => {
 			worldTick: () => 1n,
 			readsAsPublisher: true,
 		});
-		const described = port.describe({ kind: "entities", key: "elven_mini/hero" });
+		const described = port.describe({ kind: "entities", key: "kavemouth/hero" });
 		expect(described.ok).toBe(true);
 		if (described.ok) {
 			expect(described.belonging.map((b) => b.entity_key).sort()).toEqual(["leaf", "mid"]);
@@ -570,7 +570,7 @@ describe("createOwnerInstanceRead", () => {
 		if (listed.ok) {
 			expect(listed.rows?.map((r) => r.state_id).sort()).toEqual(["ac", "hp"]);
 			expect(
-				listed.rows?.every((r) => r.entity_key === "elven_mini/adventure/item/loft_chest_1"),
+				listed.rows?.every((r) => r.entity_key === "kavemouth/adventure/item/loft_chest_1"),
 			).toBe(true);
 		}
 	});
@@ -598,14 +598,14 @@ describe("createOwnerInstanceRead", () => {
 		const listed = port.get({ kind: "entities" });
 		const keyed = port.get({
 			kind: "entities",
-			key: "elven_mini/adventure/item/loft_chest_1",
+			key: "kavemouth/adventure/item/loft_chest_1",
 		});
 		expect(listed.ok && keyed.ok).toBe(true);
 		if (listed.ok && keyed.ok) {
 			const row = listed.rows?.[0];
-			expect(row?.entity_key).toBe("elven_mini/adventure/item/loft_chest_1");
+			expect(row?.entity_key).toBe("kavemouth/adventure/item/loft_chest_1");
 			expect(row?.numeric_id).toBe("10");
-			expect(row?.bundle_id).toBe("elven_mini");
+			expect(row?.bundle_id).toBe("kavemouth");
 			expect(row?.place_node_id).toBe("inn/loft");
 			expect(row).not.toHaveProperty("description");
 			expect(keyed.row).toHaveProperty("description");
@@ -621,8 +621,8 @@ describe("createOwnerInstanceRead", () => {
 
 	it("bounds 51 authored children with left_out", () => {
 		const extras = Array.from({ length: 51 }, (_, i) => ({
-			manifestKey: `elven_mini:c${i}`,
-			bundleId: "elven_mini",
+			manifestKey: `kavemouth:c${i}`,
+			bundleId: "kavemouth",
 			entityId: BigInt(100 + i),
 		}));
 		const port = createOwnerInstanceRead({
@@ -642,7 +642,7 @@ describe("createOwnerInstanceRead", () => {
 		});
 		const described = port.describe({
 			kind: "entities",
-			key: "elven_mini/adventure/item/loft_chest_1",
+			key: "kavemouth/adventure/item/loft_chest_1",
 		});
 		expect(described.ok).toBe(true);
 		if (described.ok) {
@@ -670,11 +670,11 @@ describe("createOwnerInstanceRead", () => {
 			worldTick: () => 1n,
 			readsAsPublisher: true,
 		});
-		const described = port.describe({ kind: "entities", key: "elven_mini/hero" });
+		const described = port.describe({ kind: "entities", key: "kavemouth/hero" });
 		expect(described.ok).toBe(true);
 		if (described.ok) {
 			const rels = described.belonging
-				.filter((b) => b.entity_key === "elven_mini/adventure/item/loft_chest_potion_1")
+				.filter((b) => b.entity_key === "kavemouth/adventure/item/loft_chest_potion_1")
 				.map((b) => b.relation)
 				.sort();
 			expect(rels).toEqual(["containment", "equipment"]);
@@ -694,7 +694,7 @@ describe("createOwnerInstanceRead", () => {
 			worldTick: () => 1n,
 			readsAsPublisher: true,
 		});
-		const described = port.describe({ kind: "entities", key: "elven_mini/hero" });
+		const described = port.describe({ kind: "entities", key: "kavemouth/hero" });
 		expect(described.ok).toBe(true);
 		if (described.ok) {
 			expect(described.slices.actors?.[0]?.actor_id).toBe("99");
@@ -715,7 +715,7 @@ describe("createOwnerInstanceRead", () => {
 		});
 		const none = portNone.describe({
 			kind: "entities",
-			key: "elven_mini/adventure/item/loft_chest_1",
+			key: "kavemouth/adventure/item/loft_chest_1",
 		});
 		expect(none.ok && none.chain_end.reason === "none").toBe(true);
 		if (none.ok) expect(none.container_chain.map((c) => c.numeric_id)).not.toContain("10");
@@ -739,7 +739,7 @@ describe("createOwnerInstanceRead", () => {
 		});
 		const cyc = portCycle.describe({
 			kind: "entities",
-			key: "elven_mini/adventure/item/loft_chest_1",
+			key: "kavemouth/adventure/item/loft_chest_1",
 		});
 		expect(cyc.ok && cyc.chain_end.reason === "cycle").toBe(true);
 		if (cyc.ok) {
@@ -806,11 +806,11 @@ describe("createOwnerInstanceRead", () => {
 		});
 		const pos = port.get({
 			kind: "object_state",
-			key: "elven_mini/adventure/item/loft_chest_1::big",
+			key: "kavemouth/adventure/item/loft_chest_1::big",
 		});
 		const neg = port.get({
 			kind: "object_state",
-			key: "elven_mini/adventure/item/loft_chest_1::neg",
+			key: "kavemouth/adventure/item/loft_chest_1::neg",
 		});
 		expect(pos.ok && pos.row?.value_int).toBe(bigPos.toString());
 		expect(pos.ok && pos.row?.expires_at_tick).toBe(bigU64.toString());
@@ -952,7 +952,7 @@ describe("createOwnerInstanceRead", () => {
 		expect(
 			port.describe({
 				kind: "entities",
-				key: "elven_mini/adventure/item/loft_chest_1",
+				key: "kavemouth/adventure/item/loft_chest_1",
 				limit: -1,
 			}),
 		).toMatchObject({ ok: false, code: "usage" });

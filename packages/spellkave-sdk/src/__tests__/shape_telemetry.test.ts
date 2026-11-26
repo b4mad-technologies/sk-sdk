@@ -15,7 +15,7 @@ const CHANGE = {
 };
 
 describe("shape mismatch telemetry", () => {
-	const fields = shapeMismatchFields([CHANGE], "elven-mini-1", 1);
+	const fields = shapeMismatchFields([CHANGE], "kavemouth-1", 1);
 	const events = shapeMismatchEvents(fields, {
 		runId: "contract-check-x",
 		actorId: "42",
@@ -38,7 +38,7 @@ describe("shape mismatch telemetry", () => {
 				type: CONTRACT_SHAPE_MISMATCH,
 				data: {
 					shape_mode: "warn",
-					shape_database: "elven-mini-1",
+					shape_database: "kavemouth-1",
 					shape_item: "table actor",
 					shape_detail: "column 2 changed: name: U32 -> name: String",
 					client_epoch: 1,

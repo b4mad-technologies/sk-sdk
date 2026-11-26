@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { describeResolutionOutcome, parseResolutionSummary } from "../resolution";
 
 // Modeled on the real selected_template_ids shape a stochastic attack
-// dispatch writes (elven-mini fixtures/story/05-fight-slime.md) — real
+// dispatch writes (kavemouth fixtures/story/05-fight-slime.md) — real
 // template ids, precondition/claim annotations, and the resolution_*
 // prefixed lines mixed together in one flat string array.
 function stochasticSuccessIds(): string[] {
@@ -89,7 +89,7 @@ describe("parseResolutionSummary (U1 minimal fix)", () => {
 	// r_react's own provenance (r_react.rs) writes resolution_result/
 	// resolution_branch/resolution_consequence but never a resolution_mode
 	// line at all — that annotation is r_manipulate-specific. Modeled on the
-	// real Opportunity Attack reaction shape (elven-mini
+	// real Opportunity Attack reaction shape (kavemouth
 	// fixtures/story/05-fight-slime.md).
 	function reactionSuccessIds(): string[] {
 		return [

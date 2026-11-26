@@ -2117,7 +2117,7 @@ function collectSpatialToolRows(
 }
 
 // Raster width for output_type='jpg' map-art — same choice PLAYER's
-// spellkave_map (tools.ts, MAP_JPEG_WIDTH_PX) and elven-mini's renders.ts
+// spellkave_map (tools.ts, MAP_JPEG_WIDTH_PX) and kavemouth's renders.ts
 // make for their own "with-map" product views (git-friendly size, still
 // legible backdrop art).
 const AUTHOR_MAP_JPEG_WIDTH_PX = 900;
@@ -2167,7 +2167,7 @@ export const mapGraphToolDef = defineTool<
 			context,
 			params.target,
 		);
-		// Optional out-of-repo bitmap overlay from [[map_layers]] (ccc3-maps / FVTT).
+		// Optional out-of-repo bitmap overlay from [[map_layers]] (asset modules / FVTT).
 		const toml = context.workspace.readToml();
 		const manifest =
 			toml === null ? {} : (inspectManifest(toml).manifest as Record<string, unknown>);
@@ -3434,6 +3434,14 @@ export const setMovementDefaultToolDef = defineTool({
 	},
 });
 
+function requireMapLayerText(value: string | undefined, name: string): string {
+	const text = value?.trim() ?? "";
+	if (text === "") {
+		throw new Error(`${ATTACH_MAP_LAYER_TOOL}: ${name} is required and has no default.`);
+	}
+	return text;
+}
+
 export const attachMapLayerToolDef = defineTool<
 	AuthorToolContext,
 	typeof ATTACH_MAP_LAYER_PARAMS,
@@ -3444,10 +3452,11 @@ export const attachMapLayerToolDef = defineTool<
 	schema: ATTACH_MAP_LAYER_PARAMS,
 	requiredCapabilities: ["node"],
 	exampleParams: {
-		place_graph_id: "elven_mini/hamlet",
-		asset_module: "ccc3-maps",
-		asset_path: "maps/306 Fortified Hamlet.jpg",
-		map_id: "306",
+		place_graph_id: "kavemouth/hamlet",
+		asset_module: "kavemouth-maps",
+		asset_path: "maps/hamlet.jpg",
+		posture: "cc-by-4.0",
+		source_kind: "first-party",
 	},
 	run: async (
 		context: AuthorToolContext,
@@ -3467,7 +3476,12 @@ export const attachMapLayerToolDef = defineTool<
 			);
 		}
 		const layerId = params.map_layer_id?.trim() || `${graphId}/backdrop`;
-		const assetModule = params.asset_module?.trim() || "ccc3-maps";
+		// No built-in source: the caller names the module, the source kind and
+		// the licence posture. The schema requires them; blank strings are
+		// refused here because a silent default would stamp a wrong provenance.
+		const assetModule = requireMapLayerText(params.asset_module, "asset_module");
+		const sourceKind = requireMapLayerText(params.source_kind, "source_kind");
+		const posture = requireMapLayerText(params.posture, "posture");
 		const assetPath = params.asset_path.trim();
 		const displayName =
 			params.display_name?.trim() || titleCase(graphId.slice(graphId.lastIndexOf("/") + 1));
@@ -3524,9 +3538,9 @@ export const attachMapLayerToolDef = defineTool<
 			display_name: displayName,
 			asset_module: assetModule,
 			asset_path: assetPath,
-			source_kind: params.source_kind?.trim() || "elven-tower-ccc",
+			source_kind: sourceKind,
 			state: params.state?.trim() || "template",
-			posture: params.posture?.trim() || "cc-by-4.0",
+			posture,
 			image_width_px: widthPx,
 			image_height_px: heightPx,
 			grid_size_px: gridSize,
@@ -3568,11 +3582,9 @@ export const attachMapLayerToolDef = defineTool<
 					map_id: params.map_id ?? "",
 					file: assetPath,
 					module: assetModule,
-					license: params.posture?.trim() || "cc-by-4.0",
-					license_url: params.license_url ?? "https://creativecommons.org/licenses/by/4.0/",
-					source_url:
-						params.source_url ??
-						"https://www.patreon.com/elventower/posts/creative-commons-153067169",
+					license: posture,
+					license_url: params.license_url?.trim() ?? "",
+					source_url: params.source_url?.trim() ?? "",
 				}),
 			});
 			rowsAdded += 1;
@@ -3602,7 +3614,7 @@ export const annotatePlaceToolDef = defineTool({
 	schema: ANNOTATE_PLACE_PARAMS,
 	exampleParams: {
 		target_kind: "place_graph",
-		target_ref: "elven_mini/region",
+		target_ref: "kavemouth/region",
 		terrain: ["road", "crossroads", "wilderness"],
 		h3_origin_res10: 4242424242424,
 	},
@@ -7397,10 +7409,10 @@ export const defineTraceKindToolDef = defineTool({
 	contract: DEFINE_TRACE_KIND_TOOL,
 	schema: DEFINE_TRACE_KIND_PARAMS,
 	exampleParams: {
-		bundle: "elven_mini",
+		bundle: "kavemouth",
 		id: "adventure/trace/slime_trail",
 		description: "A glistening trail of translucent slime, still faintly wet.",
-		places: [{ node: "elven_mini/tomb/entrance" }],
+		places: [{ node: "kavemouth/tomb/entrance" }],
 	},
 	run: async (context: AuthorToolContext, params: Static<typeof DEFINE_TRACE_KIND_PARAMS>) => {
 		const bundle = resolveBundle(context, params.bundle, DEFINE_TRACE_KIND_TOOL);

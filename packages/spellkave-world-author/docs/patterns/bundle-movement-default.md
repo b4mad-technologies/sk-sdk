@@ -42,14 +42,14 @@ battle-map part.
 
 ## TOML example
 
-Copied from `packages/spellkave-adventure-elven-mini/fixtures/hamlet.manifest.toml`
+Copied from `packages/spellkave-adventure-kavemouth/fixtures/hamlet.manifest.toml`
 (consuming bundle re-declaring the `srd` policy):
 
 ```toml
 [[movement_defaults]]
 affordance_template_id = "srd/affordance/step"
 bindings_json = '{"movement_reach_resource":"srd/speed-walk","long_running_move_session":"srd/long_running_move"}'
-bundle_id = "elven_mini"
+bundle_id = "kavemouth"
 mode_id = ""
 place_graph_id = ""
 ```
@@ -87,6 +87,6 @@ the `srd/combat-grid/standard-10x10` preset.
 ## SRD features that use this
 
 - `srd/affordance/step` + `srd/speed-walk` + `srd/long_running_move` for
-  the standalone `srd` bundle and every elven-mini graph; the shared
+  the standalone `srd` bundle and every kavemouth graph; the shared
   `srd/combat-grid/standard-10x10` preset. Layout residue:
   [`fixtures-layout.md`](../../../spellkave-srd-cc/docs/fixtures-layout.md).

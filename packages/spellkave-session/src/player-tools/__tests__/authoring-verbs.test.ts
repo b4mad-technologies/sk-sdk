@@ -8380,15 +8380,15 @@ describe("workspace idempotency (#1968 US 'workspace idempotency')", () => {
 			const workspace = fakeWorkspace(null);
 			await authorPlaceToolDef.run(
 				contextWith({ workspace }),
-				{ bundle: "elven_mini", nodes: [{ id: "elven_mini/arena/ring" }], edges: [] },
+				{ bundle: "kavemouth", nodes: [{ id: "kavemouth/arena/ring" }], edges: [] },
 				"place",
 			);
 			await rawPlaceActorToolDef.run(
 				contextWith({ workspace }),
 				{
-					bundle: "elven_mini",
+					bundle: "kavemouth",
 					kind: "npc",
-					at: "elven_mini/arena/ring",
+					at: "kavemouth/arena/ring",
 					key_prefix: "adventure/encounter/road_wolf",
 					count: 3,
 					name_prefix: "Road Wolf",
@@ -8416,8 +8416,8 @@ describe("workspace idempotency (#1968 US 'workspace idempotency')", () => {
 			await authorPlaceToolDef.run(
 				contextWith({ workspace }),
 				{
-					bundle: "elven_mini",
-					nodes: [{ id: "elven_mini/arena/ring" }, { id: "elven_mini/arena/fringe" }],
+					bundle: "kavemouth",
+					nodes: [{ id: "kavemouth/arena/ring" }, { id: "kavemouth/arena/fringe" }],
 					edges: [],
 				},
 				"place",
@@ -8425,13 +8425,13 @@ describe("workspace idempotency (#1968 US 'workspace idempotency')", () => {
 			await rawPlaceActorToolDef.run(
 				contextWith({ workspace }),
 				{
-					bundle: "elven_mini",
+					bundle: "kavemouth",
 					kind: "npc",
 					name_prefix: "Wolf",
 					placements: [
-						{ at: "elven_mini/arena/ring", count: 2, key_prefix: "wolf" },
+						{ at: "kavemouth/arena/ring", count: 2, key_prefix: "wolf" },
 						{
-							at: "elven_mini/arena/fringe",
+							at: "kavemouth/arena/fringe",
 							count: 2,
 							key_prefix: "stirge",
 							name_prefix: "Stirge",
@@ -9310,7 +9310,7 @@ describe("#1968 verb-UX round 2 gap② — target-aware validation (commitOrRepo
 
 	// sk-jay0.2.33.15.7 (ADR-0142): prompt_definitions.response_action_ids
 	// (MF-VAL-101) resolving against a DEPENDENCY bundle's action_definitions —
-	// the elven_mini quest-prompt gap. Same "CLOSED WORLD UNCHANGED / local
+	// the kavemouth quest-prompt gap. Same "CLOSED WORLD UNCHANGED / local
 	// driver / live driver" triple as the entity_definitions gap② tests above.
 	it("CLOSED WORLD UNCHANGED: with NO target, prompt_definitions.response_action_ids naming an action that exists only in another fragment stays a Fatal", async () => {
 		const workspace = fakeWorkspace(null);
@@ -12546,9 +12546,11 @@ describe("spatial toolbox — link / map_layer / annotate", () => {
 			{
 				bundle: "tb",
 				place_graph_id: "tb/g",
-				asset_module: "ccc3-maps",
-				asset_path: "maps/306 Fortified Hamlet.jpg",
-				map_id: "306",
+				asset_module: "sample-maps",
+				asset_path: "maps/hamlet.jpg",
+				posture: "cc-by-4.0",
+				source_kind: "first-party",
+				map_id: "hamlet",
 			},
 			"layer",
 			{ node: nodeToolCapability },
@@ -12569,12 +12571,48 @@ describe("spatial toolbox — link / map_layer / annotate", () => {
 		const manifest = inspectManifest(workspace.current() ?? "").manifest as Record<string, unknown>;
 		expect(tableRows(manifest, "map_layers")[0]).toMatchObject({
 			place_graph_id: "tb/g",
-			asset_module: "ccc3-maps",
+			asset_module: "sample-maps",
+			posture: "cc-by-4.0",
+			source_kind: "first-party",
 		});
 		expect(Number(tableRows(manifest, "place_graphs")[0]?.origin_cell_res10)).toBe(4242424242424);
 		const meta = tableRows(manifest, "metadata_attachments");
 		expect(meta.some((m) => m.namespace === "terrain.hint")).toBe(true);
-		expect(meta.some((m) => m.namespace === "provenance.source")).toBe(true);
+		// The provenance stamp carries only what the caller gave: no built-in
+		// source or licence URL stands in for a missing one.
+		const provenance = meta.find((m) => m.namespace === "provenance.source");
+		expect(JSON.parse(String(provenance?.payload_json))).toEqual({
+			map_id: "hamlet",
+			file: "maps/hamlet.jpg",
+			module: "sample-maps",
+			license: "cc-by-4.0",
+			license_url: "",
+			source_url: "",
+		});
+	});
+
+	it("attach_map_layer refuses a blank asset_module, source_kind or posture", async () => {
+		const workspace = fakeWorkspace(null);
+		await authorPlaceToolDef.run(
+			contextWith({ workspace }),
+			{ bundle: "tb", nodes: [{ id: "tb/g/a", name: "A", x: 0, y: 0 }], edges: [] },
+			"g",
+		);
+		const complete = {
+			bundle: "tb",
+			place_graph_id: "tb/g",
+			asset_module: "sample-maps",
+			asset_path: "maps/hamlet.jpg",
+			posture: "cc-by-4.0",
+			source_kind: "first-party",
+		};
+		for (const name of ["asset_module", "source_kind", "posture"] as const) {
+			await expect(
+				attachMapLayerToolDef.run(contextWith({ workspace }), { ...complete, [name]: " " }, "layer", {
+					node: nodeToolCapability,
+				}),
+			).rejects.toThrow(new RegExp(`${name} is required and has no default`));
+		}
 	});
 });
 
@@ -12740,17 +12778,17 @@ describe("spellkave_tag_entity (sk-ntz.2, cross-file post-placement retag)", () 
 	async function placeHero(workspace: ReturnType<typeof fakeWorkspace>) {
 		await authorPlaceToolDef.run(
 			contextWith({ workspace }),
-			{ bundle: "elven_mini", nodes: [{ id: "elven_mini/hearth" }], edges: [] },
+			{ bundle: "kavemouth", nodes: [{ id: "kavemouth/hearth" }], edges: [] },
 			"place",
 		);
 		await rawPlaceActorToolDef.run(
 			contextWith({ workspace }),
 			{
-				bundle: "elven_mini",
+				bundle: "kavemouth",
 				kind: "player",
-				at: "elven_mini/hearth",
-				entity_key: "elven_mini/hero_1",
-				tags: ["elven_mini.fighter", "elven_mini.human"],
+				at: "kavemouth/hearth",
+				entity_key: "kavemouth/hero_1",
+				tags: ["kavemouth.fighter", "kavemouth.human"],
 			},
 			"place-hero",
 		);
@@ -12761,7 +12799,7 @@ describe("spellkave_tag_entity (sk-ntz.2, cross-file post-placement retag)", () 
 		await placeHero(workspace);
 		const result = await tagEntityToolDef.run(
 			contextWith({ workspace }),
-			{ bundle: "elven_mini", entity_key: "elven_mini/hero_1", tags: ["elven_mini.party_member"] },
+			{ bundle: "kavemouth", entity_key: "kavemouth/hero_1", tags: ["kavemouth.party_member"] },
 			"tag",
 		);
 		const details = result.details as VerbResult;
@@ -12770,12 +12808,12 @@ describe("spellkave_tag_entity (sk-ntz.2, cross-file post-placement retag)", () 
 		expect(details.rows_replaced).toBeUndefined();
 		const manifest = inspectManifest(workspace.current() ?? "").manifest as Record<string, unknown>;
 		const tagRowsFound = tableRows(manifest, "entity_tag").filter(
-			(r) => r.entity_key === "elven_mini/hero_1",
+			(r) => r.entity_key === "kavemouth/hero_1",
 		);
 		expect(tagRowsFound.map((r) => r.tag).sort()).toEqual([
-			"elven_mini.fighter",
-			"elven_mini.human",
-			"elven_mini.party_member",
+			"kavemouth.fighter",
+			"kavemouth.human",
+			"kavemouth.party_member",
 		]);
 	});
 
@@ -12784,12 +12822,12 @@ describe("spellkave_tag_entity (sk-ntz.2, cross-file post-placement retag)", () 
 		await placeHero(workspace);
 		await tagEntityToolDef.run(
 			contextWith({ workspace }),
-			{ bundle: "elven_mini", entity_key: "elven_mini/hero_1", tags: ["elven_mini.party_member"] },
+			{ bundle: "kavemouth", entity_key: "kavemouth/hero_1", tags: ["kavemouth.party_member"] },
 			"tag-1",
 		);
 		const second = await tagEntityToolDef.run(
 			contextWith({ workspace }),
-			{ bundle: "elven_mini", entity_key: "elven_mini/hero_1", tags: ["elven_mini.party_member"] },
+			{ bundle: "kavemouth", entity_key: "kavemouth/hero_1", tags: ["kavemouth.party_member"] },
 			"tag-2",
 		);
 		const details = second.details as VerbResult;
@@ -12798,7 +12836,7 @@ describe("spellkave_tag_entity (sk-ntz.2, cross-file post-placement retag)", () 
 		expect(details.rows_replaced).toBeUndefined();
 		const manifest = inspectManifest(workspace.current() ?? "").manifest as Record<string, unknown>;
 		const tagRowsFound = tableRows(manifest, "entity_tag").filter(
-			(r) => r.entity_key === "elven_mini/hero_1" && r.tag === "elven_mini.party_member",
+			(r) => r.entity_key === "kavemouth/hero_1" && r.tag === "kavemouth.party_member",
 		);
 		expect(tagRowsFound).toHaveLength(1);
 	});
@@ -12809,9 +12847,9 @@ describe("spellkave_tag_entity (sk-ntz.2, cross-file post-placement retag)", () 
 		const result = await tagEntityToolDef.run(
 			contextWith({ workspace }),
 			{
-				bundle: "elven_mini",
-				entity_key: "elven_mini/hero_1",
-				tags: ["elven_mini.party_member"],
+				bundle: "kavemouth",
+				entity_key: "kavemouth/hero_1",
+				tags: ["kavemouth.party_member"],
 				mode: "replace",
 			},
 			"tag-replace",
@@ -12822,9 +12860,9 @@ describe("spellkave_tag_entity (sk-ntz.2, cross-file post-placement retag)", () 
 		expect(details.rows_added).toBe(1);
 		const manifest = inspectManifest(workspace.current() ?? "").manifest as Record<string, unknown>;
 		const tagRowsFound = tableRows(manifest, "entity_tag").filter(
-			(r) => r.entity_key === "elven_mini/hero_1",
+			(r) => r.entity_key === "kavemouth/hero_1",
 		);
-		expect(tagRowsFound.map((r) => r.tag)).toEqual(["elven_mini.party_member"]);
+		expect(tagRowsFound.map((r) => r.tag)).toEqual(["kavemouth.party_member"]);
 	});
 
 	it("rejects an entity_key with no entities row, naming `entity_key` (place it first)", async () => {
@@ -12832,7 +12870,7 @@ describe("spellkave_tag_entity (sk-ntz.2, cross-file post-placement retag)", () 
 		await expect(
 			tagEntityToolDef.run(
 				contextWith({ workspace }),
-				{ bundle: "elven_mini", entity_key: "elven_mini/ghost", tags: ["elven_mini.party_member"] },
+				{ bundle: "kavemouth", entity_key: "kavemouth/ghost", tags: ["kavemouth.party_member"] },
 				"tag",
 			),
 		).rejects.toThrow(/`entity_key`/);
@@ -12844,12 +12882,12 @@ describe("spellkave_tag_entity (sk-ntz.2, cross-file post-placement retag)", () 
 		await writeRowsToolDef.run(
 			contextWith({ workspace }),
 			{
-				bundle: "elven_mini",
+				bundle: "kavemouth",
 				kind: "capability_definitions",
 				rows: [
 					{
-						capability_id: "elven_mini/speak",
-						bundle_id: "elven_mini",
+						capability_id: "kavemouth/speak",
+						bundle_id: "kavemouth",
 						actor_kind: "any",
 						display_name: "Speak",
 						description: "",
@@ -12861,13 +12899,13 @@ describe("spellkave_tag_entity (sk-ntz.2, cross-file post-placement retag)", () 
 		await writeRowsToolDef.run(
 			contextWith({ workspace }),
 			{
-				bundle: "elven_mini",
+				bundle: "kavemouth",
 				kind: "tag_capability_grant",
 				rows: [
 					{
-						tag: "elven_mini.party_member",
-						capability_id: "elven_mini/speak",
-						bundle_id: "elven_mini",
+						tag: "kavemouth.party_member",
+						capability_id: "kavemouth/speak",
+						bundle_id: "kavemouth",
 					},
 				],
 			},
@@ -12875,16 +12913,16 @@ describe("spellkave_tag_entity (sk-ntz.2, cross-file post-placement retag)", () 
 		);
 		const result = await tagEntityToolDef.run(
 			contextWith({ workspace }),
-			{ bundle: "elven_mini", entity_key: "elven_mini/hero_1", tags: ["elven_mini.party_member"] },
+			{ bundle: "kavemouth", entity_key: "kavemouth/hero_1", tags: ["kavemouth.party_member"] },
 			"tag",
 		);
 		const details = result.details as VerbResult;
 		expect(details.ok, JSON.stringify(details)).toBe(true);
 		expect(details.tag_capability_grants).toEqual([
 			{
-				entity_key: "elven_mini/hero_1",
-				tag: "elven_mini.party_member",
-				capability_id: "elven_mini/speak",
+				entity_key: "kavemouth/hero_1",
+				tag: "kavemouth.party_member",
+				capability_id: "kavemouth/speak",
 			},
 		]);
 	});

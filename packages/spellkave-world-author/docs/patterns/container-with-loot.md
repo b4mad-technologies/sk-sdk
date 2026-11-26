@@ -82,14 +82,14 @@ bundle-owned, authored once in `srd`.
 
 ## Proof
 
-- Offline: `packages/spellkave-adventure-elven-mini` `typecheck` / `test`
-  (`author:elven-mini:check`); `packages/spellkave-srd-cc` `test:fast`.
+- Offline: `packages/spellkave-adventure-kavemouth` `typecheck` / `test`
+  (`author:kavemouth:check`); `packages/spellkave-srd-cc` `test:fast`.
 - Live: `packages/spellkave-srd-cc/src/test/live-self-seeding/scenes/pickup-two-potions.test.ts`
   and `pickup-disclosure.test.ts` — a hero dispatches `srd/pickup` against both
   potions' `item:<id>` target refs through the generic PLAYER `r_manipulate`
-  reducer (no elven-mini bespoke action, no admin move of items); the authored
+  reducer (no kavemouth bespoke action, no admin move of items); the authored
   loft chest itself is pinned offline in
-  `packages/spellkave-adventure-elven-mini/tests/offline/seed-facts.test.ts`; and
+  `packages/spellkave-adventure-kavemouth/tests/offline/seed-facts.test.ts`; and
   `packages/spellkave-srd-cc/src/test/live-self-seeding/mechanics/
   pickup-container.test.ts`, proving the generic capability against a
   disposable self-seeded scene. The one-pickup-per-turn budget comes from
@@ -123,5 +123,5 @@ player does with the item once carried).
 
 ## SRD features that use this
 
-- Elven-mini's loft chest (`elven_mini/adventure/item/loft_chest_1`, 2x Potion
+- Kavemouth's loft chest (`kavemouth/adventure/item/loft_chest_1`, 2x Potion
   of Healing, sk-jay0.1.23.36.22.2 — design §6, L-4 loop pilot).

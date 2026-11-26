@@ -65,7 +65,7 @@
 		],
 		"examples": [
 			{
-				"command": "sk diff packages/spellkave-adventure-elven-mini/fixtures/reference/renn.toml packages/spellkave-srd-cc/saves/<name>/elven_mini-adventure-candidate_1.toml --map-key elven_mini/adventure/candidate_1=elven_mini/adventure/hero_1",
+				"command": "sk diff packages/spellkave-adventure-kavemouth/fixtures/reference/renn.toml packages/spellkave-srd-cc/saves/<name>/kavemouth-adventure-candidate_1.toml --map-key kavemouth/adventure/candidate_1=kavemouth/adventure/hero_1",
 				"description": "compare a created candidate export to Renn without key-prefix noise"
 			}
 		]

@@ -1,7 +1,7 @@
 // live-phase: final
 /**
  * A RECONNECTED hosted PLAYER session receives a committed scheduled arrival. Re-homed from the
- * elven-mini live file `travel-hold-brain` (:412-433, `syncHostedSeat`;
+ * kavemouth live file `travel-hold-brain` (:412-433, `syncHostedSeat`;
  * ledger/designs/rehome-map-kernel-sdk.md): the hosted-session type lives in this package, which
  * the sdk (that holds the travel-clock test) cannot depend on.
  * Final phase: `timeStep` pauses the node clock every other test sees, advances it and resumes it

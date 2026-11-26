@@ -2454,12 +2454,15 @@
 		{
 			"name": "spellkave_attach_map_layer",
 			"label": "Attach Map Layer",
-			"description": "Author a [[map_layers]] backdrop pointer for a place_graph (Phandelver parity). Does NOT vendor the image — asset_path resolves at map_graph time via CCC3_MAPS_ROOT or FVTT_DATA_ROOT. Optionally stamps provenance metadata on the graph. When the file is present, image_width/height are filled from PNG IHDR if unset.",
+			"description": "Author a [[map_layers]] backdrop pointer for a place_graph. Does NOT vendor the image — asset_path resolves at map_graph time via SPELLKAVE_MAP_ASSETS_ROOT/<asset_module> or FVTT_DATA_ROOT. The caller names asset_module, source_kind and posture; nothing is assumed. Optionally stamps provenance metadata on the graph. When the file is present, image_width/height are filled from PNG IHDR if unset.",
 			"parameters": {
 				"type": "object",
 				"required": [
 					"place_graph_id",
-					"asset_path"
+					"asset_path",
+					"asset_module",
+					"posture",
+					"source_kind"
 				],
 				"properties": {
 					"bundle": {
@@ -2471,11 +2474,12 @@
 					},
 					"asset_path": {
 						"type": "string",
-						"description": "Relative path under asset root, e.g. \"maps/306 Fortified Hamlet.jpg\" for ccc3-maps."
+						"description": "Relative path under the asset module, e.g. \"maps/hamlet.jpg\"."
 					},
 					"asset_module": {
 						"type": "string",
-						"description": "Asset root module id (default \"ccc3-maps\"). Also resolves FVTT_DATA_ROOT/<module>."
+						"minLength": 1,
+						"description": "Asset module id: the folder that holds the image. Resolves SPELLKAVE_MAP_ASSETS_ROOT/<module> and FVTT_DATA_ROOT/<module>. No default."
 					},
 					"display_name": {
 						"type": "string"
@@ -2486,11 +2490,13 @@
 					},
 					"posture": {
 						"type": "string",
-						"description": "License posture stamp (default \"cc-by-4.0\" for ccc3)."
+						"minLength": 1,
+						"description": "License posture stamp of the image, e.g. \"cc-by-4.0\" or \"proprietary\". No default."
 					},
 					"source_kind": {
 						"type": "string",
-						"description": "Default \"elven-tower-ccc\"."
+						"minLength": 1,
+						"description": "Where the image comes from, e.g. \"first-party\" or a named map source. No default."
 					},
 					"grid_size_px": {
 						"type": "number"
@@ -2531,18 +2537,20 @@
 						"description": "Catalog map id for provenance payload."
 					},
 					"license_url": {
-						"type": "string"
+						"type": "string",
+						"description": "License text URL for the provenance payload. No default."
 					},
 					"source_url": {
-						"type": "string"
+						"type": "string",
+						"description": "Source page URL for the provenance payload. No default."
 					}
 				}
 			},
 			"executionMode": "sequential",
 			"promptSnippet": "Attach an out-of-repo map image layer to a place_graph",
 			"promptGuidelines": [
-				"Use after author_place. asset_module ccc3-maps + asset_path maps/<file>.",
-				"Images never go in git; map_graph overlays them when CCC3_MAPS_ROOT resolves.",
+				"Use after author_place. Pass asset_module + asset_path maps/<file>, plus source_kind and posture.",
+				"Images never go in git; map_graph overlays them when SPELLKAVE_MAP_ASSETS_ROOT/<asset_module> resolves.",
 				"just map-font-check is unrelated — this is bitmap backdrops, not terminal fonts."
 			],
 			"roles": [
@@ -3251,7 +3259,7 @@
 				"properties": {
 					"bundle": {
 						"type": "string",
-						"description": "bundle_id stamped on every generated entity_tag row. Omit to fall back to `context.defaultBundle` (#1968 smart default). NOTE: this is the bundle OWNING the new tag row(s), not necessarily the bundle that placed `entity_key` — a cross-bundle caller stamps ITS own bundle_id here (the elven-mini idiom this verb replaces: crypt-fight.ts/dm-npc.ts tag the hero placed in hero.ts, all three sharing one bundle in that fixture, but nothing requires it)."
+						"description": "bundle_id stamped on every generated entity_tag row. Omit to fall back to `context.defaultBundle` (#1968 smart default). NOTE: this is the bundle OWNING the new tag row(s), not necessarily the bundle that placed `entity_key` — a cross-bundle caller stamps ITS own bundle_id here (the kavemouth idiom this verb replaces: crypt-fight.ts/dm-npc.ts tag the hero placed in hero.ts, all three sharing one bundle in that fixture, but nothing requires it)."
 					},
 					"entity_key": {
 						"type": "string",
@@ -5671,7 +5679,7 @@
 				],
 				"examples": [
 					{
-						"command": "sk --live export elven_mini --actor elven_mini/adventure/hero_1 --out hero.toml",
+						"command": "sk --live export kavemouth --actor kavemouth/adventure/hero_1 --out hero.toml",
 						"description": "export the staged hero as a standalone TOML save"
 					}
 				]
@@ -5764,7 +5772,7 @@
 				],
 				"examples": [
 					{
-						"command": "sk diff packages/spellkave-adventure-elven-mini/fixtures/reference/renn.toml packages/spellkave-srd-cc/saves/<name>/elven_mini-adventure-candidate_1.toml --map-key elven_mini/adventure/candidate_1=elven_mini/adventure/hero_1",
+						"command": "sk diff packages/spellkave-adventure-kavemouth/fixtures/reference/renn.toml packages/spellkave-srd-cc/saves/<name>/kavemouth-adventure-candidate_1.toml --map-key kavemouth/adventure/candidate_1=kavemouth/adventure/hero_1",
 						"description": "compare a created candidate export to Renn without key-prefix noise"
 					}
 				]
@@ -6158,11 +6166,11 @@
 				],
 				"examples": [
 					{
-						"command": "sk get entities elven_mini/adventure/item/loft_chest_1",
+						"command": "sk get entities kavemouth/adventure/item/loft_chest_1",
 						"description": "read the loft chest by authored key"
 					},
 					{
-						"command": "sk get entities --bundle elven_mini",
+						"command": "sk get entities --bundle kavemouth",
 						"description": "list authored entities in the bundle"
 					}
 				]
@@ -6233,7 +6241,7 @@
 				],
 				"examples": [
 					{
-						"command": "sk describe entities elven_mini/adventure/item/loft_chest_1",
+						"command": "sk describe entities kavemouth/adventure/item/loft_chest_1",
 						"description": "describe the loft chest and its contents"
 					}
 				]

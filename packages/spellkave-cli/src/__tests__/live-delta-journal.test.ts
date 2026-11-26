@@ -15,7 +15,7 @@ import {
 	resolveLiveDeltaJournalDir,
 } from "../live-delta-journal.ts";
 
-const DELTA = 'schema_version = "1.0.0"\n\n[[bundles]]\nbundle_id = "elven_mini"\n';
+const DELTA = 'schema_version = "1.0.0"\n\n[[bundles]]\nbundle_id = "kavemouth"\n';
 
 describe("live delta journal", () => {
 	let dir: string;

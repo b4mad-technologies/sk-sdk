@@ -43,12 +43,12 @@ function sampleSubmission(overrides: Partial<FeedbackSubmission> = {}): Feedback
 	return {
 		message: "The exit to the crypt looked walkable but move failed.",
 		category: "bug",
-		seat: { actor_id: "hero_42", world_slug: "elven-mini" },
+		seat: { actor_id: "hero_42", world_slug: "kavemouth" },
 		submitted_at: "2026-08-22T16:00:00.000Z",
 		bundle: {
 			v: MUST_GATHER_BUNDLE_VERSION,
 			collected_at: "2026-08-22T16:00:00.000Z",
-			world: { slug: "elven-mini", db: "elven-mini" },
+			world: { slug: "kavemouth", db: "kavemouth" },
 			seat: { actor_id: "hero_42", role: "PLAYER" },
 			versions: { gateway: "0.0.0", module: "0.0.0" },
 			session_status: {},
@@ -84,11 +84,11 @@ describe("parseAppEnvFile + issue shaping", () => {
 	it("builds title, labels, body with collapsed must-gather details", () => {
 		const feedback = sampleSubmission();
 		expect(buildFeedbackIssueTitle(feedback)).toBe(
-			"feedback(elven-mini): The exit to the crypt looked walkable but move failed.",
+			"feedback(kavemouth): The exit to the crypt looked walkable but move failed.",
 		);
 		expect(feedbackIssueLabels(feedback)).toEqual([
 			FEEDBACK_ISSUE_LABEL,
-			"world:elven-mini",
+			"world:kavemouth",
 			"seat:hero_42",
 		]);
 		const body = buildFeedbackIssueBody(feedback);
@@ -161,7 +161,7 @@ describe("parseAppEnvFile + issue shaping", () => {
 	it("renders the hashed subject prefix, never the raw WorkOS user id (sk-0m4.120.19)", () => {
 		const subject = "user_01M13FABNDQ7EXAMPLE0000";
 		const body = buildFeedbackIssueBody(
-			sampleSubmission({ seat: { actor_id: "hero_42", world_slug: "elven-mini", subject } }),
+			sampleSubmission({ seat: { actor_id: "hero_42", world_slug: "kavemouth", subject } }),
 		);
 		// Same value the bundle's `seat.subject_prefix` carries (feedback.ts).
 		expect(body).toContain(`**Subject prefix:** \`${hashTranscriptSubject(subject)}\``);
@@ -206,7 +206,7 @@ describe("GitHubFeedbackSink (fake fetch)", () => {
 				};
 				expect(body.labels).toContain(FEEDBACK_ISSUE_LABEL);
 				expect(body.body).toContain("<details>");
-				expect(body.title.startsWith("feedback(elven-mini):")).toBe(true);
+				expect(body.title.startsWith("feedback(kavemouth):")).toBe(true);
 				return new Response(
 					JSON.stringify({
 						number: 4242,
@@ -343,7 +343,7 @@ describe("GitHubFeedbackSink (fake fetch)", () => {
 			{ invoke: async () => ({ id: 1, ok: true, result: { content: [] } }) },
 			{
 				sink,
-				resolveSeat: () => ({ actorId: "hero_1", worldSlug: "elven-mini" }),
+				resolveSeat: () => ({ actorId: "hero_1", worldSlug: "kavemouth" }),
 				now: () => new Date("2026-08-22T16:00:00.000Z"),
 			},
 		);

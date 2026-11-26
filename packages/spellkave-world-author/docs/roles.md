@@ -52,7 +52,7 @@ Pacing and manifest apply remain separate capabilities. See
 
 `timekeeper` controls the shared world clock in every extent. A regional
 grant still pauses every table in that world. Ordinary `dm` does not pace
-time. Elven Mini's publisher-applied `elven_mini/scripted-dm` definition
+time. Kavemouth's publisher-applied `kavemouth/scripted-dm` definition
 adds `frontier.pace_time` for Aldwin. The local tool factory offers
 `spellkave_pace_time` only on a caller-owned connection with a current
 pacing presence; it refuses a publisher connection. Hosted roster and
@@ -186,12 +186,12 @@ independent live postconditions for AUTH-36-01/02. The captures identify the
 proved revision and publisher bootstrap; hosted MCP delivery and packaged
 persona guidance remain with `.45` and `.56`.
 
-Aldwin's publisher-authored `elven_mini/aldwin-author-bundle` binding grants
-`elven_mini/scripted-dm` over Bundle `elven_mini`, alongside the existing
+Aldwin's publisher-authored `kavemouth/aldwin-author-bundle` binding grants
+`kavemouth/scripted-dm` over Bundle `kavemouth`, alongside the existing
 regional and party bindings. Its definition authoring stays inside that
 adventure; shared `dm` and `srd` vocabulary remain publisher-authored.
 The generated fixture and `tests/offline/role-bindings.test.ts` in
-`packages/spellkave-adventure-elven-mini` prove the binding excludes those
+`packages/spellkave-adventure-kavemouth` prove the binding excludes those
 foreign bundles. Publisher listing precedes the seat claim. This content
 authority is separate from the scripted runtime: Aldwin opens shared authored
 menus through its admitted DM presence, and the occurrence retains the

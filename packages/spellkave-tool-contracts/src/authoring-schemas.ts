@@ -945,23 +945,28 @@ export const ATTACH_MAP_LAYER_PARAMS = Type.Object({
 		description: "place_graph this backdrop belongs to.",
 	}),
 	asset_path: Type.String({
-		description:
-			'Relative path under asset root, e.g. "maps/306 Fortified Hamlet.jpg" for ccc3-maps.',
+		description: 'Relative path under the asset module, e.g. "maps/hamlet.jpg".',
 	}),
-	asset_module: Type.Optional(
-		Type.String({
-			description:
-				'Asset root module id (default "ccc3-maps"). Also resolves FVTT_DATA_ROOT/<module>.',
-		}),
-	),
+	asset_module: Type.String({
+		minLength: 1,
+		description:
+			"Asset module id: the folder that holds the image. Resolves " +
+			"SPELLKAVE_MAP_ASSETS_ROOT/<module> and FVTT_DATA_ROOT/<module>. No default.",
+	}),
 	display_name: Type.Optional(Type.String()),
 	map_layer_id: Type.Optional(
 		Type.String({ description: "Defaults to <place_graph_id>/backdrop." }),
 	),
-	posture: Type.Optional(
-		Type.String({ description: 'License posture stamp (default "cc-by-4.0" for ccc3).' }),
-	),
-	source_kind: Type.Optional(Type.String({ description: 'Default "elven-tower-ccc".' })),
+	posture: Type.String({
+		minLength: 1,
+		description:
+			'License posture stamp of the image, e.g. "cc-by-4.0" or "proprietary". No default.',
+	}),
+	source_kind: Type.String({
+		minLength: 1,
+		description:
+			'Where the image comes from, e.g. "first-party" or a named map source. No default.',
+	}),
 	grid_size_px: Type.Optional(Type.Number()),
 	grid_distance_m: Type.Optional(Type.Number()),
 	image_width_px: Type.Optional(Type.Number()),
@@ -979,8 +984,12 @@ export const ATTACH_MAP_LAYER_PARAMS = Type.Object({
 	/** Provenance metadata on the place_graph (default true). */
 	provenance: Type.Optional(Type.Boolean()),
 	map_id: Type.Optional(Type.String({ description: "Catalog map id for provenance payload." })),
-	license_url: Type.Optional(Type.String()),
-	source_url: Type.Optional(Type.String()),
+	license_url: Type.Optional(
+		Type.String({ description: "License text URL for the provenance payload. No default." }),
+	),
+	source_url: Type.Optional(
+		Type.String({ description: "Source page URL for the provenance payload. No default." }),
+	),
 });
 
 export const ANNOTATE_PLACE_PARAMS = Type.Object({
@@ -1082,7 +1091,7 @@ export const TAG_ENTITY_PARAMS = Type.Object({
 				"bundle_id stamped on every generated entity_tag row. Omit to fall back to " +
 				"`context.defaultBundle` (#1968 smart default). NOTE: this is the bundle OWNING the new tag " +
 				"row(s), not necessarily the bundle that placed `entity_key` — a cross-bundle caller stamps ITS " +
-				"own bundle_id here (the elven-mini idiom this verb replaces: crypt-fight.ts/dm-npc.ts tag " +
+				"own bundle_id here (the kavemouth idiom this verb replaces: crypt-fight.ts/dm-npc.ts tag " +
 				"the hero placed in hero.ts, all three sharing one bundle in that fixture, but nothing requires it).",
 		}),
 	),

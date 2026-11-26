@@ -87,7 +87,7 @@ describe("OTLP world-actor tracer", () => {
 				requests.push(init);
 				return new Response(null, { status: 200 });
 			}) as typeof fetch,
-			resourceAttributes: { "spellkave.world_slug": "elven-mini", private: speechCanary },
+			resourceAttributes: { "spellkave.world_slug": "kavemouth", private: speechCanary },
 		});
 		const span = tracer.startSpan("spellkave.reducer_attempt", {
 			"spellkave.actor_id": "aldwin",

@@ -75,7 +75,7 @@ describe("must-gather bundle", () => {
 		const events = [
 			sampleEvent("run_start", "mcp-req-snapshot", "hero_42", {
 				correlation_id: "req-snapshot",
-				world_slug: "elven-mini",
+				world_slug: "kavemouth",
 				subject_prefix: "a1b2c3d4e5f60718",
 			}),
 			sampleEvent("tool_call", "mcp-req-snapshot", "hero_42", {
@@ -95,7 +95,7 @@ describe("must-gather bundle", () => {
 		const sessionStatus: SessionDaemonStatus = {
 			binding: {
 				url: "http://127.0.0.1:3000",
-				db: "spellkave-elven-mini",
+				db: "spellkave-kavemouth",
 				identity: "user_sub_hash",
 				actorId: "hero_42",
 			},
@@ -113,8 +113,8 @@ describe("must-gather bundle", () => {
 			runId: "mcp-req-snapshot",
 			correlationId: "req-snapshot",
 			world: {
-				slug: "elven-mini",
-				db: "spellkave-elven-mini",
+				slug: "kavemouth",
+				db: "spellkave-kavemouth",
 			},
 			seat: {
 				actorId: "hero_42",
@@ -160,7 +160,7 @@ describe("must-gather bundle", () => {
 		const bundle = buildMustGather(ctx);
 
 		expect(bundle.v).toBe(MUST_GATHER_BUNDLE_VERSION);
-		expect(bundle.world).toEqual({ slug: "elven-mini", db: "spellkave-elven-mini" });
+		expect(bundle.world).toEqual({ slug: "kavemouth", db: "spellkave-kavemouth" });
 		expect(bundle.seat.actor_id).toBe("hero_42");
 		expect(bundle.seat.subject_prefix).toBe("a1b2c3d4e5f60718");
 		expect(bundle.versions.gateway).toBe("0.0.0");
@@ -208,7 +208,7 @@ describe("must-gather bundle", () => {
 
 		const dirtyContext: MustGatherContext = {
 			world: {
-				slug: "elven-mini",
+				slug: "kavemouth",
 				db: "spellkave-dev",
 			},
 			seat: {
@@ -389,7 +389,7 @@ describe("must-gather bundle", () => {
 	it("regression sk-0m4.120.8: 5 prior runs + own run_start ⇒ bundle lists the prior runs", async () => {
 		const ringSink = createRunEventsRingBufferSink(100);
 		const observer = createRemoteMcpRunObserver({
-			resolveActor: () => ({ actorId: "hero_hist", worldSlug: "elven-mini-4" }),
+			resolveActor: () => ({ actorId: "hero_hist", worldSlug: "kavemouth-4" }),
 			sinks: [ringSink],
 			eventsSink: ringSink,
 		});
@@ -416,7 +416,7 @@ describe("must-gather bundle", () => {
 		ringSink.write({
 			...sampleEvent("run_start", "mcp-fb-own", "hero_hist", {
 				correlation_id: "fb-own",
-				world_slug: "elven-mini-4",
+				world_slug: "kavemouth-4",
 				subject_prefix: hashTranscriptSubject(subject),
 			}),
 		});
@@ -425,7 +425,7 @@ describe("must-gather bundle", () => {
 			runId: "mcp-fb-own",
 			correlationId: "fb-own",
 			eventsSink: ringSink,
-			world: { slug: "elven-mini-4", db: "elven-mini-4" },
+			world: { slug: "kavemouth-4", db: "kavemouth-4" },
 			seat: { actorId: "hero_hist", subjectPrefix: hashTranscriptSubject(subject) },
 			now: fixedClock(),
 		});
@@ -468,7 +468,7 @@ describe("must-gather bundle", () => {
 	it("excludes another subject's rows from the process-wide ring buffer", async () => {
 		const ringSink = createRunEventsRingBufferSink(100);
 		const observer = createRemoteMcpRunObserver({
-			resolveActor: () => ({ actorId: "shared_actor", worldSlug: "elven-mini-4" }),
+			resolveActor: () => ({ actorId: "shared_actor", worldSlug: "kavemouth-4" }),
 			sinks: [ringSink],
 			eventsSink: ringSink,
 		});
@@ -496,7 +496,7 @@ describe("must-gather bundle", () => {
 		const bundle = buildMustGather({
 			runId: "mcp-mine-2",
 			eventsSink: ringSink,
-			world: { slug: "elven-mini-4", db: "elven-mini-4" },
+			world: { slug: "kavemouth-4", db: "kavemouth-4" },
 			seat: { actorId: "shared_actor", subjectPrefix: hashTranscriptSubject(mine) },
 			now: fixedClock(),
 		});
@@ -517,7 +517,7 @@ describe("must-gather bundle", () => {
 			sampleEvent("tool_call", "mcp-w1", "hero_w", {
 				tool_name: "spellkave_scene",
 				subject_prefix: prefix,
-				world_slug: "elven-mini-4",
+				world_slug: "kavemouth-4",
 			}),
 			sampleEvent("tool_call", "mcp-w2", "hero_w", {
 				tool_name: "spellkave_scene",
@@ -528,7 +528,7 @@ describe("must-gather bundle", () => {
 		];
 		const bundle = buildMustGather({
 			runEvents: events,
-			world: { slug: "elven-mini-4", db: "elven-mini-4" },
+			world: { slug: "kavemouth-4", db: "kavemouth-4" },
 			seat: { actorId: "hero_w", subjectPrefix: prefix },
 			now: fixedClock(),
 		});
