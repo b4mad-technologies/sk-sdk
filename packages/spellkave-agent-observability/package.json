@@ -1,6 +1,6 @@
 {
 	"name": "@spellkave/agent-observability",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"private": true,
 	"description": "World-actor run observability (ADR-0074): the agent-run-events/v1 schema, emit API + sinks, and the read/projection API. NOT ADR-0030 coding-agent telemetry.",
 	"type": "module",

@@ -1,6 +1,6 @@
 {
 	"name": "@spellkave/tool-node",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"private": true,
 	"description": "Node-only filesystem, local-credential, raster-output, and host-telemetry adapters for Spellkave tool runtime capability ports.",
 	"type": "module",

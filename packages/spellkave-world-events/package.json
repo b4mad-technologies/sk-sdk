@@ -1,6 +1,6 @@
 {
 	"name": "@spellkave/world-events",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"private": true,
 	"description": "Closed WorldEvent and ActPlayerResult vocabularies, renderers, and single-cursor fan-out. Zero runtime dependencies \u2014 SDK, tool-runtime, and tool-player may all import it.",
 	"type": "module",
