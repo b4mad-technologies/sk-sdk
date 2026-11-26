@@ -34,7 +34,7 @@ describe("spellkave_get / spellkave_describe", () => {
 		const answer = {
 			ok: true as const,
 			kind: "entities",
-			bundle: "elven_mini",
+			bundle: "kavemouth",
 			tick: "1",
 			labels: ["authored_entities_only"] as const,
 			row: { entity_key: "hero", value_int: 9223372036854775807n },
@@ -53,7 +53,7 @@ describe("spellkave_get / spellkave_describe", () => {
 		const parsed = JSON.parse(modelText(g)) as Record<string, unknown>;
 		expect(parsed.ok).toBe(true);
 		expect(parsed.kind).toBe("entities");
-		expect(parsed.bundle).toBe("elven_mini");
+		expect(parsed.bundle).toBe("kavemouth");
 		expect(parsed.tick).toBe("1");
 		expect(parsed.labels).toEqual(["authored_entities_only"]);
 		expect(parsed.row).toMatchObject({
@@ -67,7 +67,7 @@ describe("spellkave_get / spellkave_describe", () => {
 		const answer = {
 			ok: true as const,
 			kind: "entities" as const,
-			bundle: "elven_mini",
+			bundle: "kavemouth",
 			tick: "9",
 			labels: ["authored_entities_only"] as const,
 			row: { entity_key: "chest" },
@@ -98,7 +98,7 @@ describe("spellkave_get / spellkave_describe", () => {
 		expect(parsed.container_chain).toEqual([
 			{ numeric_id: "10", entity_key: "chest", place: "inn/loft" },
 		]);
-		expect(parsed.bundle).toBe("elven_mini");
+		expect(parsed.bundle).toBe("kavemouth");
 		expect(parsed.tick).toBe("9");
 		expect(parsed.labels).toEqual(["authored_entities_only"]);
 		expect(parsed.numeric_id).toBe("10");

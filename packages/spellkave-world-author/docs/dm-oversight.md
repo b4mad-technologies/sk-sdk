@@ -205,7 +205,7 @@ authority, and cannot apply a self-bind delta to bootstrap it (`MF-APPLY-015`).
 Even a separate apply grant does not waive D6 for changing a role-bound NPC's
 durable primary membership. Use the publisher-mediated bootstrap rather than
 putting publishing credentials in the host. The host integration lives in
-`packages/spellkave-adventure-elven-mini/scripts/host.ts`; this source pointer
+`packages/spellkave-adventure-kavemouth/scripts/host.ts`; this source pointer
 is not a hosted acceptance claim.
 
 ### The exception: an operator hands over a seat

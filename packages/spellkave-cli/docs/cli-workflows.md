@@ -177,8 +177,8 @@ placed bodies under a graph grant and all 84 under the Bundle grant, without
 changing admission. An authorized operator can grant the world's existing role:
 
 ```sh
-sk --live grant --role dm --subject <identity> --extent-kind bundle --extent elven_mini --bundle elven_mini
-sk explore search --kind entities --bundle elven_mini --source live
+sk --live grant --role dm --subject <identity> --extent-kind bundle --extent kavemouth --bundle kavemouth
+sk explore search --kind entities --bundle kavemouth --source live
 sk explore search Candidate --kind entity_definitions --source live
 ```
 
@@ -264,10 +264,10 @@ in `behaviour/exploration/visibility.feature` (also run by the existing kernel
 scoped-read CI row).
 
 For adventures and rules in separate packages, configure the local manifest and
-each dependency once. From the checkout root, for Elven Mini:
+each dependency once. From the checkout root, for Kavemouth:
 
 ```bash
-sk config set --project author.target packages/spellkave-adventure-elven-mini/fixtures/adventure.manifest.toml
+sk config set --project author.target packages/spellkave-adventure-kavemouth/fixtures/adventure.manifest.toml
 sk explore search --kind place_graphs --limit 20
 sk map-inspect --images off
 ```

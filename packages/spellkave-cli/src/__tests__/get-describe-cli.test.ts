@@ -273,24 +273,24 @@ function describeOk(
 		kind: "entities" as const,
 		tick: "12",
 		labels: ["authored_entities_only"] as const,
-		row: { entity_key: "elven_mini/adventure/item/loft_chest_1", name: "Loft chest" },
+		row: { entity_key: "kavemouth/adventure/item/loft_chest_1", name: "Loft chest" },
 		slices: {
-			entities: [{ entity_key: "elven_mini/adventure/item/loft_chest_1" }],
+			entities: [{ entity_key: "kavemouth/adventure/item/loft_chest_1" }],
 			object_state: [{ state_id: "locked", value: false }],
 		},
 		numeric_id: "41",
-		place: "elven_mini/loft",
+		place: "kavemouth/loft",
 		container_chain: [
 			{
 				numeric_id: "41",
-				entity_key: "elven_mini/adventure/item/loft_chest_1",
-				place: "elven_mini/loft",
+				entity_key: "kavemouth/adventure/item/loft_chest_1",
+				place: "kavemouth/loft",
 			},
 		],
 		chain_end: { reason: "place" as const, numeric_id: "41" },
 		belonging: [
 			{
-				entity_key: "elven_mini/adventure/item/loft_chest_potion_1",
+				entity_key: "kavemouth/adventure/item/loft_chest_potion_1",
 				numeric_id: "42",
 				name: "Potion",
 				belongs_to_numeric_id: "41",
@@ -314,7 +314,7 @@ describe("sk describe human rendering", () => {
 		const { io, out } = collect({ stdoutIsTTY: true });
 		expect(
 			await runCli(
-				["--format", "human", "describe", "entities", "elven_mini/adventure/item/loft_chest_1"],
+				["--format", "human", "describe", "entities", "kavemouth/adventure/item/loft_chest_1"],
 				io,
 				connection(port),
 			),
@@ -338,7 +338,7 @@ describe("sk describe human rendering", () => {
 		const { io, out } = collect({ stdoutIsTTY: true });
 		expect(
 			await runCli(
-				["--format", "human", "describe", "entities", "elven_mini/adventure/item/loft_chest_1"],
+				["--format", "human", "describe", "entities", "kavemouth/adventure/item/loft_chest_1"],
 				io,
 				connection(port),
 			),
@@ -364,7 +364,7 @@ describe("sk describe human rendering", () => {
 		const { io, out } = collect({ stdoutIsTTY: true });
 		expect(
 			await runCli(
-				["--format", "human", "describe", "entities", "elven_mini/adventure/item/loft_chest_1"],
+				["--format", "human", "describe", "entities", "kavemouth/adventure/item/loft_chest_1"],
 				io,
 				connection(port),
 			),
@@ -392,8 +392,8 @@ describe("sk get and sk describe answer like the spellkave_get and spellkave_des
 					visible_manifest_authored_entity_coverage: [{ status: "complete", projectionVersion: 1 }],
 					operator_manifest_authored_entity: [
 						{
-							manifestKey: "elven_mini:elven_mini/adventure/item/loft_chest_1",
-							bundleId: "elven_mini",
+							manifestKey: "kavemouth:kavemouth/adventure/item/loft_chest_1",
+							bundleId: "kavemouth",
 							entityId: 10n,
 						},
 					],
@@ -411,12 +411,12 @@ describe("sk get and sk describe answer like the spellkave_get and spellkave_des
 		expect(getTool).toBeDefined();
 		const toolResult = (await getTool?.execute("t", {
 			kind: "entities",
-			key: "elven_mini/adventure/item/loft_chest_1",
+			key: "kavemouth/adventure/item/loft_chest_1",
 		})) as { details?: unknown } | undefined;
 		const { io, out } = collect();
 		expect(
 			await runCli(
-				["--format", "jsonl", "get", "entities", "elven_mini/adventure/item/loft_chest_1"],
+				["--format", "jsonl", "get", "entities", "kavemouth/adventure/item/loft_chest_1"],
 				io,
 				connection(port),
 			),
@@ -439,8 +439,8 @@ describe("sk get and sk describe answer like the spellkave_get and spellkave_des
 					visible_manifest_authored_entity_coverage: [{ status: "complete", projectionVersion: 1 }],
 					operator_manifest_authored_entity: [
 						{
-							manifestKey: "elven_mini:elven_mini/adventure/item/loft_chest_1",
-							bundleId: "elven_mini",
+							manifestKey: "kavemouth:kavemouth/adventure/item/loft_chest_1",
+							bundleId: "kavemouth",
 							entityId: 10n,
 						},
 					],
@@ -458,12 +458,12 @@ describe("sk get and sk describe answer like the spellkave_get and spellkave_des
 		expect(describeTool).toBeDefined();
 		const toolResult = (await describeTool?.execute("t", {
 			kind: "entities",
-			key: "elven_mini/adventure/item/loft_chest_1",
+			key: "kavemouth/adventure/item/loft_chest_1",
 		})) as { details?: unknown } | undefined;
 		const { io, out } = collect();
 		expect(
 			await runCli(
-				["--format", "jsonl", "describe", "entities", "elven_mini/adventure/item/loft_chest_1"],
+				["--format", "jsonl", "describe", "entities", "kavemouth/adventure/item/loft_chest_1"],
 				io,
 				connection(port),
 			),

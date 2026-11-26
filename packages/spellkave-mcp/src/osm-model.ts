@@ -7,7 +7,7 @@
  * (debounced ≤1 s). Lazily computes and caches MVT GeoJSON layers and
  * geojson-vt indexes for `/tiles/…` routes.
  *
- * Bbox index: simple linear scan over nodes. Fine for <10k nodes (elven-mini
+ * Bbox index: simple linear scan over nodes. Fine for <10k nodes (kavemouth
  * is ~280); replace with an R-tree when a world exceeds that.
  */
 

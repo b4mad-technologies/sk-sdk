@@ -148,7 +148,7 @@ describe("ensureDaemon", () => {
 			pollIntervalMs: 1,
 			readyTimeoutMs: 1_000,
 			token: "tok-xyz",
-			worldSlug: " elven-mini-1 ",
+			worldSlug: " kavemouth-1 ",
 			idleTimeoutMs: 42,
 			command: { command: "fake-daemon", args: ["--flag"] },
 		});
@@ -163,7 +163,7 @@ describe("ensureDaemon", () => {
 		expect(options.env[DAEMON_ENV.binding]).toBe(JSON.stringify(binding));
 		expect(options.env[DAEMON_ENV.socket]).toBe(socketPath);
 		expect(options.env[DAEMON_ENV.token]).toBe("tok-xyz");
-		expect(options.env[DAEMON_ENV.worldSlug]).toBe("elven-mini-1");
+		expect(options.env[DAEMON_ENV.worldSlug]).toBe("kavemouth-1");
 		expect(options.env[DAEMON_ENV.idleTimeoutMs]).toBe("42");
 	});
 

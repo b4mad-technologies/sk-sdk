@@ -93,7 +93,7 @@ The world it points at:
 - SPELLKAVE_MCP_WORLD_URL is a closed port, so every seat probe fails at
   once and every player is a player without a hero (a seat needs a live
   SpacetimeDB subscription, which no offline fake can answer);
-- the catalog holds one public world `elven-mini-1` and one private world
+- the catalog holds one public world `kavemouth-1` and one private world
   `private-1`; the public one has a transcript on disk.
 The listen port is ephemeral, which runtime.ts allows only for a loopback
 canonical origin. Trust boundary `network-policy` lets the world URL point

@@ -124,7 +124,7 @@ describe("parseToolArgs", () => {
 					"--only",
 					"gaps",
 					"--map-key",
-					"elven_mini/adventure/candidate_1=elven_mini/adventure/hero_1",
+					"kavemouth/adventure/candidate_1=kavemouth/adventure/hero_1",
 					"--map-key",
 					"a=b",
 				],
@@ -136,7 +136,7 @@ describe("parseToolArgs", () => {
 			ignore_fields: "a,b",
 			kinds: "entities,object_state",
 			only: "gaps",
-			map_key: ["elven_mini/adventure/candidate_1=elven_mini/adventure/hero_1", "a=b"],
+			map_key: ["kavemouth/adventure/candidate_1=kavemouth/adventure/hero_1", "a=b"],
 		});
 	});
 
@@ -147,12 +147,12 @@ describe("parseToolArgs", () => {
 		expect(
 			parseToolArgs(
 				flags,
-				["elven_mini", "--actor", "elven_mini/adventure/hero_1", "--out", "hero.toml"],
+				["kavemouth", "--actor", "kavemouth/adventure/hero_1", "--out", "hero.toml"],
 				def.cli?.positionals ?? [],
 			),
 		).toEqual({
-			bundle: "elven_mini",
-			actor: "elven_mini/adventure/hero_1",
+			bundle: "kavemouth",
+			actor: "kavemouth/adventure/hero_1",
 			out: "hero.toml",
 		});
 	});

@@ -24,9 +24,9 @@ const catalog: WorldCatalog = parseWorldCatalog({
 	v: "player-world-catalog/v1",
 	worlds: [
 		{
-			slug: "elven-mini-1",
-			display_name: "Elven Mini",
-			adventure: "elven-mini",
+			slug: "kavemouth-1",
+			display_name: "Kavemouth",
+			adventure: "kavemouth",
 			db: "db-elven",
 			status: "running",
 			visibility: "public",
@@ -37,7 +37,7 @@ const catalog: WorldCatalog = parseWorldCatalog({
 		{
 			slug: "private",
 			display_name: "Private",
-			adventure: "elven-mini",
+			adventure: "kavemouth",
 			db: "db-private",
 			status: "running",
 			visibility: "private",
@@ -50,8 +50,8 @@ const catalog: WorldCatalog = parseWorldCatalog({
 
 describe("parseSeatClaim", () => {
 	it("reads <world>/<actor_id>, keeping a slug that contains a slash", () => {
-		expect(parseSeatClaim(token({ "urn:spellkave:seat": "elven-mini-1/7" }))).toEqual({
-			slug: "elven-mini-1",
+		expect(parseSeatClaim(token({ "urn:spellkave:seat": "kavemouth-1/7" }))).toEqual({
+			slug: "kavemouth-1",
 			actorId: "7",
 		});
 		expect(parseSeatClaim(token({ "urn:spellkave:seat": "team/world/12" }))).toEqual({
@@ -63,7 +63,7 @@ describe("parseSeatClaim", () => {
 	it("is absent without the claim and invalid when malformed", () => {
 		expect(parseSeatClaim(token({}))).toBeUndefined();
 		expect(parseSeatClaim("not-a-jwt")).toBeUndefined();
-		for (const value of ["elven-mini-1", "/7", "elven-mini-1/hero", 7, null])
+		for (const value of ["kavemouth-1", "/7", "kavemouth-1/hero", 7, null])
 			expect(parseSeatClaim(token({ "urn:spellkave:seat": value }))).toBe("invalid");
 	});
 
@@ -78,7 +78,7 @@ describe("parseSeatClaim", () => {
 
 describe("resolveClaimedSeatRoute", () => {
 	const held = { actorId: "107", boundAtTick: 3, role: "primary" };
-	const elven = { slug: "elven-mini-1", actorId: "9" };
+	const elven = { slug: "kavemouth-1", actorId: "9" };
 
 	/** A world fake: `heldBy` = actors this caller holds, `free` = offered unclaimed seats. */
 	function ports(options: {
@@ -118,12 +118,12 @@ describe("resolveClaimedSeatRoute", () => {
 			catalog,
 			"user_1",
 			"tok",
-			{ slug: "elven-mini-1", actorId: "7" },
+			{ slug: "kavemouth-1", actorId: "7" },
 			world.ports,
 		);
 		expect(route).toMatchObject({
 			kind: "seat",
-			hit: { world: { slug: "elven-mini-1" }, actorId: "107" },
+			hit: { world: { slug: "kavemouth-1" }, actorId: "107" },
 		});
 		expect(world.calls).toEqual(["find:7"]);
 	});
@@ -142,7 +142,7 @@ describe("resolveClaimedSeatRoute", () => {
 				catalog,
 				"user_1",
 				"tok",
-				{ slug: "elven-mini-1", actorId: "42" },
+				{ slug: "kavemouth-1", actorId: "42" },
 				world.ports,
 			),
 		).rejects.toBeInstanceOf(SeatClaimUnavailableError);

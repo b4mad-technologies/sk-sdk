@@ -37,7 +37,7 @@
 		],
 		"examples": [
 			{
-				"command": "sk describe entities elven_mini/adventure/item/loft_chest_1",
+				"command": "sk describe entities kavemouth/adventure/item/loft_chest_1",
 				"description": "describe the loft chest and its contents"
 			}
 		]

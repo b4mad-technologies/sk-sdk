@@ -66,7 +66,7 @@ prose.
 
 The `base/** = definitions-only, no instance rows` rule (catalog row **C1**) is
 **scoped to reusable bundles** (`srd/`, and `core/`'s shared vocabulary), *not*
-to content bundles. A content bundle (an adventure such as `elven_mini`, a
+to content bundles. A content bundle (an adventure such as `kavemouth`, a
 `packages/spellkave-mechanics` fixture) **legitimately
 ships instance rows mixed with definitions** — that *is* the content. Applying an
 `srd`-style hygiene check
@@ -82,11 +82,11 @@ This is the table the auditor reads to know *which* rules apply *where*.
 | `core` (`packages/spellkave-mechanics/fixtures/core`) | `[]` | World-agnostic floor (login, primary action) | partial — shared vocabulary should stay definition-like |
 | `srd` (`packages/spellkave-srd-cc/fixtures`, generated) | `[]` | The 5e ruleset (generic, **reusable**) | **yes** — `base/**` definitions only |
 | `dm` (`packages/spellkave-srd-cc/fixtures/dm`) | `srd` | Reusable authored dialogue, wizard phase conditions and finite DM acts | **yes** — never names an adventure |
-| `elven_mini` (`packages/spellkave-adventure-elven-mini/fixtures`) | `srd, dm` | One adventure (content) | no — instance rows expected |
+| `kavemouth` (`packages/spellkave-adventure-kavemouth/fixtures`) | `srd, dm` | One adventure (content) | no — instance rows expected |
 | `packages/spellkave-mechanics/fixtures/<mech_*>` | mostly `core` | Single-mechanic proof bundles (content) | no |
 
 Reuse boundary, stated plainly: `srd` is separate from an adventure bundle
-because it is the **reusable ruleset** every adventure (elven-mini today, a
+because it is the **reusable ruleset** every adventure (kavemouth today, a
 modder bundle later) `depends_on`. The split is also a **definitions-vs-instances**
 discipline that pays off even with one adventure — it is what the C1 hygiene
 lint protects. Do not fold `srd/` into a content bundle.

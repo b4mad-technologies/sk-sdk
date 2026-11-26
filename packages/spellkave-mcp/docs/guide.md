@@ -321,7 +321,7 @@ Every statement below is a scenario that ran against the real tool; [scenarios.m
   - [The website's transcript preflight needs no token](scenarios.md#the-websites-transcript-preflight-needs-no-token)
     Transcripts have their own CORS policy: only the website's hosts, and `authorization` as the one request header, not the MCP allowlist.
     ```text
-    $ curl -q -s -i -X OPTIONS -H origin: https://spellkave.com -H access-control-request-method: GET -H access-control-request-headers: authorization $MCP/transcripts/elven-mini-1
+    $ curl -q -s -i -X OPTIONS -H origin: https://spellkave.com -H access-control-request-method: GET -H access-control-request-headers: authorization $MCP/transcripts/kavemouth-1
     HTTP/1.1 204 No Content
     access-control-allow-credentials: true
     access-control-allow-headers: authorization, content-type
@@ -353,7 +353,7 @@ Every statement below is a scenario that ran against the real tool; [scenarios.m
     Connection: keep-alive
     … (3 more lines)
     ```
-  - ["GET /w/elven-mini-1/tiles.json" without a token answers 401](scenarios.md#get-welven-mini-1tilesjson-without-a-token-answers-401): `{"error":"invalid_token","error_description":"Missing Authorization header"}`
+  - ["GET /w/kavemouth-1/tiles.json" without a token answers 401](scenarios.md#get-wkavemouth-1tilesjson-without-a-token-answers-401): `{"error":"invalid_token","error_description":"Missing Authorization header"}`
 
 ## Known limits
 

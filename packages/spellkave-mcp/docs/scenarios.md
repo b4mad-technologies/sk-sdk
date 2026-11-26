@@ -1252,10 +1252,10 @@ Status: **verified** · Code: [`withMcpCors`](../src/mcp-cors.ts)
 Status: **verified** · Code: [`servePublicTranscript`](../src/transcript-http.ts)
 
 - Given the gateway runs
-- When I send "GET /transcripts/elven-mini-1" from "https://spellkave.com" anonymously
+- When I send "GET /transcripts/kavemouth-1" from "https://spellkave.com" anonymously
 
   ```console
-  $ curl -q -s -i -X GET -H origin: https://spellkave.com $MCP/transcripts/elven-mini-1
+  $ curl -q -s -i -X GET -H origin: https://spellkave.com $MCP/transcripts/kavemouth-1
   HTTP/1.1 401 Unauthorized
   access-control-allow-credentials: true
   access-control-allow-headers: authorization, content-type
@@ -1342,12 +1342,12 @@ Status: **verified** · Code: [`servePublicTranscript`](../src/transcript-http.t
 Status: **verified** · Code: [`servePublicTranscript`](../src/transcript-http.ts)
 
 - Given the gateway runs
-- When I send "GET /transcripts/elven-mini-1" from "https://spellkave.com" with a valid token
+- When I send "GET /transcripts/kavemouth-1" from "https://spellkave.com" with a valid token
 
-  <details><summary>curl -q -s -i -X GET -H origin: https://spellkave.com -H authorization: Bearer $TOKEN $MCP/transcripts/elven-mini-1</summary>
+  <details><summary>curl -q -s -i -X GET -H origin: https://spellkave.com -H authorization: Bearer $TOKEN $MCP/transcripts/kavemouth-1</summary>
 
   ```console
-  $ curl -q -s -i -X GET -H origin: https://spellkave.com -H authorization: Bearer $TOKEN $MCP/transcripts/elven-mini-1
+  $ curl -q -s -i -X GET -H origin: https://spellkave.com -H authorization: Bearer $TOKEN $MCP/transcripts/kavemouth-1
   HTTP/1.1 200 OK
   access-control-allow-credentials: true
   access-control-allow-headers: authorization, content-type
@@ -1391,12 +1391,12 @@ Status: **verified** · Code: [`servePublicTranscript`](../src/transcript-http.t
 > Transcripts have their own CORS policy: only the website's hosts, and `authorization` as the one request header, not the MCP allowlist.
 
 - Given the gateway runs
-- When I send "OPTIONS /transcripts/elven-mini-1" from "https://spellkave.com" asking for "authorization"
+- When I send "OPTIONS /transcripts/kavemouth-1" from "https://spellkave.com" asking for "authorization"
 
-  <details><summary>curl -q -s -i -X OPTIONS -H origin: https://spellkave.com -H access-control-request-method: GET -H access-control-request-headers: authorization $MCP/transcripts/elven-mini-1</summary>
+  <details><summary>curl -q -s -i -X OPTIONS -H origin: https://spellkave.com -H access-control-request-method: GET -H access-control-request-headers: authorization $MCP/transcripts/kavemouth-1</summary>
 
   ```console
-  $ curl -q -s -i -X OPTIONS -H origin: https://spellkave.com -H access-control-request-method: GET -H access-control-request-headers: authorization $MCP/transcripts/elven-mini-1
+  $ curl -q -s -i -X OPTIONS -H origin: https://spellkave.com -H access-control-request-method: GET -H access-control-request-headers: authorization $MCP/transcripts/kavemouth-1
   HTTP/1.1 204 No Content
   access-control-allow-credentials: true
   access-control-allow-headers: authorization, content-type
@@ -1472,17 +1472,17 @@ Status: **verified** · Code: [`handleWorldTilesRequest`](../src/tiles.ts)
   </details>
 
 
-### "GET /w/elven-mini-1/tiles.json" without a token answers 401
+### "GET /w/kavemouth-1/tiles.json" without a token answers 401
 
 Status: **verified** · Code: [`handleWorldTilesRequest`](../src/tiles.ts)
 
 - Given the gateway runs
-- When I send "GET /w/elven-mini-1/tiles.json" from "https://josm.openstreetmap.de" anonymously
+- When I send "GET /w/kavemouth-1/tiles.json" from "https://josm.openstreetmap.de" anonymously
 
-  <details><summary>curl -q -s -i -X GET -H origin: https://josm.openstreetmap.de $MCP/w/elven-mini-1/tiles.json</summary>
+  <details><summary>curl -q -s -i -X GET -H origin: https://josm.openstreetmap.de $MCP/w/kavemouth-1/tiles.json</summary>
 
   ```console
-  $ curl -q -s -i -X GET -H origin: https://josm.openstreetmap.de $MCP/w/elven-mini-1/tiles.json
+  $ curl -q -s -i -X GET -H origin: https://josm.openstreetmap.de $MCP/w/kavemouth-1/tiles.json
   HTTP/1.1 401 Unauthorized
   access-control-allow-headers: authorization, content-type, range
   access-control-allow-methods: GET, HEAD, POST, OPTIONS

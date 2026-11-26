@@ -75,7 +75,7 @@ describe("createRunEmitter", () => {
 			category: "bug",
 			message_chars: 42,
 			bundle_sha256: "a".repeat(64),
-			world_slug: "elven-mini",
+			world_slug: "kavemouth",
 			correlation_id: "corr-fb-1",
 		});
 		expect(sink.events).toHaveLength(1);
@@ -87,7 +87,7 @@ describe("createRunEmitter", () => {
 			category: "bug",
 			message_chars: 42,
 			bundle_sha256: "a".repeat(64),
-			world_slug: "elven-mini",
+			world_slug: "kavemouth",
 			correlation_id: "corr-fb-1",
 		});
 		// Deterministic JSONL fixture — join keys only, no message/bundle body.

@@ -332,7 +332,7 @@ describe("createOtlpHttpSink", () => {
 	it("projects world_lifecycle fields — five new plus seven reused — and drops an unlisted one (sk-jay0.6.38.2)", () => {
 		const record = toOtlpLogRecord({
 			v: "agent-run-events/v1",
-			run_id: "load.elven-mini-3.1756800000000",
+			run_id: "load.kavemouth-3.1756800000000",
 			run_kind: "world_observation",
 			actor_id: "api",
 			role: "ADMIN",
@@ -344,20 +344,20 @@ describe("createOtlpHttpSink", () => {
 			data: {
 				// The five new disclosure-boundary fields.
 				phase: "world_ready",
-				job_id: "load.elven-mini-3.1756800000000",
+				job_id: "load.kavemouth-3.1756800000000",
 				job_kind: "load",
 				boot_ms: 150000,
 				artifact_digest: "sha256:abc123",
 				// Seven already-allowlisted fields, reused here.
 				outcome: "ok",
-				world_slug: "elven-mini-3",
+				world_slug: "kavemouth-3",
 				duration_ms: 27000,
 				image_tag: "sha-018bfb5a",
 				failure_class: "binding_drift",
 				error_class: "BindingDriftError",
 				error_code: "CrashLoopBackOff",
 				// Not on the allowlist — must be dropped, not renamed or blobbed.
-				artifact_ref: "registry.example/elven-mini-3:latest",
+				artifact_ref: "registry.example/kavemouth-3:latest",
 			},
 		});
 		const body = JSON.parse((record.body as { stringValue: string }).stringValue) as {
@@ -365,12 +365,12 @@ describe("createOtlpHttpSink", () => {
 		};
 		expect(body.data).toEqual({
 			phase: "world_ready",
-			job_id: "load.elven-mini-3.1756800000000",
+			job_id: "load.kavemouth-3.1756800000000",
 			job_kind: "load",
 			boot_ms: 150000,
 			artifact_digest: "sha256:abc123",
 			outcome: "ok",
-			world_slug: "elven-mini-3",
+			world_slug: "kavemouth-3",
 			duration_ms: 27000,
 			image_tag: "sha-018bfb5a",
 			failure_class: "binding_drift",
@@ -398,7 +398,7 @@ describe("createOtlpHttpSink", () => {
 				category: "bug",
 				message_chars: 42,
 				bundle_sha256: "b".repeat(64),
-				world_slug: "elven-mini",
+				world_slug: "kavemouth",
 				// Mistaken body leak must be stripped at the OTLP boundary.
 				bundle: { v: "spellkave-must-gather/v1", notes: canary },
 				message: canary,
@@ -415,7 +415,7 @@ describe("createOtlpHttpSink", () => {
 				category: "bug",
 				message_chars: 42,
 				bundle_sha256: "b".repeat(64),
-				world_slug: "elven-mini",
+				world_slug: "kavemouth",
 			},
 		});
 	});
@@ -440,7 +440,7 @@ describe("createOtlpHttpSink", () => {
 				duration_ms: 12,
 				is_error: true,
 				correlation_id: "corr-1",
-				world_slug: "elven-mini-1",
+				world_slug: "kavemouth-1",
 				subject_prefix: "abcdef0123456789",
 				args: { token: canary },
 				speech: canary,
@@ -461,7 +461,7 @@ describe("createOtlpHttpSink", () => {
 			is_error: true,
 			duration_ms: 12,
 			correlation_id: "corr-1",
-			world_slug: "elven-mini-1",
+			world_slug: "kavemouth-1",
 			subject_prefix: "abcdef0123456789",
 			cause_kind: "visible_trace",
 			cause_id: "trace-character-confirmed-7",
@@ -484,7 +484,7 @@ describe("createOtlpHttpSink", () => {
 			type: "tool_call",
 			data: {
 				tool_name: "spellkave_scene",
-				world_slug: "elven-mini-1",
+				world_slug: "kavemouth-1",
 				subject_prefix: hashed,
 			},
 		});
@@ -543,12 +543,12 @@ describe("decision-input disclosure (ADR-0114 D-2 option A)", () => {
 		expect(OTEL_SAFE_EVENT_DATA_FIELDS).not.toContain("intent");
 		const record = toOtlpLogRecord({
 			v: "agent-run-events/v1",
-			run_id: "npc-host-elven-mini-1-aldwin_1",
+			run_id: "npc-host-kavemouth-1-aldwin_1",
 			run_kind: "world_observation",
-			actor_id: "elven_mini/adventure/npc/aldwin_1",
+			actor_id: "kavemouth/adventure/npc/aldwin_1",
 			role: "NPC",
 			controller_kind: "deterministic_npc",
-			driver: "srd-cc-npc-host-elven-mini",
+			driver: "srd-cc-npc-host-kavemouth",
 			seed: "",
 			ts: "2026-08-30T18:00:00.000Z",
 			type: "brain_decision",

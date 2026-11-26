@@ -72,7 +72,7 @@ await port.subscribeReaders([
 `packages/spellkave-adventure-runtime/src/dm/watches/quest-xp-watch.ts`
 (reader list `QUEST_XP_WATCH_READERS` in `dm/lib/readers.ts`) subscribes `visible_actor_spatial_location` for
 `resolvePresentPartyEntityIds`;
-`packages/spellkave-adventure-elven-mini/npcs/catalog.ts` supplies the
+`packages/spellkave-adventure-kavemouth/npcs/catalog.ts` supplies the
 resolver. Live proof:
 `just srd-cc-live src/test/live-self-seeding/mechanics/q4-quest-xp.test.ts` —
 `Aldwin granted 200 quest XP for Q4 to 2,143,15`, `xpAfter={hero:200,
@@ -107,4 +107,4 @@ participates or holds Internal DM elevation.
 
 ## SRD features that use this
 
-- Elven-mini Q1–Q12 terminal quest XP to the co-located party.
+- Kavemouth Q1–Q12 terminal quest XP to the co-located party.

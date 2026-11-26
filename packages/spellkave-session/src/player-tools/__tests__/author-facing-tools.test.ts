@@ -295,27 +295,27 @@ describe("spellkave_apply_manifest_delta — the ONE connection-gated AUTHOR too
 describe("spellkave_export — live snapshot + optional hero filter", () => {
 	it("throws when the live export port is not wired", async () => {
 		const tool = toolByName(contextWith(), EXPORT_MANIFEST_TOOL);
-		await expect(tool.execute("id", { bundle: "elven_mini", out: "/tmp/x.toml" })).rejects.toThrow(
+		await expect(tool.execute("id", { bundle: "kavemouth", out: "/tmp/x.toml" })).rejects.toThrow(
 			/not connected/,
 		);
 	});
 
 	it("returns ok:false when --actor is unknown", async () => {
 		const exportManifest = vi.fn(async () => ({
-			bundleId: "elven_mini",
+			bundleId: "kavemouth",
 			status: "complete",
 			rowCount: 2,
 			diagnostics: "coverage_gap_row_kinds=60",
 			manifestJson: JSON.stringify({
 				schema_version: "1.0.0",
-				bundles: [{ bundle_id: "elven_mini" }],
-				entities: [{ entity_key: "elven_mini/adventure/hero_1", bundle_id: "elven_mini" }],
-				actors: [{ entity_key: "elven_mini/adventure/hero_1" }],
+				bundles: [{ bundle_id: "kavemouth" }],
+				entities: [{ entity_key: "kavemouth/adventure/hero_1", bundle_id: "kavemouth" }],
+				actors: [{ entity_key: "kavemouth/adventure/hero_1" }],
 			}),
 		}));
 		const tool = toolByName(contextWith({ exportManifest }), EXPORT_MANIFEST_TOOL);
 		const result = await tool.execute("id", {
-			bundle: "elven_mini",
+			bundle: "kavemouth",
 			actor: "nobody",
 			out: "/tmp/nobody.toml",
 		});

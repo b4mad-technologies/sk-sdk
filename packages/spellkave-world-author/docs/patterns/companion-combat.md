@@ -40,7 +40,7 @@ Two shipped shapes use it:
   `buildPlayerRuntimeSeat` was deleted); the archer role brain is her combat-cycle
   `tacticalOverride` (hero never a target), and the join is a policy switch
   after which only a human `follow` order moves her. See the header of
-  `packages/spellkave-adventure-elven-mini/npcs/quests/hesper.ts`.
+  `packages/spellkave-adventure-kavemouth/npcs/quests/hesper.ts`.
 
 Companion brain steps:
 
@@ -64,7 +64,7 @@ optional `heal` overlay) — no new brain module (sk-609b.15).
 
 Storyline slots (sk-609b.15): **Aldwin's rogue** (`skirmisher`) at hero L2;
 **Hesper** (`archer`) after Q6; **Caddoc** (`healer`) after Q10. See
-[`elven-mini-party.md`](../../../spellkave-adventure-elven-mini/docs/elven-mini-party.md).
+[`kavemouth-party.md`](../../../spellkave-adventure-kavemouth/docs/kavemouth-party.md).
 
 ## TOML example
 

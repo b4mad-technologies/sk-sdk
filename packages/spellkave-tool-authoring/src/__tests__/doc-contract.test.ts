@@ -193,14 +193,14 @@ describe("tool-reference.md — spellkave_place_actor name_prefix", () => {
 		const workspace = fakeWorkspace(null);
 		const context = contextWith({ workspace });
 		await toolByName(context, "spellkave_author_place").execute("place", {
-			bundle: "elven_mini",
-			nodes: [{ id: "elven_mini/river_crossing/bridge_mid", name: "Bridge Mid" }],
+			bundle: "kavemouth",
+			nodes: [{ id: "kavemouth/stonebridge/bridge_mid", name: "Bridge Mid" }],
 			edges: [],
 		});
 		await toolByName(context, "spellkave_place_actor").execute("place-wolves", {
-			bundle: "elven_mini",
+			bundle: "kavemouth",
 			kind: "npc",
-			at: "elven_mini/river_crossing/bridge_mid",
+			at: "kavemouth/stonebridge/bridge_mid",
 			count: 3,
 			key_prefix: "adventure/encounter/road_wolf",
 			name_prefix: "Road Wolf",

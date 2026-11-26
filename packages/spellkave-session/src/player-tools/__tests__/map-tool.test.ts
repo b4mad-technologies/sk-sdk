@@ -18,7 +18,7 @@ const TINY_PNG_BASE64 =
 /**
  * JPEG mode shells out to ffmpeg (spatial-graph/jpeg-write.ts) — absent on
  * this repo's CI runners (sk-dms.42, the SAME finding
- * `packages/spellkave-srd-cc/src/author/elven-mini/generate.ts`'s own
+ * `packages/spellkave-srd-cc/src/author/kavemouth/generate.ts`'s own
  * `SRD_CC_AUTHOR_CHECK_TEXT_ONLY` env-var skip documents). Companion-agent's
  * `test` script (unlike the live-preseeded adventure suite) runs UNGATED in
  * CI (`.github/workflows/js-packages.yml`), so these tests skip themselves
@@ -130,8 +130,8 @@ describe("spellkave_map (fog-of-war)", () => {
 			visible_manifest_authored_entity_coverage: [{ status: "complete", projectionVersion: 1 }],
 			visible_manifest_authored_entity: [
 				{
-					manifestKey: "elven_mini:elven_mini/adventure/hero_1",
-					bundleId: "elven_mini",
+					manifestKey: "kavemouth:kavemouth/adventure/hero_1",
+					bundleId: "kavemouth",
 					entityId: 7n,
 				},
 			],
@@ -164,7 +164,7 @@ describe("spellkave_map (fog-of-war)", () => {
 				{ edgeId: 1n, placeGraphId: "town", fromNodeId: "town/inn", toNodeId: "town/road" },
 			],
 		});
-		const context = { db, act: { actorId: "elven_mini/adventure/hero_1" } };
+		const context = { db, act: { actorId: "kavemouth/adventure/hero_1" } };
 		const result = await createMapTool(context).execute("t4", { graph: "town" });
 		const details = result.details as {
 			known_nodes: number;

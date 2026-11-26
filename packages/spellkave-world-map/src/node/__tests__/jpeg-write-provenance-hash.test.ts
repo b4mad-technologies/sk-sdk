@@ -12,7 +12,7 @@ const LAYER_ROWS = [
 		place_graph_id: "town",
 		display_name: "Town backdrop",
 		asset_module: "ccc3-maps",
-		asset_path: "131 The Windmill Cult-DM.jpg",
+		asset_path: "131 The Chaff Cult-DM.jpg",
 		image_width_px: 100,
 		image_height_px: 100,
 		grid_size_px: 50,

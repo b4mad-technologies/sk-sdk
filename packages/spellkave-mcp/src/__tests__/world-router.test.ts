@@ -26,7 +26,7 @@ const catalog = parseWorldCatalog({
 		{
 			slug: "world-a",
 			display_name: "A",
-			adventure: "elven-mini",
+			adventure: "kavemouth",
 			db: "spellkave-a",
 			status: "running",
 			visibility: "public",
@@ -37,7 +37,7 @@ const catalog = parseWorldCatalog({
 		{
 			slug: "world-b",
 			display_name: "B",
-			adventure: "elven-mini",
+			adventure: "kavemouth",
 			db: "spellkave-b",
 			status: "running",
 			visibility: "public",
@@ -48,7 +48,7 @@ const catalog = parseWorldCatalog({
 		{
 			slug: "stopped",
 			display_name: "Stopped",
-			adventure: "elven-mini",
+			adventure: "kavemouth",
 			db: "spellkave-stopped",
 			status: "stopped",
 			visibility: "public",

@@ -13,7 +13,7 @@ When a quest terminal fires I need to grant a fixed XP reward to the present par
 - Terminal evaluation and recipient selection belong to the story's watch.
 - Durable per-recipient markers must survive retries and host restarts.
 - A completed giver settlement must follow successful recipient awards.
-- Elven-mini currently selects the hero and co-located catalog companions
+- Kavemouth currently selects the hero and co-located catalog companions
   (Rogue, Hesper, Caddoc), joined or not. Its resolver does not filter on
   `srd.party.heroes`; this known membership gap is tracked as
   `sk-jay0.3.4.11.7`. Party extent admission is a separate kernel decision.
@@ -22,8 +22,8 @@ When a quest terminal fires I need to grant a fixed XP reward to the present par
 
 At authoring time define one award action and one settlement action per quest.
 `adventure-runtime/src/author/dm/quest-xp-acts.ts` builds these finite actions,
-requiring `frontier.set_state`. Elven-mini binds them to
-`elven_mini/dm/award-quest-xp/<Qn>` and `elven_mini/dm/settle-quest/<Qn>`.
+requiring `frontier.set_state`. Kavemouth binds them to
+`kavemouth/dm/award-quest-xp/<Qn>` and `kavemouth/dm/settle-quest/<Qn>`.
 The running DM dispatches them through its act port; it publishes no
 per-terminal manifest or action definition.
 
@@ -65,7 +65,7 @@ they are not the production watch's reward path.
   checks terminal gating, recipient awards, settlement and replay through the watch.
 - `packages/spellkave-srd-cc/src/test/live-self-seeding/mechanics/q4-quest-xp.test.ts`
   checks actual hero and companion XP after Q4.
-- `packages/spellkave-adventure-elven-mini/tests/offline/dm-acts.test.ts`
+- `packages/spellkave-adventure-kavemouth/tests/offline/dm-acts.test.ts`
   checks finite actions and initial companion award homes.
 
 ## Related
@@ -86,4 +86,4 @@ they are not the production watch's reward path.
 
 ## SRD features that use this
 
-Elven-mini Q1–Q12 catalog rewards to the currently selected present recipients.
+Kavemouth Q1–Q12 catalog rewards to the currently selected present recipients.

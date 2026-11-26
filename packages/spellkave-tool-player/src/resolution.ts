@@ -1,9 +1,9 @@
-// U1 minimal fix (elven-mini findings, operator quick-fix 2026-08-04): a
+// U1 minimal fix (kavemouth findings, operator quick-fix 2026-08-04): a
 // dispatched manipulate/react receipt's hit/miss outcome is readable today
 // only by grepping `resolution_result:true|false` out of
 // `provenance.selected_template_ids` — a flat string array `r_manipulate`/
 // `r_react` already write real template ids AND prefixed annotation strings
-// into side by side (see the elven-mini T6 finding: the full attack
+// into side by side (see the kavemouth T6 finding: the full attack
 // predicate appears twice in there, byte-identical). This module parses the
 // SAME strings the receipt already carries into one small, readable field —
 // no new reads, no epistemic change (the info was already in the receipt,

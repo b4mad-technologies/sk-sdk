@@ -794,7 +794,7 @@ function backdropEntry(
 			baseWorld = { east_m: 0, north_m: 0 };
 		}
 	} else {
-		// Nested graphs nest at the anchor in elven-mini; use anchor as sheet origin.
+		// Nested graphs nest at the anchor in kavemouth; use anchor as sheet origin.
 		const nestPlaced = placed.get(graph.anchor_node_id) ?? anchorPlaced;
 		if (nestPlaced) {
 			anchorSheet = { x: nestPlaced.node.pos_x, y: nestPlaced.node.pos_y };

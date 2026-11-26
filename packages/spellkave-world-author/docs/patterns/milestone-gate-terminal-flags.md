@@ -24,9 +24,9 @@ Phandelver content):
 
 ## TOML example
 
-Live example (elven-mini Q9): the Q9 terminal reads the persistent flag
-`elven_mini/quest/flag/q9_tomb_opened` and the deep-tomb stair edge reads the
-seal's spatial state; the one `elven_mini/quest/open-tomb` action writes both
+Live example (kavemouth Q9): the Q9 terminal reads the persistent flag
+`kavemouth/quest/flag/q9_tomb_opened` and the deep-tomb stair edge reads the
+seal's spatial state; the one `kavemouth/quest/open-tomb` action writes both
 (`author/tomb-key.ts`). The proof stages
 just the giver, the DM, the hero, the key item and one companion at the seal
 node — not the Rung III fights before it — and executes the real actions:
@@ -34,7 +34,7 @@ node — not the Rung III fights before it — and executes the real actions:
 ```toml
 # compose only what the gate reads:
 # gates:  Q9 terminal reads quest/flag/q9_tomb_opened; the stair edge reads the seal state
-# writer: elven_mini/quest/open-tomb (hero holds the tomb key, stands at the seal)
+# writer: kavemouth/quest/open-tomb (hero holds the tomb key, stands at the seal)
 # stage:  giver + DM + hero + key + one companion at TOMB_SEAL_NODE
 ```
 
@@ -43,7 +43,7 @@ node — not the Rung III fights before it — and executes the real actions:
 - `packages/spellkave-adventure-runtime/tests/live/quest-giver.live.test.ts`
   and `packages/spellkave-test-lab/src/scene-live/seal-gate.local-node.test.ts`
   (private scenes; accept Q9, open the tomb with the key, the stair opens).
-- `packages/spellkave-adventure-elven-mini/tests/offline/quest-progression.test.ts`.
+- `packages/spellkave-adventure-kavemouth/tests/offline/quest-progression.test.ts`.
 
 ## Related
 

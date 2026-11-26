@@ -172,18 +172,18 @@ describe("validateActorCapabilityRows — sk-dms.28 ADR-0085 upsert-key blind sp
 		() => {
 			const diags = validateActorCapabilityRows([
 				{
-					actor_entity_key: "elven_mini/adventure/npc/aldwin_1",
-					capability_id: "elven_mini/dm/watch",
+					actor_entity_key: "kavemouth/adventure/npc/aldwin_1",
+					capability_id: "kavemouth/dm/watch",
 				},
 				{
-					actor_entity_key: "elven_mini/adventure/npc/aldwin_1",
-					capability_id: "elven_mini/dm/watch",
+					actor_entity_key: "kavemouth/adventure/npc/aldwin_1",
+					capability_id: "kavemouth/dm/watch",
 				},
 			]);
 			expect(diags).toHaveLength(1);
 			expect(diags[0]?.code).toBe("WA-CAP-001");
 			expect(diags[0]?.severity).toBe("warning");
-			expect(diags[0]?.message).toContain("elven_mini/dm/watch");
+			expect(diags[0]?.message).toContain("kavemouth/dm/watch");
 		},
 	);
 
@@ -249,7 +249,7 @@ describe("validateCapabilityNicheProvider — WA-CAP-002 required provider on ca
 		expect(validateCapabilityNicheProvider([], [])).toEqual([]);
 		expect(
 			validateCapabilityNicheProvider(
-				[{ niche_id: "elven_mini/niche/hazard_pool", provider: "" }],
+				[{ niche_id: "kavemouth/niche/hazard_pool", provider: "" }],
 				[{ niche_id: "creature" }],
 			),
 		).toEqual([]);

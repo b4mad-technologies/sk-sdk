@@ -15,13 +15,13 @@ import {
 import { renderSchemaManifest } from "../manifest";
 import { validateManifestToml } from "../validate";
 
-const HERO = "elven_mini/adventure/hero_1";
-const OTHER = "elven_mini/adventure/mira_1";
-const SWORD = "elven_mini/adventure/item/longsword_1";
-const BAG = "elven_mini/adventure/item/bag_1";
-const COIN = "elven_mini/adventure/item/coin_1";
-const OWNED = "elven_mini/adventure/item/deed_1";
-const OTHER_AXE = "elven_mini/adventure/item/axe_1";
+const HERO = "kavemouth/adventure/hero_1";
+const OTHER = "kavemouth/adventure/mira_1";
+const SWORD = "kavemouth/adventure/item/longsword_1";
+const BAG = "kavemouth/adventure/item/bag_1";
+const COIN = "kavemouth/adventure/item/coin_1";
+const OWNED = "kavemouth/adventure/item/deed_1";
+const OTHER_AXE = "kavemouth/adventure/item/axe_1";
 
 function state(
 	key: string,
@@ -34,7 +34,7 @@ function state(
 		value_bool: true,
 		value_int: value,
 		source_template_id: "",
-		bundle_id: "elven_mini",
+		bundle_id: "kavemouth",
 		expires_at_tick: 0,
 	};
 }
@@ -46,7 +46,7 @@ function entity(
 ): NonNullable<SchemaManifest["entities"]>[0] {
 	return {
 		entity_key: key,
-		bundle_id: "elven_mini",
+		bundle_id: "kavemouth",
 		entity_def_id: "",
 		name: key,
 		kind,
@@ -61,8 +61,8 @@ function twoActorWorld(): SchemaManifest {
 		schema_version: "1.0.0",
 		bundles: [
 			{
-				bundle_id: "elven_mini",
-				display_name: "Elven Mini",
+				bundle_id: "kavemouth",
+				display_name: "Kavemouth",
 				author: "test",
 				version: "0.0.0",
 				depends_on: [],
@@ -79,33 +79,33 @@ function twoActorWorld(): SchemaManifest {
 			entity(OTHER_AXE, "item"),
 		],
 		actors: [
-			{ entity_key: HERO, bundle_id: "elven_mini", name: HERO },
-			{ entity_key: OTHER, bundle_id: "elven_mini", name: OTHER },
+			{ entity_key: HERO, bundle_id: "kavemouth", name: HERO },
+			{ entity_key: OTHER, bundle_id: "kavemouth", name: OTHER },
 		],
 		actor_capabilities: [
 			{
 				actor_entity_key: HERO,
 				capability_id: "srd/skill/athletics",
-				source: "elven_mini",
-				bundle_id: "elven_mini",
+				source: "kavemouth",
+				bundle_id: "kavemouth",
 			},
 			{
 				actor_entity_key: OTHER,
 				capability_id: "srd/skill/persuasion",
-				source: "elven_mini",
-				bundle_id: "elven_mini",
+				source: "kavemouth",
+				bundle_id: "kavemouth",
 			},
 		],
 		actor_spatial_locations: [
 			{
 				entity_key: HERO,
-				place_node_id: "elven_mini/inn/loft",
-				bundle_id: "elven_mini",
+				place_node_id: "kavemouth/inn/loft",
+				bundle_id: "kavemouth",
 			},
 			{
 				entity_key: OTHER,
-				place_node_id: "elven_mini/inn/bar",
-				bundle_id: "elven_mini",
+				place_node_id: "kavemouth/inn/bar",
+				bundle_id: "kavemouth",
 			},
 		],
 		actor_equipment_slots: [
@@ -119,13 +119,13 @@ function twoActorWorld(): SchemaManifest {
 			{ entity_key: OTHER_AXE, container_entity_key: OTHER, slot_id: "", direction: "in" },
 		],
 		entity_tag: [
-			{ entity_key: HERO, tag: "srd.class.fighter", bundle_id: "elven_mini", source: "manifest" },
-			{ entity_key: OTHER, tag: "srd.class.cleric", bundle_id: "elven_mini", source: "manifest" },
-			{ entity_key: SWORD, tag: "srd.item.weapon", bundle_id: "elven_mini", source: "manifest" },
+			{ entity_key: HERO, tag: "srd.class.fighter", bundle_id: "kavemouth", source: "manifest" },
+			{ entity_key: OTHER, tag: "srd.class.cleric", bundle_id: "kavemouth", source: "manifest" },
+			{ entity_key: SWORD, tag: "srd.item.weapon", bundle_id: "kavemouth", source: "manifest" },
 			{
 				entity_key: OTHER_AXE,
 				tag: "srd.item.weapon",
-				bundle_id: "elven_mini",
+				bundle_id: "kavemouth",
 				source: "manifest",
 			},
 		],
@@ -159,7 +159,7 @@ describe("filterManifestForActor", () => {
 		expect(out.entity_tag?.map((row) => row.entity_key)).toEqual([HERO, SWORD]);
 		expect(out.object_state?.map((row) => row.entity_key)).toEqual([HERO, SWORD]);
 		expect(out.bundles).toHaveLength(1);
-		expect(out.bundles?.[0]?.bundle_id).toBe("elven_mini");
+		expect(out.bundles?.[0]?.bundle_id).toBe("kavemouth");
 		expect(out.place_nodes).toBeUndefined();
 		expect(out.entity_definitions).toBeUndefined();
 		expect(filteredRowCount(out)).toBe(17);

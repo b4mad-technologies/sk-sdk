@@ -58,7 +58,7 @@ export function defaultDiffIgnoreFields(kind: string): readonly string[] {
  * Parse a manifest or include-fragment TOML into SchemaManifest (snake_case).
  *
  * Integers above 2^53 (H3 cell ids such as `cell_res10 = 622215095455449087`
- * in every elven-mini world fragment) are read as BigInt and then carried as
+ * in every kavemouth world fragment) are read as BigInt and then carried as
  * their decimal string, so a diff or subset check compares them exactly
  * instead of refusing the whole file ("integer value cannot be represented
  * losslessly", sk-jay0.7.171.2). This parser feeds read-only comparisons

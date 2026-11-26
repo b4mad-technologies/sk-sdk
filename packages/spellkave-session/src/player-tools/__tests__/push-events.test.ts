@@ -444,7 +444,7 @@ describe("ADR-0093 D-2: createWorldEventBuilder", () => {
 			resourceId: "srd/xp",
 			delta: 50,
 			newValue: 50,
-			templateId: "elven_mini/dm/grant-kill-xp/10/success",
+			templateId: "kavemouth/dm/grant-kill-xp/10/success",
 			sourceEntityRef: "2",
 		});
 		expect(builder.diffAndAdvance()).toEqual<WorldEvent[]>([

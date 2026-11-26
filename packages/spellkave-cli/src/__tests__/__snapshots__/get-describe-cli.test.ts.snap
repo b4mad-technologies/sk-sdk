@@ -32,7 +32,7 @@ Row
 ┌────────────┬────────────────────────────────────────┐
 │ Field      │ Value                                  │
 ├────────────┼────────────────────────────────────────┤
-│ Entity key │ elven_mini/adventure/item/loft_chest_1 │
+│ Entity key │ kavemouth/adventure/item/loft_chest_1 │
 ├────────────┼────────────────────────────────────────┤
 │ Name       │ Loft chest                             │
 └────────────┴────────────────────────────────────────┘
@@ -44,7 +44,7 @@ Slices
 ┌────────────────────────────────────────┐
 │ Entity key                             │
 ├────────────────────────────────────────┤
-│ elven_mini/adventure/item/loft_chest_1 │
+│ kavemouth/adventure/item/loft_chest_1 │
 └────────────────────────────────────────┘
 
 ### Object state
@@ -60,7 +60,7 @@ Container chain
 ┌────────────┬────────────────────────────────────────┬─────────────────┐
 │ Numeric id │ Entity key                             │ Place           │
 ├────────────┼────────────────────────────────────────┼─────────────────┤
-│ 41         │ elven_mini/adventure/item/loft_chest_1 │ elven_mini/loft │
+│ 41         │ kavemouth/adventure/item/loft_chest_1 │ kavemouth/loft │
 └────────────┴────────────────────────────────────────┴─────────────────┘
 
 Chain end
@@ -79,7 +79,7 @@ Belonging
 │ Entity key                                │ Numeric   │ Name   │ Belongs to        │ Relation    │
 │                                           │ id        │        │ numeric id        │             │
 ├───────────────────────────────────────────┼───────────┼────────┼───────────────────┼─────────────┤
-│ elven_mini/adventure/item/loft_chest_poti │ 42        │ Potion │ 41                │ containment │
+│ kavemouth/adventure/item/loft_chest_poti │ 42        │ Potion │ 41                │ containment │
 │ on_1                                      │           │        │                   │             │
 └───────────────────────────────────────────┴───────────┴────────┴───────────────────┴─────────────┘"
 `;
@@ -116,7 +116,7 @@ Row
 ┌────────────┬────────────────────────────────────────┐
 │ Field      │ Value                                  │
 ├────────────┼────────────────────────────────────────┤
-│ Entity key │ elven_mini/adventure/item/loft_chest_1 │
+│ Entity key │ kavemouth/adventure/item/loft_chest_1 │
 ├────────────┼────────────────────────────────────────┤
 │ Name       │ Loft chest                             │
 └────────────┴────────────────────────────────────────┘
@@ -128,7 +128,7 @@ Slices
 ┌────────────────────────────────────────┐
 │ Entity key                             │
 ├────────────────────────────────────────┤
-│ elven_mini/adventure/item/loft_chest_1 │
+│ kavemouth/adventure/item/loft_chest_1 │
 └────────────────────────────────────────┘
 
 ### Object state
@@ -168,7 +168,7 @@ exports[`sk describe human rendering > shows slices, chain end at a place, and b
 ├────────────────────┼─────────────────┤
 │ Numeric id         │ 41              │
 ├────────────────────┼─────────────────┤
-│ Place              │ elven_mini/loft │
+│ Place              │ kavemouth/loft │
 ├────────────────────┼─────────────────┤
 │ Match count        │ 1               │
 ├────────────────────┼─────────────────┤
@@ -190,7 +190,7 @@ Row
 ┌────────────┬────────────────────────────────────────┐
 │ Field      │ Value                                  │
 ├────────────┼────────────────────────────────────────┤
-│ Entity key │ elven_mini/adventure/item/loft_chest_1 │
+│ Entity key │ kavemouth/adventure/item/loft_chest_1 │
 ├────────────┼────────────────────────────────────────┤
 │ Name       │ Loft chest                             │
 └────────────┴────────────────────────────────────────┘
@@ -202,7 +202,7 @@ Slices
 ┌────────────────────────────────────────┐
 │ Entity key                             │
 ├────────────────────────────────────────┤
-│ elven_mini/adventure/item/loft_chest_1 │
+│ kavemouth/adventure/item/loft_chest_1 │
 └────────────────────────────────────────┘
 
 ### Object state
@@ -218,7 +218,7 @@ Container chain
 ┌────────────┬────────────────────────────────────────┬─────────────────┐
 │ Numeric id │ Entity key                             │ Place           │
 ├────────────┼────────────────────────────────────────┼─────────────────┤
-│ 41         │ elven_mini/adventure/item/loft_chest_1 │ elven_mini/loft │
+│ 41         │ kavemouth/adventure/item/loft_chest_1 │ kavemouth/loft │
 └────────────┴────────────────────────────────────────┴─────────────────┘
 
 Chain end
@@ -237,7 +237,7 @@ Belonging
 │ Entity key                                │ Numeric   │ Name   │ Belongs to        │ Relation    │
 │                                           │ id        │        │ numeric id        │             │
 ├───────────────────────────────────────────┼───────────┼────────┼───────────────────┼─────────────┤
-│ elven_mini/adventure/item/loft_chest_poti │ 42        │ Potion │ 41                │ containment │
+│ kavemouth/adventure/item/loft_chest_poti │ 42        │ Potion │ 41                │ containment │
 │ on_1                                      │           │        │                   │             │
 └───────────────────────────────────────────┴───────────┴────────┴───────────────────┴─────────────┘"
 `;

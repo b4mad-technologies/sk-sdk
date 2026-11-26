@@ -88,9 +88,9 @@ Where they are defined and granted:
 - `core/raw_trace_inscription` is defined only in
   `packages/spellkave-mechanics/fixtures/core/base/affordances.toml`. A node
   seeded without that fixture has no definition, so nobody can hold it.
-- Binding example: the Elven Mini DM NPC Aldwin receives `frontier.apply_manifest` and `frontier.pace_time`
+- Binding example: the Kavemouth DM NPC Aldwin receives `frontier.apply_manifest` and `frontier.pace_time`
   through an authored role binding
-  (`packages/spellkave-adventure-elven-mini/fixtures/adventure/cast/npcs/aldwin.toml`).
+  (`packages/spellkave-adventure-kavemouth/fixtures/adventure/cast/npcs/aldwin.toml`).
 
 A role binding's D6 gate checks the dynamic id `frontier.bind.<role_id>` or
 covering live grants of every merged capability; publisher/genesis also admits
@@ -262,11 +262,11 @@ Shipped grants:
 | Capability id | `elevation_class` | Extent | Holder | Fixture |
 |---|---|---|---|---|
 | `dm_oversight/oversee` | `internal` | `place_graph` `dm_oversight/region` | `dm_oversight/dm` | [`examples/dm-oversight.toml`](./examples/dm-oversight.toml) |
-| `elven_mini/dm/watch` | `full` | `place_graph` `elven_mini/region` | Aldwin | `packages/spellkave-adventure-elven-mini/fixtures/adventure/cast/npcs/aldwin.toml` |
-| `elven_mini/dm/seat` | `full` | none | Aldwin | same file; an empty `extent_ref` widens nothing, so this grant is a marker checked by an affordance's `gate_predicate` |
+| `kavemouth/dm/watch` | `full` | `place_graph` `kavemouth/region` | Aldwin | `packages/spellkave-adventure-kavemouth/fixtures/adventure/cast/npcs/aldwin.toml` |
+| `kavemouth/dm/seat` | `full` | none | Aldwin | same file; an empty `extent_ref` widens nothing, so this grant is a marker checked by an affordance's `gate_predicate` |
 
 `core/world_admin` and
-`elven_mini/dm/seat` sound like privileges, but the server never checks them
+`kavemouth/dm/seat` sound like privileges, but the server never checks them
 by name. Bundles use them in DSL predicates, like any ordinary capability.
 
 ## Authored session setup

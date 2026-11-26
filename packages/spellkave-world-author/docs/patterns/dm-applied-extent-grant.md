@@ -73,7 +73,7 @@ condition_definition_id = "demo/bond-active"
   independent sources, exclusive expiry and fail-closed behavior.
 - `crates/spellkave-validate/src/refs/condition_extents/tests.rs`: references,
   dependency closure, owner locking and reserved-capability refusal.
-- Elven-mini's unchanged Chapter 1 story assertions protect prebond fog.
+- Kavemouth's unchanged Chapter 1 story assertions protect prebond fog.
 - `author/dm-acts.ts` and `dm/watches/companion-bond-watch.ts` author and
   execute receipt-ordered bond activation; Hesper retains her placed identity.
 

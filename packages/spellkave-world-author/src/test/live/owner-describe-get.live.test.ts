@@ -1,6 +1,6 @@
 /**
  * Publisher `describe` / `get` over the owner cache, proven on private scenes of the package's
- * one shared database. Re-homed from the elven-mini live file `owner-get-describe`
+ * one shared database. Re-homed from the kavemouth live file `owner-get-describe`
  * (ledger/designs/rehome-map-kernel-sdk.md): the world-author half that the sdk could not hold
  * because world-author depends on the sdk. Every assertion is scoped to the test's own scene.
  */

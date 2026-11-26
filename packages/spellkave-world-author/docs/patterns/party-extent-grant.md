@@ -32,12 +32,12 @@ policy; the substrate no longer requires it.
 
 ## TOML example
 
-Copied from `packages/spellkave-adventure-elven-mini/fixtures/adventure/cast/npcs/aldwin.toml`:
+Copied from `packages/spellkave-adventure-kavemouth/fixtures/adventure/cast/npcs/aldwin.toml`:
 
 ```toml
 [[actor_capabilities]]
-actor_entity_key = "elven_mini/adventure/npc/aldwin_1"
-bundle_id = "elven_mini"
+actor_entity_key = "kavemouth/adventure/npc/aldwin_1"
+bundle_id = "kavemouth"
 capability_id = "srd/action/communicate/telepathy"
 elevation_class = ""
 extent_kind_ref = "party"
@@ -46,7 +46,7 @@ source = "srd"
 source_args_hash = ""
 ```
 
-Compare the DM's sight grant in the same file: `elven_mini/dm/watch` with
+Compare the DM's sight grant in the same file: `kavemouth/dm/watch` with
 `extent_kind_ref = "place_graph"` — extents are the general privilege
 shape, party is one kind.
 
@@ -57,7 +57,7 @@ shape, party is one kind.
   `cross_graph_metric_still_rejects_without_extent` (`:1389-1437`).
 - `packages/spellkave-srd-cc/src/test/live-self-seeding/mechanics/telepathy.ts`
   covers directed speech heard only by the addressee (range, not extent).
-- `packages/spellkave-adventure-elven-mini/npcs/__tests__/aldwin-xp-threshold.test.ts`
+- `packages/spellkave-adventure-kavemouth/npcs/__tests__/aldwin-xp-threshold.test.ts`
   (invitation path)
 
 ## Related

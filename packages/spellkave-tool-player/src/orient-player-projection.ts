@@ -70,7 +70,7 @@ export const SUMMARY_REQUESTED_ACTIONS_LIMIT = 25;
 /**
  * The default `spellkave_manipulation_context` answer (sk-jay0.1.46.4,
  * sk-jay0.1.75). The full registry grows with every authored action the
- * actor's capabilities admit: a level-1 cleric on elven-mini lists 200 rows,
+ * actor's capabilities admit: a level-1 cleric on kavemouth lists 200 rows,
  * 100 KB of JSON, and a model host read that on every call. The summary keeps
  * what a player needs to compose the next attempt:
  *

@@ -24,13 +24,13 @@ describe("worldTableEventData", () => {
 				payload_json: '{"text":"CANARY-DETAIL"}',
 				template_id: "core/speak",
 			},
-			"elven-mini",
+			"kavemouth",
 		);
 		expect(data).toEqual({
 			event_id: "4711",
 			tick: 300,
 			event_kind: "Layer2.ApplyConsequence",
-			world_slug: "elven-mini",
+			world_slug: "kavemouth",
 		});
 		expect(JSON.stringify(data)).not.toContain("CANARY-DETAIL");
 	});

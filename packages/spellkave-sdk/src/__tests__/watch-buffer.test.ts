@@ -96,7 +96,7 @@ function occupancyDb(opts: {
 						entityId: opts.entities[0]?.id ?? 1n,
 						capabilityId: "maps_watch/oversee",
 						source: "maps_watch",
-						extentRef: "elven_mini/region",
+						extentRef: "kavemouth/region",
 						extentKindRef: "place_graph",
 						elevationClass: "internal",
 					},

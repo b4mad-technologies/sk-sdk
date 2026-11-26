@@ -309,9 +309,9 @@ describe("portable PLAYER and DM ownership", () => {
 				visible_entity_tag_coverage: [{ status: "complete", projectionVersion: 1, tick: 1n }],
 				world_time: [{ tick: 1n }],
 			}),
-			act: { actorId: "elven_mini/adventure/npc/aldwin_1" },
+			act: { actorId: "kavemouth/adventure/npc/aldwin_1" },
 		} as SpellkaveToolContext;
-		expect(contextActorId(context)).toBe("elven_mini/adventure/npc/aldwin_1");
+		expect(contextActorId(context)).toBe("kavemouth/adventure/npc/aldwin_1");
 	});
 });
 

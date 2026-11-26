@@ -123,8 +123,8 @@ describe("metresPerParentLocalUnit (the single metres -> pixels/parent-cell conv
 		expect(metresPerParentLocalUnit(undefined, 0)).toBe(1);
 	});
 
-	it("matches the real elven-mini tomb/inn fixture shape: an unmaintained metres_per_unit=1.0 next to a real 5ft grid", () => {
-		// packages/spellkave-srd-cc/fixtures/elven-mini/tomb.manifest.toml:
+	it("matches the real kavemouth tomb/inn fixture shape: an unmaintained metres_per_unit=1.0 next to a real 5ft grid", () => {
+		// packages/spellkave-srd-cc/fixtures/kavemouth/tomb.manifest.toml:
 		// place_graph_definition.metres_per_unit = 1.0 (unmaintained default);
 		// the SAME graph's own map_layer row (adventure.manifest.toml:1016-1037)
 		// declares grid_distance_m = 1.524 (the 5 ft square, stored in metres
@@ -135,7 +135,7 @@ describe("metresPerParentLocalUnit (the single metres -> pixels/parent-cell conv
 		// defect, filed as sk-j1a.
 		const tombScale = 1.0;
 		const tombMapLayer = {
-			place_graph_id: "elven_mini/tomb",
+			place_graph_id: "kavemouth/tomb",
 			grid_distance_m: 1.5240000486373901,
 		};
 		expect(metresPerParentLocalUnit(tombMapLayer, tombScale)).toBeCloseTo(1.524, 3);
@@ -174,9 +174,9 @@ describe("resolveGraphAncestorChain", () => {
 describe("isEphemeralInstanceGraph", () => {
 	it("trusts an explicit boolean column when present (AUTHOR's workspace-manifest rows)", () => {
 		expect(isEphemeralInstanceGraph({ is_ephemeral_instance: true }, "anything")).toBe(true);
-		// elven-mini's tomb/inn: parent_graph_id set, is_ephemeral_instance
+		// kavemouth's tomb/inn: parent_graph_id set, is_ephemeral_instance
 		// explicitly false — must never be treated as a session grid.
-		expect(isEphemeralInstanceGraph({ is_ephemeral_instance: false }, "elven_mini/tomb")).toBe(
+		expect(isEphemeralInstanceGraph({ is_ephemeral_instance: false }, "kavemouth/tomb")).toBe(
 			false,
 		);
 	});
@@ -185,6 +185,6 @@ describe("isEphemeralInstanceGraph", () => {
 		// @spellkave/sdk's readPlaceTopology (the PLAYER spellkave_map row
 		// source) does not project is_ephemeral_instance today.
 		expect(isEphemeralInstanceGraph({}, "session_grid_42")).toBe(true);
-		expect(isEphemeralInstanceGraph({}, "elven_mini/tomb")).toBe(false);
+		expect(isEphemeralInstanceGraph({}, "kavemouth/tomb")).toBe(false);
 	});
 });

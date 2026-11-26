@@ -66,7 +66,7 @@ not as world-manifest rows and not as a generic runtime registry (ADR-0115 D-4).
 A missing list is a boot error. An unlisted step, error code, or tool name is
 logged once as unmapped; the exporter still collapses the metric attribute to
 bound cardinality. First consumer:
-`packages/spellkave-adventure-elven-mini/npcs/metrics-vocabulary.ts`. Contract:
+`packages/spellkave-adventure-kavemouth/npcs/metrics-vocabulary.ts`. Contract:
 `packages/spellkave-adventure-runtime/docs/host-metrics-vocabulary.md`.
 
 ---
