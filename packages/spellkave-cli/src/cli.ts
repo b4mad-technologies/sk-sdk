@@ -210,6 +210,14 @@ import type { TSchema } from "typebox";
 import { Check as typeboxCheck, Errors as typeboxErrors } from "typebox/value";
 import { type ApplysetVerb, applysetVerbArgs, finishApplysetVerb } from "./applyset-verbs.ts";
 import { deriveFlags, parseToolArgs, UsageError } from "./args.ts";
+import {
+	applySeedRoots,
+	type ConnectSeed,
+	connectSeedTarget,
+	flattenSeedRoot,
+	parseSeedArgs,
+	SEED_USAGE,
+} from "./seed.ts";
 import { prepareAuthoring } from "./authoring-prepare.ts";
 import {
 	inspectBundle,
@@ -1874,6 +1882,7 @@ interface FileCommand {
 		argv: string[],
 		options: GlobalOptions,
 		connectLive: ConnectLive,
+		extras: CliExtras,
 	) => Promise<number>;
 }
 
@@ -2462,6 +2471,64 @@ const FILE_COMMANDS: Record<string, FileCommand> = {
 			];
 			io.hint(next.join("\n"));
 			return EXIT_OK;
+		},
+	},
+	// Takes manifest paths like its siblings, and is the one file command that
+	// connects: it sends what it read to a running world (`./seed.ts`).
+	seed: {
+		summary: "Load compiled world manifests into a running world over websocket",
+		usage: SEED_USAGE,
+		run: async (io, argv, options, _connectLive, extras) => {
+			const args = parseSeedArgs(argv);
+			// Read every root before connecting: a broken later root must not
+			// leave a half-seeded world.
+			const roots = [];
+			for (const root of args.roots) roots.push(await flattenSeedRoot(root));
+			if (args.dryRun) {
+				const planned = roots.map((flat) => ({
+					kind: "seed_root",
+					root: flat.root,
+					includes: flat.includes.length,
+					bytes: flat.bytes,
+					sha256: flat.sha256,
+					status: "planned",
+				}));
+				for (const record of planned) io.record(record);
+				io.record({ kind: "seed_result", ok: true, dry_run: true, roots: planned.length });
+				return EXIT_OK;
+			}
+			const resolved = resolveLiveConnection(options.profileName);
+			announceAuthorConnection(io, resolved, "sk seed");
+			const target = await (extras.connectSeed ?? connectSeedTarget)({
+				url: resolved.url,
+				db: resolved.db,
+				...(resolved.token === undefined ? {} : { token: resolved.token }),
+			});
+			try {
+				const result = await applySeedRoots(target, roots, {
+					tolerateApplied: args.tolerateApplied,
+					onRoot: (record) => io.record({ ...record }),
+				});
+				io.record({
+					kind: "seed_result",
+					ok: result.ok,
+					db: resolved.db,
+					roots: roots.length,
+					applied: result.roots.filter((root) => root.status === "applied").length,
+					already_applied: result.roots.filter((root) => root.status === "already_applied")
+						.length,
+				});
+				if (!result.ok) {
+					io.hint(
+						"Next:\n  sk validate <root> --bundle --dep <dependency>... — check the refused root offline\n" +
+							"  sk seed <roots...> --tolerate-applied — rerun after a fix; sealed roots are skipped",
+					);
+					return EXIT_IN_WORLD;
+				}
+				return EXIT_OK;
+			} finally {
+				await target.close();
+			}
 		},
 	},
 	// Host metadata, not a manifest-path command like its siblings above — kept
@@ -3485,6 +3552,8 @@ async function quickStartContext(options: GlobalOptions): Promise<string[]> {
 export interface CliExtras {
 	plugins?: PluginSource;
 	host?: HostDeps;
+	/** `sk seed`'s connector; tests pass a fake so no node is needed. */
+	connectSeed?: ConnectSeed;
 }
 
 export async function runCli(
@@ -3946,7 +4015,7 @@ async function runCliDispatch(
 		}
 		const fileCommand = FILE_COMMANDS[command];
 		if (fileCommand !== undefined) {
-			return await fileCommand.run(output, rest.slice(1), options, connectLive);
+			return await fileCommand.run(output, rest.slice(1), options, connectLive, extras);
 		}
 		// AUTHOR-vs-PLAYER routing is registry membership, never a name
 		// literal: `definitionFor` searches `authorFacingToolDefinitions`,

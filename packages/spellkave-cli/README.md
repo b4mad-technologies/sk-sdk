@@ -399,6 +399,12 @@ command **before** a registry tool of the same name, and refuses to ship a
 file command whose name collides with one (`src/__tests__/file-commands.test.ts`).
 `sk skill path` is the file-command group's packaged documentation lookup.
 
+`sk seed <root>...` is the one file command that connects: it reads manifest
+roots off disk like its siblings, then loads them into a running world over
+the websocket connection (the HTTP call route refuses a large ruleset
+manifest). See [Seed a running world](docs/seed.md) for the command sequence,
+exit codes and the current world API epoch gap.
+
 Before committing a content delta, run
 `sk delta inspect <delta.toml> --against <dependency-roots...>`. Roots accept
 manifest files or directories containing `manifest.toml`. The offline report
