@@ -30,4 +30,16 @@ export {
 	resolveOutputFormat,
 	type StructuredRecord,
 } from "./output.ts";
+export {
+	applySeedRoots,
+	type ConnectSeed,
+	connectSeedTarget,
+	type FlattenedSeedRoot,
+	flattenSeedRoot,
+	type SeedRootRecord,
+	type SeedRunResult,
+	type SeedSession,
+	type SeedTarget,
+	seedTargetFromSession,
+} from "./seed.ts";
 export { assertNotCoreProfile, createFileAuthorWorkspace, SK_SCRATCH_DIR } from "./workspace.ts";
