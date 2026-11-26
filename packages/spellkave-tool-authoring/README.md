@@ -30,7 +30,7 @@ must refresh `tools/list` or reconnect; stale calls still pass current admission
 Local stdio MCP captures discovery when it connects, so reconnect after authority
 changes to refresh its advertised list.
 
-[Verified caller examples](../../../sandbox/authority-tools-over-mcp/README.md)
+Verified caller examples (internal record, not in this repository)
 link exact presence-only HTTP/local stdio requests, payload success, server-path
 refusal and independent postconditions at a pinned revision. Synthetic aliases
 must be replaced with the caller's own admitted binding/source values. Shared

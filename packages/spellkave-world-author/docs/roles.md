@@ -180,7 +180,7 @@ write also checks its target entity independently; root-graph ownership does
 not confer ownership of every body inside it. PlaceGraph and Party grants
 admit placed edits but cannot claim a placeless definition or an applyset root.
 See [extent-scoped apply](./getting-started-with-verbs.md#extent-scoped-apply)
-for the row rules and compatibility boundary. [Captured local author examples](../../../sandbox/extent-scoped-apply/README.md)
+for the row rules and compatibility boundary. Captured local author examples (internal record, not in this repository)
 record an admitted `sk apply -k` edit, a refused `sk diff -k` takeover and
 independent live postconditions for AUTH-36-01/02. The captures identify the
 proved revision and publisher bootstrap; hosted MCP delivery and packaged
@@ -273,7 +273,7 @@ scripted pass does not establish unaided discovery or an efficiency threshold.
 
 ## Proven binding journeys
 
-The [local binding evidence](../../../sandbox/role-bindings/README.md) records
+The local binding evidence (internal record, not in this repository) records
 AUTH-34-01 targeted inspection of two distinct bindings and AUTH-34-02 revocation
 while retaining the independent character claim. Each versioned trace records
 real admission, refusals and independent state checks. The examples above are
@@ -316,7 +316,7 @@ local proof does not authorize a hosted activation.
 
 Admission and drain-time rechecks use the original submitting identity and live authority. The role definitions, aggregations, presence grants and bindings form the bounded atomic authority unit at cursor 1. A refusal before cursor 0 starts writes leaves the world unchanged. A refusal at cursor 1 can retain ordinary cursor-0 writes; it leaves the authority unit unchanged and follows the existing quarantine/unknown-applyset-base recovery contract. Inspect the failure, reconcile the actual state and resubmit an authorized delta; do not assume that the entire manifest rolled back.
 
-The role-escalation slice changes no table, column, reducer signature or binding layout. The subsequent handover slice adds defaulted binding metadata, private receipt tables and caller projections; publish its matching schema and clients together. Preserve persistent state with an incremental publish and verify realised and inert bindings and grants. Recovery uses a compatible module or a forward fix retaining escalation, affected-binding, prune, namespace and privacy checks. An older module that admits the refused edits violates the security floor and is not a recovery build. The local rehearsal and supported CLI scenarios are linked in [the escalation evidence](../../../sandbox/role-escalation-at-apply/README.md); hosted activation and portable persona publication remain separate operator/.56 work.
+The role-escalation slice changes no table, column, reducer signature or binding layout. The subsequent handover slice adds defaulted binding metadata, private receipt tables and caller projections; publish its matching schema and clients together. Preserve persistent state with an incremental publish and verify realised and inert bindings and grants. Recovery uses a compatible module or a forward fix retaining escalation, affected-binding, prune, namespace and privacy checks. An older module that admits the refused edits violates the security floor and is not a recovery build. The local rehearsal and supported CLI scenarios are recorded in the escalation evidence (internal record, not in this repository); hosted activation and portable persona publication remain separate operator/.56 work.
 
 ## Prepared places
 
@@ -343,7 +343,7 @@ an own-bundle extent stays silent. Extent kinds resolve through their authored
 `sk explain place <graph-or-node> --target files` names the sealing ancestor.
 Live explanations use publisher observations; other callers see `server decides`
 because policy rows are private. Publisher `spellkave seal list|inspect` includes
-break provenance and descendant graph IDs. See the [local proof](../../../sandbox/place-seal/README.md)
+break provenance and descendant graph IDs. See the local proof (internal record, not in this repository)
 for the precise surfaces and evidence status. Ordinary affordances continue to
 resolve inside sealed places; seals protect privileged editing, not gameplay.
 
@@ -381,7 +381,7 @@ Publish the supporting module before content using this operation. For rollback,
 remove that content before restoring the compatible predecessor module; preserve
 seal and break rows and verify that remaining seals still refuse privileged edits.
 
-The [versioned local proof](../../../sandbox/seal-break-as-affordance/README.md)
+The versioned local proof (internal record, not in this repository)
 contains exact installed CLI arguments, shared-tool requests and independent
 audit assertions. The installed CLI ran outside the checkout with the warden's
 retained credential; the publisher supplied setup and the independent audit,

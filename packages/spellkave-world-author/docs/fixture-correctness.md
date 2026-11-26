@@ -9,10 +9,10 @@ rules:
   the world API,
 - the `srd-fixture-hygiene` grep lint (retired 2026-08-11 alongside
   `world-fixtures/`'s move to `archive/world-fixtures/`; script archived to
-  [`archive/scripts/ci/check-srd-fixture-hygiene.sh`](../../../archive/scripts/ci/check-srd-fixture-hygiene.sh) —
+  `archive/scripts/ci/check-srd-fixture-hygiene.sh` —
   see `archive/README.md` Phase D),
-- the read-only [`fixture-correctness-auditor`](../../../.claude/agents/fixture-correctness-auditor.md)
-  agent (it *runs* this catalog against a bundle),
+- the read-only `fixture-correctness-auditor`
+  agent of the private development repository (it *runs* this catalog against a bundle),
 - the packaged `sk` skill (`packages/spellkave-cli/skill/SKILL.md`) and the
   shared [`authoring-process.md`](authoring-process.md).
 

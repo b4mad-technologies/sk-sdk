@@ -63,8 +63,7 @@ one required operator-view subscription. Missing secure views return
 The server checks generation and current extent admission at commit. Runtime
 changes can still race an optimistic comparison.
 
-Local installed CLI and migration evidence:
-[role-scoped proof](../../../sandbox/role-scoped-world-read/README.md).
+Local installed CLI and migration evidence: the role-scoped proof (internal record, not in this repository).
 Hosted MCP transport and the complete exploration journey are proved by their
 owning changes, `authority-tools-over-mcp` (.45) and
 `persona-world-exploration` (.58). The publisher loft-chest example remains in

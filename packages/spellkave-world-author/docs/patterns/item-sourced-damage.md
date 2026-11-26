@@ -128,5 +128,5 @@ attacker math, `delta_source` for a one-off non-item-sourced number),
 - Every manufactured weapon (`fixtures/base/equipment/weapons/<slug>.toml`),
   every CR 0–4 natural weapon, Opportunity Attack's weapon branch. The
   attack archetype, reach/range ownership and the retired-idiom tombstone:
-  [`attack-and-damage.md`](../../../spellkave-srd-cc/docs/attack-and-damage.md),
-  [`authoring-damage.md`](../../../spellkave-srd-cc/docs/authoring-damage.md).
+  `attack-and-damage.md`,
+  `authoring-damage.md` (`@spellkave/srd-cc` docs, not in this repository).

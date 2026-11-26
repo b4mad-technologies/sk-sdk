@@ -55,7 +55,7 @@ ordinary observation, attempt and refusal recovery.
 
 ## Evidence and limits
 
-The [authority transport proof](../../../sandbox/authority-tools-over-mcp/README.md)
+The authority transport proof (internal record, not in this repository)
 records AUTH-45-01/02 on a disposable node with real caller HTTP and local stdio
 MCP, portable inputs and independent state assertions. Its named historical
 captures predate private baselines. The current AUTH-45-01 and local stdio cases

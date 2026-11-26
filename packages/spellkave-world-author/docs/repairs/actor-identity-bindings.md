@@ -109,7 +109,7 @@ isn't classified as `NonSteering` (`r_apply_consequence/steering_claim.rs`);
 `srd/attack/melee`'s generic outcome (HP `ModifyResource` + a conditional
 death `ApplyStatus`) does NOT classify as non-steering, so every hero attack
 against an NPC acquires/renews a `core/condition/controlled` claim-lock on
-it ([claims][claims], Item 20; TTL 10 ticks, renewed on each hit). No prior
+it (claims, Item 20; TTL 10 ticks, renewed on each hit). No prior
 combat beat needed the SAME entity to act on itself moments later. Since #2411,
 an action authored with `self_only = true` skips target-claim acquisition, so
 the carrier can use a self-heal or another genuinely self-only verb while the
@@ -249,8 +249,6 @@ playable tag also grants SRD capabilities, so do not add it merely to bind a hos
 `readSeats` in `@spellkave/sdk`; the doctor check `seat_catalog_readable`
 proves the view is reachable. A seeded Elven-Mini currently offers only the
 Creation Candidate — the pregen Renn body in `reference/` is not seeded.
-
-[claims]: ../data-model-concepts/claims.md
 
 ---
 

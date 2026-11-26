@@ -11,7 +11,7 @@ caller-owned presence/payload tools are described in the supported
 Named scene setup is implemented by `parameterized-scene-setups`
 (`sk-jay0.3.24.50`). The [scene guide](./parameterized-scenes.md) describes its
 preview, separate graph/population commits, partial receipts and cleanup limits.
-The [owning captures](../../../sandbox/parameterized-scene-setups/README.md)
+The owning captures (internal record, not in this repository)
 verify installed CLI and real caller HTTP MCP on a disposable local node, including
 source guards and reset. They do not certify a persistent hosted deployment,
 external client or unaided discovery.

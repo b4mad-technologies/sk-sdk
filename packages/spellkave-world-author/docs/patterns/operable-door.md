@@ -46,7 +46,8 @@ separate capability and grant that only to the appropriate player.
 ## Authoring shape
 
 The complete, CLI-authored example is
-[`behaviour/doors/fixtures/manifest.toml`](../../../spellkave-cli/behaviour/doors/fixtures/manifest.toml).
+`behaviour/doors/fixtures/manifest.toml` in the CLI behaviour suite (not in
+this repository).
 It places a player, Ada, in a two-room indoor graph and depends on `srd`.
 The local proof seeds core mechanics and SRD before that root.
 
@@ -126,7 +127,7 @@ that the world accepted the action. Re-read the scene after a step to check
 the player's location.
 
 The live scenario in
-[`behaviour/doors/doors.feature`](../../../spellkave-cli/behaviour/doors/doors.feature)
+`behaviour/doors/doors.feature`
 checks the initially refused step, accepted open and traversal, close from
 the room, refused return, and locked-door refusals. Run it with:
 

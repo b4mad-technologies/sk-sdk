@@ -1386,8 +1386,8 @@ when the owning bundle's `depends_on` closure is fully present (or on live
 admission) and Info with a hint when it is not, the same two-tier trust as
 `MF-VAL-217`, so a per-file validate of a formula reading `srd/str` declared
 in another file does not fail closed. See also
-[`packages/spellkave-srd-cc/docs/attack-and-damage.md`](../../spellkave-srd-cc/docs/attack-and-damage.md)
-and [`authoring-damage.md`](../../spellkave-srd-cc/docs/authoring-damage.md).
+`attack-and-damage.md` and `authoring-damage.md` in the docs of the
+`@spellkave/srd-cc` bundle package (not published yet).
 
 ## Observing What Happened
 

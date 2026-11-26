@@ -713,7 +713,7 @@ same way: a spell, feat, or class sprite lands on that entry's
 The existing `frontier.apply_manifest`-gated `art.image` registration and
 annotations remain unchanged. See ADR-0073 (2026-09-07 postscript) and the
 executable
-[Elven Mini example](../../spellkave-adventure-elven-mini/docs/public-subject-art.md)
+Elven Mini example
 for asset validation, precedence, compatibility and consumer fallback rules.
 
 For verbatim CC-BY SRD prose, register `srd.text` (`public` audience,

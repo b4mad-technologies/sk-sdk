@@ -82,4 +82,4 @@ There is no per-terminal action definition or manifest publication.
 ## SRD features that use this
 
 - Elven-mini Q1–Q12 (givers, terminals, rewards, parleys, Hesper):
-  [`elven-mini-quests.md`](../../../spellkave-adventure-elven-mini/docs/elven-mini-quests.md).
+  `elven-mini-quests.md`.

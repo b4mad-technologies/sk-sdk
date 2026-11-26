@@ -79,7 +79,7 @@ const snapshot = readLocationSnapshot(db, "example_spatial_cell/cell_a");
 edges; a single-cell location is disconnected from the rest of the
 world by design. To connect it, add `[[place_edges]]` rows pointing
 `from_node_id` / `to_node_id` to existing nodes — see
-[`../../../packages/spellkave-mechanics/fixtures/core/base/spatial.toml`](../../../../packages/spellkave-mechanics/fixtures/core/base/spatial.toml)
+[`packages/spellkave-mechanics/fixtures/core/base/spatial.toml` in sk-grimoire](https://github.com/b4mad-technologies/sk-grimoire/blob/main/packages/spellkave-mechanics/fixtures/core/base/spatial.toml)
 for the full edge contract.
 
 ## Why this scores `fits`
@@ -89,6 +89,5 @@ requires: a typed substrate, a discrete cell with coordinates and an
 (optionally authored) spatial extent. No SRD attribute is lost on
 translation; no DSL is required.
 This is the only SRD probe row that translated without dropped
-attributes — see
-[`../../../openspec/changes/archive/2026-05-18-srd-conformance-probe/gap-matrix.md`](../../../../openspec/changes/archive/2026-05-18-srd-conformance-probe/gap-matrix.md)
-for the other four probe rows (`partial` / `gap`).
+attributes — the gap matrix of the 2026-05-18 SRD conformance probe (not in
+this repository) lists the other four probe rows (`partial` / `gap`).

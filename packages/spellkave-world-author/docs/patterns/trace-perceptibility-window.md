@@ -126,4 +126,4 @@ fade on their own" (the decay-deletes warning in substrate terms),
 - `srd/speech` (event), the elven-mini slime trail (mark), utility spell
   cast marks (mending / prestidigitation / alarm — srd-cc L12d `trace_cast`). Residue and the
   full lifetime note:
-  [`speech-and-traces.md`](../../../spellkave-srd-cc/docs/speech-and-traces.md).
+  `speech-and-traces.md` (`@spellkave/srd-cc` docs, not in this repository).

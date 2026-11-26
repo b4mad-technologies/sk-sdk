@@ -134,4 +134,5 @@ is computed or applied by the dialogue runtime.
 
 Aldwin's creation and advancement wizards use these steps. The SRD vocabulary,
 kit composition and world-owned vessel limits are described in
-[character creation](../../../spellkave-srd-cc/docs/character-creation.md).
+the character creation notes of the `@spellkave/srd-cc` docs (not in this
+repository).

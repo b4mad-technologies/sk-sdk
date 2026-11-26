@@ -2,8 +2,7 @@
 
 Status: **implemented**. Package: `@spellkave/tool-player` (+ one new
 `@spellkave/sdk` reader). Related: `spellkave_map_graph` (AUTHOR mode,
-`authoring-verbs.ts`), the world API,
-[`docs/README.md`](../../../docs/README.md#canonical-vs-change-local-docs).
+`authoring-verbs.ts`), the world API.
 
 > **Placement note.** This design was originally briefed to land under
 > `packages/spellkave-srd-cc/ledger/designs/`. That directory is **frozen for

@@ -158,4 +158,4 @@ computed outside the DSL entirely),
 - Proficiency Bonus (macro from `srd/level` for PCs, baked from CR for
   monsters), the six ability-modifier macros, AC via `effective`, DCs as
   scene literals. SRD tables, ids and the PC-level/monster-CR rule:
-  [`derived-values.md`](../../../spellkave-srd-cc/docs/derived-values.md).
+  `derived-values.md` (`@spellkave/srd-cc` docs, not in this repository).

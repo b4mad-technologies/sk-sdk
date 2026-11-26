@@ -68,7 +68,7 @@ cache listeners retain the configured polling fallback. Listeners and the
 pending timer are removed when an attempt ends, including rejection or a
 caller predicate error. The injected-delivery contract is covered by
 [reducer_observation_delivery.test.ts](src/__tests__/reducer_observation_delivery.test.ts).
-The [creation measurement](../../docs/research/ci-reducer-observation-callbacks.md)
+The creation measurement (internal record, not in this repository)
 records local before/after and counterfactual timings with their limits.
 
 For `ActorClient.manipulate`, an actor ID and a fresh provenance row are
@@ -79,7 +79,7 @@ argument object. The pinned SpacetimeDB 2.10.1 transport preserves that object
 in the caller's ReducerResult callbacks; other sockets receive Transaction
 callbacks. Driver-token wrappers retain the nested manipulation args object.
 The live transport and same-presence two-process contract is
-[manipulation-receipt.local-node.test.ts](../spellkave-test-lab/src/scene-live/manipulation-receipt.local-node.test.ts).
+`manipulation-receipt.local-node.test.ts` in the private test lab package.
 
 A changed state predicate alone no longer proves manipulation success. Without
 an attributable receipt (including snapshot-only hosts, wrappers that clone
@@ -107,8 +107,8 @@ or the scoped controller's conservative guard during rollback.
 `createWorldEventBuilder` (`@spellkave/sdk/world-events`,
 [builder.ts](src/world-events/builder.ts)) derives the closed `WorldEvent`
 stream that Play, the player MCP gateway, the Pi extension and `sk` deliver.
-Its contract and every dated change live in
-[unified-world-event-stream.md](../../ledger/designs/unified-world-event-stream.md).
+Its contract and every dated change live in the design note
+`unified-world-event-stream.md`, which is not in this repository.
 
 Since the compatibility decision of 2026-11-12:
 

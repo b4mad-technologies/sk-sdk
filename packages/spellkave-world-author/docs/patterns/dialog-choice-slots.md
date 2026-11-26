@@ -133,4 +133,4 @@ speaker, `ActorSpatialRef` — `srd-cc fixtures/dm/manifest.toml:2364-2368`), [`
 - Aldwin's character-creation wizard and level-up dialogue; Mira's bar talk;
   every elven-mini quest giver's accept/decline slot. Ids, `.mdsl` dialog
   files and acceptance list:
-  [`npc-dialog-choice-slots.md`](../../../spellkave-srd-cc/docs/npc-dialog-choice-slots.md).
+  `npc-dialog-choice-slots.md` (`@spellkave/srd-cc` docs, not in this repository).

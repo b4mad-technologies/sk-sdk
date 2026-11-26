@@ -88,7 +88,7 @@ an existing export coverage gap.
 
 ## Related
 
-[Conditions](../../../../docs/data-model-concepts/conditions.md#condition-derived-extents),
+Conditions (data model concept),
 [Party extent](./party-extent-grant.md),
 [Directed speech](./directed-speech-anchor.md).
 
