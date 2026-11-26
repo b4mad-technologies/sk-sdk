@@ -121,7 +121,7 @@ An NPC host can explicitly pass `presenceActorId` to `createNpcSeat`; discovery
 and dispatch then use that presence rather than the host session's character.
 The host hydrates `presenceActRequiredTables` on its existing caller connection.
 The real local-node proof is `spellkave-npc-tests/src/live/presence-act.test.ts`;
-[recorded SDK, CLI and NPC evidence](../../../sandbox/privileged-acts-as-affordances/README.md)
+the recorded SDK, CLI and NPC evidence (internal record, not in this repository)
 names the exact supported routes and their measured cost.
 Hosted selection and MCP composition remain transitional under `.45`.
 
@@ -148,8 +148,8 @@ timekeepers and `read_internal` callers receive no private pacing rows; the
 read extension is deferred to `sk-jay0.3.24.86` after ADR-0151 acceptance. The
 estimate comes from the timer's arming time; it is not the host scheduler's
 actual next deadline. Pacing events record each admitted call, including
-no-ops, while the durable last-pacer row survives event retention. See the
-[local acceptance evidence](../../../sandbox/time-control-tools/README.md).
+no-ops, while the durable last-pacer row survives event retention. The local
+acceptance evidence is an internal record, not in this repository.
 
 ## Authoring safety
 
@@ -252,7 +252,7 @@ authored `core/act/break-seal` uses a warden presence with a covering PlaceGraph
 binding and an explicit `dispatch_text` reason. It changes one selected seal,
 records a Public trace and preserves the ordinary consequence provenance; a
 generic forced edit does not invoke it. See [the authored break guide](roles.md#break-a-prepared-boundary-through-an-authored-act)
-and [local evidence](../../../sandbox/seal-break-as-affordance/README.md).
+and the local evidence (internal record, not in this repository).
 
 ## Steering and held NPC control
 
@@ -301,7 +301,7 @@ persistent hosted activation and legacy backfill/classification are owned by
 `sk-jay0.3.24.145`. A local proof does not certify public availability.
 
 
-The [versioned local control walkthrough](../../../sandbox/act-as-and-consent/evidence/2026-10-06-local/index.json)
+The versioned local control walkthrough (internal record, not in this repository)
 contains exact successful MCP parameters, installed CLI calls and atomic
 refusal/recovery traces. For example, the verified MCP route offers
 `spellkave_take_npc_control` with `presence_actor_id`, `actor_id`,

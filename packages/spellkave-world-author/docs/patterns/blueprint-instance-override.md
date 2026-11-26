@@ -115,4 +115,4 @@ tag = "srd.creature.role.skirmisher"
 - Mira and Aldwin (`srd/creature/commoner`), the Crypt Warden (goblin
   warrior, XP override), the Slime Scout (gray ooze, HP 3), every §5
   storyline encounter. Worked verdicts:
-  [`scenario-blueprints.md`](../../../spellkave-srd-cc/docs/scenario-blueprints.md).
+  `scenario-blueprints.md` (`@spellkave/srd-cc` docs, not in this repository).

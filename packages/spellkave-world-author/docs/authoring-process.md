@@ -90,7 +90,7 @@ the default.
   `packages/spellkave-srd-cc/cache/` (open5e JSON + the SRD markdown),
   refreshed only by `pnpm --filter @spellkave/srd-cc run sync-cache`; every
   rule claim pins a `cache/` file:line before it is authored (rules and
-  layout: [`packages/spellkave-srd-cc/CLAUDE.md`](../../spellkave-srd-cc/CLAUDE.md)).
+  layout: the agent notes of the `@spellkave/srd-cc` package).
   Adventure content cites its own admitted sources. If the value is not in a
   cited source, STOP and ask the operator; never fall back to memory.
 - "I don't know the value" → say it and stop. Never guess.
@@ -132,7 +132,7 @@ the default.
 - **Record cross-layer findings before implementation.** Search the existing
   tracker, adopt matching work, or file a scoped Bead under the owning epic
   with evidence, dependencies, and acceptance criteria. Follow
-  [docs/beads.md](../../../docs/beads.md); do not recreate the retired GitHub
+  the tracker guide of your repository; do not recreate the retired GitHub
   intake lane. Gate substrate direction with `canon-warden` and record any
   required operator decision before proceeding.
 - The four `canon-warden` axes (Gibson / ADR / K-rule / data-driven) bind

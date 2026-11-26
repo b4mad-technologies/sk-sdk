@@ -103,4 +103,4 @@ inscribe this trace), [`communicate-with-actor`](../examples/communicate-with-ac
 - `srd/speak-aloud`, `srd/speak-to-room` (speaker-anchored),
   `srd/speak-to`, `srd/communicate/telepathy` (addressee-anchored), DM
   dialogue lines (speaker-anchored with an addressee, see above). Chains, ids and the extent residue:
-  [`speech-and-traces.md`](../../../spellkave-srd-cc/docs/speech-and-traces.md).
+  `speech-and-traces.md` (`@spellkave/srd-cc` docs, not in this repository).

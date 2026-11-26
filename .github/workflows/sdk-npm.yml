@@ -22,6 +22,8 @@ jobs:
         with:
           node-version: 24.22.1
           package-manager-cache: false
+      - name: Check relative links
+        run: node scripts/check-links.mjs
       - name: Install dependencies
         shell: bash
         run: |

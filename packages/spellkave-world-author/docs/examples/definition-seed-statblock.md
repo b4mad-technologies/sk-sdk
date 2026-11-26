@@ -46,7 +46,7 @@ The seed FK targets (`entity_def_id`, `state_id`, `capability_id`,
 dependency. A same-bundle typo fails loudly at validation (MF-VAL-252…255);
 a legitimate cross-bundle reference (a `phandelver` creature seeding `srd/hp`)
 resolves at live admission / the merge-gate per
-[ADR-0044](../../../../specifications/adr/0044-incremental-world-aware-manifest-admission.md).
+ADR-0044.
 
 ## Structural seeds: containment and equipment
 
@@ -83,7 +83,7 @@ bundle_id = "pack"
 ```
 
 (Cribbed from the live `edi_demo` proof bundle —
-[`entity-definition-initial-items.toml`](../../../../openspec/specs/world-manifest-authoring/demos/fixtures/entity-definition-initial-items.toml)
+`entity-definition-initial-items.toml`, not in this repository,
 — with the demo's `edi_demo/*` ids renamed to the `pack/*` ids the spec
 scenarios use.)
 

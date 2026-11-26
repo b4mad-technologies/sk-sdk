@@ -77,4 +77,4 @@ Warden uses `role: "archer"` plus its hostile refusal line
 
 - Every `srd/creature/<slug>` definition; elven-mini §5 encounters, the
   Crypt Warden, storyline villains. Role table and assignment heuristics:
-  [`combat-roles.md`](../../../spellkave-srd-cc/docs/combat-roles.md).
+  `combat-roles.md` (`@spellkave/srd-cc` docs, not in this repository).

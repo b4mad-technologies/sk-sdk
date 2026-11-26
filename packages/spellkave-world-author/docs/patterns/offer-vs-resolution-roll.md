@@ -100,10 +100,10 @@ one consequence), [`interaction-dsl-and-world-authoring`](../interaction-dsl-and
 
 - Melee / Ranged / Unarmed / Opportunity Attack, every `srd/check/<subject>`
   verb, saving-throw style scene checks. Pipeline details:
-  [`attack-and-damage.md`](../../../spellkave-srd-cc/docs/attack-and-damage.md).
+  `attack-and-damage.md` (`@spellkave/srd-cc` docs, not in this repository).
 - Thrown Acid, Alchemist's Fire, Holy Water (`srd/item/<slug>/throw`): the
   target's Dexterity save, written from the thrower's side
   (`d20 + DC - mod >= 22`, same unbiased odds). The target's own save
   modifiers are not routed onto that d20; its against-bearer attack bias is
   (sk-jay0.2.41). Details:
-  [`equipment-catalogue.md`](../../../spellkave-srd-cc/docs/equipment-catalogue.md#thrown-consumables).
+  `equipment-catalogue.md` (`@spellkave/srd-cc` docs, not in this repository).

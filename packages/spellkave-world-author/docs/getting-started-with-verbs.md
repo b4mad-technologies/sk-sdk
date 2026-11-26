@@ -394,10 +394,10 @@ Server ownership and extent checks still apply to adoption and forced writes.
 The seeded-adoption/refusal assertions live in
 `crates/spellkave-authoring/src/diff_apply.rs` and
 `packages/spellkave-tool-authoring/src/__tests__/applyset-tools.test.ts`.
-The [captured AUTH-37 local journey](../../../sandbox/diff-drift-decision/README.md)
+The captured AUTH-37 local journey (internal record, not in this repository)
 also proves the actual CLI refusal, explicit recovery and independent world
 postconditions. It runs the workspace-installed CLI in an external temporary
-directory. [The scoped reader evidence](../../../sandbox/role-scoped-world-read/README.md)
+directory. The scoped reader evidence (internal record, not in this repository)
 also covers the bound author's source and unchecked-force refusal; hosted
 delivery and portable publication remain the `.45`/`.56` follow-up surfaces.
 

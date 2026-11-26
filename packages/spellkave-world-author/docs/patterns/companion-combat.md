@@ -64,7 +64,7 @@ optional `heal` overlay) — no new brain module (sk-609b.15).
 
 Storyline slots (sk-609b.15): **Aldwin's rogue** (`skirmisher`) at hero L2;
 **Hesper** (`archer`) after Q6; **Caddoc** (`healer`) after Q10. See
-[`elven-mini-party.md`](../../../spellkave-adventure-elven-mini/docs/elven-mini-party.md).
+`elven-mini-party.md`.
 
 ## TOML example
 

@@ -6,7 +6,7 @@ bounded duration, then fades. No player re-casts every turn; the zone pulses
 itself.
 
 > **Binding decision:** ADR-0054 — Caster-attributed autonomy jobs.
-> Substrate concept: [autonomy-jobs](../../../docs/data-model-concepts/autonomy-jobs.md).
+> Substrate concept: autonomy jobs.
 > The worked example below is the **historical** `srd` Cloudkill — the prose
 > and TOML shape are still correct (ranged placement via `anchor_place_node_id`,
 > the liveness-policy choice), but every artifact it cites is now archived:
@@ -321,7 +321,7 @@ is a single cell fixed at cast time.
 
 - ADR-0054 — the decision and its fences. ADR-0064 — admits `ApplyStatus`
   into the subject-bound frame-write allowlist.
-- [autonomy-jobs concept](../../../docs/data-model-concepts/autonomy-jobs.md) — the scheduling table and the eligibility fence.
+- The autonomy jobs concept — the scheduling table and the eligibility fence.
 - `archive/packages/spellkave-srd/fixtures/base/spell-actions.toml` — the
   seeded `srd/cast_cloudkill/*` rows this guide's cast-based prose quotes.
   Historical: `packages/spellkave-srd` was retired to `archive/` and does not

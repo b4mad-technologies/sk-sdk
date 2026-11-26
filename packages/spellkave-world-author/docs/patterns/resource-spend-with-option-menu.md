@@ -23,8 +23,8 @@ Author the pool (`spellkave_define_resource` / chapter unit). Each option is its
 own action/affordance with the same spend debit (`ModifyResource` delta `-1` on
 the pool) and distinct effect body. Advancement/metadata may list members for
 DM dialogue; live spend is still per-action. See
-[`spellcasting-substrate.md`](../../../spellkave-srd-cc/docs/spellcasting-substrate.md)
-and [`caster-features-l1-4.md`](../../../spellkave-srd-cc/docs/caster-features-l1-4.md).
+`spellcasting-substrate.md`
+and `caster-features-l1-4.md` (`@spellkave/srd-cc` docs, not in this repository).
 
 ## TOML example
 

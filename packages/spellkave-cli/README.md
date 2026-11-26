@@ -358,8 +358,8 @@ passing both `--live` and `--target` as flags remains an error. Connection profi
 (`--profile`, `sk config use-context`) continue to select live worlds; local
 dependency mappings do not change credentials or live authority.
 
-The configure-once promises run against the real CLI in
-[`configured-world.feature`](behaviour/exploration/configured-world.feature).
+The configure-once promises run against the real CLI in the
+`configured-world.feature` behaviour scenarios (not in this repository).
 
 ## Two halves: AUTHOR (registry tools that edit content) and PLAYER (registry tools that act in-world)
 
@@ -405,8 +405,7 @@ manifest files or directories containing `manifest.toml`. The offline report
 includes bundle validation, potential preservation-sensitive rows, git tracking,
 unkeyed subset-regression kinds and census recapture guidance. Roots describe
 authored context; they cannot establish live player progress or seat ownership.
-See [the delta preflight reference](../../.agents/skills/sk-author/references/delta-preflight.md)
-and `sk help delta` for exit codes and the JSONL contract.
+See `sk help delta` for exit codes and the JSONL contract.
 
 ## Offline rule evaluation bench: `sk eval`
 
@@ -447,8 +446,8 @@ This command requires a local target and sends nothing to the world. For a root
 with applyset memory, inspect the proposed retraction with
 `sk apply -k <root> --prune --dry-run`, then use
 `sk apply -k <root> --prune` when the report is acceptable. World-added rows and
-other prune admission rules still apply. The captured
-[applyset guide](docs/applyset-guide.md) proves the file edit and dry-run plan.
+other prune admission rules still apply. A captured applyset guide (not in
+this repository) proves the file edit and dry-run plan.
 
 ## AUTHOR flush destinations
 
@@ -616,7 +615,7 @@ rows would require a forced apply. An unreadable candidate exits `2`
 with a cannot-look reason; entity-content inspection requires publisher
 closure. The live scenario “Preview the world-added rows on every entity a
 prune would remove” in
-[the applyset evidence](docs/applyset-scenarios.md) checks the preview and
+the applyset evidence (not in this repository) checks the preview and
 unchanged items, states and applyset memory.
 
 `sk apply -k <dir> [--prune] [--dry-run] [--force] [--dep <manifest>]...`
@@ -1034,13 +1033,14 @@ repository root.
 Which CI step runs each script and each live test file: `sk spire package
 @spellkave/cli` and `sk spire check @spellkave/cli test --full` (Spire's check
 page shows the same). Every test file starts with a comment that says what it
-promises and what it needs to run; when you add one, follow
-[`test-headers.md`](../../.agents/skills/sk-tests/references/test-headers.md).
+promises and what it needs to run; when you add one, follow the same form.
 
 ## Inside the Spellkave monorepo
 
 The above is everything `sk` needs regardless of where it runs. The
-following is monorepo-local convenience, not part of `sk`'s own contract:
+following is monorepo-local convenience, not part of `sk`'s own contract.
+It applies only inside the Spellkave development monorepo, which is not
+public; paths and `just` recipes named here do not exist in this repository:
 
 - **This worktree's world** — `sk dev up --seed <manifest>` starts a world
   for this worktree (by default a lease on the shared stdb pool; a local
@@ -1049,8 +1049,7 @@ following is monorepo-local convenience, not part of `sk`'s own contract:
   when none is set, so `sk --live`, `sk get` and `sk diff -k` reach it
   without environment variables (`sk config view` says which world is in
   use). `sk dev status`, `publish`, `wipe`, `seed`, `save` and `stop` cover
-  the rest; every verb: `sk help dev` or
-  [`sk dev` at a glance](../../docs/development.md#sk-dev-at-a-glance).
+  the rest; every verb: `sk help dev`.
   Never run `spacetime start` by hand: it skips the per-worktree isolation.
 - **Workspace install** — `sk` needs the monorepo's workspace installed
   once per clone (`just bootstrap`); there is no build step after that: the

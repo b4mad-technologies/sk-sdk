@@ -58,8 +58,7 @@ lockfile. [SDK npm workflow](.github/workflows/sdk-npm.yml)
 
 Install the workspace dependencies with `pnpm install --frozen-lockfile`.
 Supply `NPM_TOKEN` with publish access to the `@spellkave` scope and run
-`scripts/npm-setup bootstrap`. On a Vega host the maintainer can run
-`vega secrets run --for sk-server -- scripts/npm-setup bootstrap`.
+`scripts/npm-setup bootstrap`.
 The script builds and publishes `0.0.0-bootstrap` with the `bootstrap` tag
 for packages that are missing on npm. It uses a temporary npm user config.
 

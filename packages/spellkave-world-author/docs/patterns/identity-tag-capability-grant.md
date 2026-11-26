@@ -109,4 +109,4 @@ tag = "srd.creature"
   `fixtures/base/playing-the-game/creature-identity.toml`), `srd.player_character` (Level Up, Claim Victory, Heroic
   Inspiration), `srd.communication.vocal` (Speak), caster class tags →
   `srd/action/magic`. The complete ownership split:
-  [`capabilities-and-identity.md`](../../../spellkave-srd-cc/docs/capabilities-and-identity.md).
+  `capabilities-and-identity.md` (`@spellkave/srd-cc` docs, not in this repository).

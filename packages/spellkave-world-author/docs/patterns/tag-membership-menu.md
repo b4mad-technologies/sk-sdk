@@ -98,4 +98,4 @@ tag = "srd.weapon.property.finesse"     # family srd.weapon registered in tag_pr
 - Fighting-style menus, class spell lists, skill → ability references,
   `srd.ability_score` / `srd.difficulty_class` descriptions. Naming rules
   and the rename history:
-  [`tags-and-ids.md`](../../../spellkave-srd-cc/docs/tags-and-ids.md).
+  `tags-and-ids.md` (`@spellkave/srd-cc` docs, not in this repository).

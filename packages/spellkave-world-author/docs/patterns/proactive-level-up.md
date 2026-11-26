@@ -96,4 +96,4 @@ change succeeded. The recorder must observe their actual receipts and effects.
 ## SRD features that use this
 
 Elven-mini Aldwin's levels 2–4 arc. Bundle IDs and recorder constraints:
-[`proactive-level-up.md`](../../../spellkave-srd-cc/docs/proactive-level-up.md).
+`proactive-level-up.md` (`@spellkave/srd-cc` docs, not in this repository).

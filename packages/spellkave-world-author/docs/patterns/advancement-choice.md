@@ -111,5 +111,5 @@ registry), [`dialog-choice-slots`](./dialog-choice-slots.md),
 - Fighting Style (L1 / Paladin-Ranger L2), subclass L3, ASI-or-feat L4 for
   all 12 classes, Divine/Primal Order, Expertise, Metamagic, Eldritch
   Invocations. The shipped menus and the ASI mechanics split:
-  [`advancement-choice.md`](../../../spellkave-srd-cc/docs/advancement-choice.md),
-  [`caster-features-l1-4.md`](../../../spellkave-srd-cc/docs/caster-features-l1-4.md).
+  `advancement-choice.md`,
+  `caster-features-l1-4.md` (`@spellkave/srd-cc` docs, not in this repository).

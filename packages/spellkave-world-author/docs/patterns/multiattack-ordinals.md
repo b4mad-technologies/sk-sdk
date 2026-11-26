@@ -136,4 +136,4 @@ target_ref = "Actor"
 - CR 0–4 bestiary Multiattack (Black/Brown Bear and the rest), flat-1
   damage actions, ability-mismatch stat blocks. Route selection and the
   n/a list (breath/AoE, condition riders):
-  [`attack-and-damage.md`](../../../spellkave-srd-cc/docs/attack-and-damage.md).
+  `attack-and-damage.md` (`@spellkave/srd-cc` docs, not in this repository).

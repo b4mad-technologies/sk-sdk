@@ -201,7 +201,7 @@ The hosted activation/pairing, rollback and eventual legacy-stamp branch retirem
 obligations are tracked in `.145`; retirement requires an inventory showing no
 untouched migrated sentinel rows remain.
 Local production/queued captures and the preservation/compatibility-build
-rehearsal are linked from the [handover evidence report](../../../sandbox/role-binding-hand-over/README.md).
+rehearsal are recorded in the handover evidence report (internal record, not in this repository).
 The examples prove the named local caller surface; `.45` and `.56` own hosted
 routing and portable publication, respectively.
 No hosted reset is required or authorized by these local changes.

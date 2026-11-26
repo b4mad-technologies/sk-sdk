@@ -178,7 +178,7 @@ private applyset provenance and reports lost applier authority without retractin
 anything. Missing ownership/provenance evidence is reported as unknown; run as
 publisher for a whole-world audit.
 
-[Versioned local examples and refusal receipts](../../../sandbox/privileged-acts-as-affordances/README.md)
+Versioned local examples and refusal receipts (internal record, not in this repository)
 include the installed CLI outside the checkout, caller-owned presence selection,
 independent mutation assertions and whole-journey cost. The captured Plant argv
 uses `intent manipulate`, its selected presence and `args_json.dispatch_text`;
@@ -230,8 +230,7 @@ owner — the identity that published the module — to those tables, read-only,
 for SQL and for a subscription. ADR-0150 is the opt-in on `connect()` (default off). `sk` sets that
 publisher option. The hosted gateway does not. A
 holder of `frontier.apply_manifest` who is not that identity is not admitted
-to the raw tables. The measured proof is
-[`../../../sandbox/owner-private-subscribe/README.md`](../../../sandbox/owner-private-subscribe/README.md).
+to the raw tables. The measured proof is the `owner-private-subscribe` evidence report (internal record, not in this repository).
 The greps at the bottom of this page do not see the rule, because it is not
 a string in the world implementation. `sk get` and `sk describe` use that cache after the publisher subscription applies
 (`reads_as_publisher`). Non-publishers use separate indexed authoring views with

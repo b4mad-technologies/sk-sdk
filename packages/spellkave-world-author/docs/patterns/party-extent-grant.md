@@ -78,4 +78,4 @@ shape, party is one kind.
 
 - Aldwin's `srd/action/communicate/telepathy` party extent (level-up
   invitations). Creature / item telepathy stays range-only:
-  [`speech-and-traces.md`](../../../spellkave-srd-cc/docs/speech-and-traces.md).
+  `speech-and-traces.md` (`@spellkave/srd-cc` docs, not in this repository).

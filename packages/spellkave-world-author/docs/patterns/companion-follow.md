@@ -36,8 +36,8 @@ follow brain's substring / first-exit fallback is not used on this path
 (`player-runtime-seat.ts:609-611`). The switch reads the durable terminal
 every cycle, so a restarted seat re-installs the policy from the world.
 
-Quest context: [`elven-mini-quests.md`](../../../spellkave-adventure-elven-mini/docs/elven-mini-quests.md),
-[`elven-mini-party.md`](../../../spellkave-adventure-elven-mini/docs/elven-mini-party.md).
+Quest context: `elven-mini-quests.md`,
+`elven-mini-party.md`.
 
 ## TOML example
 

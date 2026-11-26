@@ -89,4 +89,4 @@ the `srd/combat-grid/standard-10x10` preset.
 - `srd/affordance/step` + `srd/speed-walk` + `srd/long_running_move` for
   the standalone `srd` bundle and every elven-mini graph; the shared
   `srd/combat-grid/standard-10x10` preset. Layout residue:
-  [`fixtures-layout.md`](../../../spellkave-srd-cc/docs/fixtures-layout.md).
+  `fixtures-layout.md` (`@spellkave/srd-cc` docs, not in this repository).

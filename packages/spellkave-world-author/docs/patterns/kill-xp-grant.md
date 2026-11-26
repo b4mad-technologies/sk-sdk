@@ -82,4 +82,4 @@ current watch's live dispatch path.
 ## SRD features that use this
 
 Elven-mini Aldwin's watch reads catalog creatures' `srd/xp_value`.
-Bundle-specific values: [`kill-time-xp.md`](../../../spellkave-srd-cc/docs/kill-time-xp.md).
+Bundle-specific values: `kill-time-xp.md` (`@spellkave/srd-cc` docs, not in this repository).

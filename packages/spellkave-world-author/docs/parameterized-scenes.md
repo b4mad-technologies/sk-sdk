@@ -125,7 +125,7 @@ uninstall, automatic reset or recorded-proof replay in this workflow.
 
 The installed CLI and HTTP MCP caller-daemon scenarios are verified in the
 AUTH-50-01/02 captures, with
-[reproduction and limits](../../../sandbox/parameterized-scene-setups/README.md).
+reproduction and limits (internal record, not in this repository).
 Queued source drift, late player arrival and a real world reset have separate
 live proofs. CLI/MCP captures use synthetic local worlds; external client
 authentication and unaided discovery remain unverified. Final portable evidence

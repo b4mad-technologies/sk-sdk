@@ -109,11 +109,11 @@ budget instead of an effect),
 - Second Wind, Action Surge (charged by level-up), Rage, Channel Divinity
   (Divine Spark), Bardic Inspiration, Wild Shape uses, Lay On Hands, Innate
   Sorcery. Tables:
-  [`caster-features-l1-4.md`](../../../spellkave-srd-cc/docs/caster-features-l1-4.md),
-  [`character-creation.md`](../../../spellkave-srd-cc/docs/character-creation.md)
+  `caster-features-l1-4.md`,
+  `character-creation.md` (`@spellkave/srd-cc` docs, not in this repository)
   § "Where a class feature can then be used".
 - Spread Caltrops, Spill Ball Bearings: not class features, but the same
   actor-provided niche (`capability:srd/action/utilize`). They spend the
   carried item instead of a use pool
-  ([`equipment-catalogue.md`](../../../spellkave-srd-cc/docs/equipment-catalogue.md)
+  (`equipment-catalogue.md` in the `@spellkave/srd-cc` docs, not in this repository,
   § "Area hazards").
