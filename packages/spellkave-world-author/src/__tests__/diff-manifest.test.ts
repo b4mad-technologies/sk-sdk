@@ -12,9 +12,9 @@ import {
 } from "../diff-manifest";
 import type { SchemaManifest } from "../filter-manifest";
 
-const HERO = "elven_mini/adventure/hero_1";
-const SWORD = "elven_mini/adventure/item/longsword_1";
-const TORCH = "elven_mini/adventure/item/torch_1";
+const HERO = "kavemouth/adventure/hero_1";
+const SWORD = "kavemouth/adventure/item/longsword_1";
+const TORCH = "kavemouth/adventure/item/torch_1";
 
 function entity(
 	key: string,
@@ -22,11 +22,11 @@ function entity(
 ): NonNullable<SchemaManifest["entities"]>[number] {
 	return {
 		entity_key: key,
-		bundle_id: "elven_mini",
+		bundle_id: "kavemouth",
 		entity_def_id: "srd/pregen/fighter",
 		name: key,
 		kind: key === HERO ? "player" : "item",
-		place_node_id: "elven_mini/inn/loft",
+		place_node_id: "kavemouth/inn/loft",
 		quantity: 1,
 		owned_by_entity_key: "",
 		...extra,
@@ -36,15 +36,15 @@ function entity(
 function base(): SchemaManifest {
 	return {
 		schema_version: "1.0.0",
-		bundles: [{ bundle_id: "elven_mini", display_name: "Elven Mini" }],
+		bundles: [{ bundle_id: "kavemouth", display_name: "Kavemouth" }],
 		entities: [entity(HERO), entity(SWORD)],
-		actors: [{ entity_key: HERO, name: "Renn", bundle_id: "elven_mini" }],
+		actors: [{ entity_key: HERO, name: "Renn", bundle_id: "kavemouth" }],
 		actor_capabilities: [
 			{ actor_entity_key: HERO, capability_id: "srd/skill/athletics", elevation_class: "hidden" },
-			{ actor_entity_key: HERO, capability_id: "elven_mini/party/sight", visibility: "Public" },
+			{ actor_entity_key: HERO, capability_id: "kavemouth/party/sight", visibility: "Public" },
 		],
 		actor_spatial_locations: [
-			{ entity_key: HERO, place_node_id: "elven_mini/inn/loft", selection_path: "manifest" },
+			{ entity_key: HERO, place_node_id: "kavemouth/inn/loft", selection_path: "manifest" },
 		],
 		actor_equipment_slots: [
 			{ actor_entity_key: HERO, slot_id: "srd/slot/main-hand", item_key: SWORD },
@@ -53,8 +53,8 @@ function base(): SchemaManifest {
 			{ container_entity_key: HERO, entity_key: SWORD, direction: "in", slot_id: "" },
 		],
 		entity_tag: [
-			{ entity_key: HERO, tag: "srd.class.fighter", bundle_id: "elven_mini" },
-			{ entity_key: HERO, tag: "srd.species.human", bundle_id: "elven_mini" },
+			{ entity_key: HERO, tag: "srd.class.fighter", bundle_id: "kavemouth" },
+			{ entity_key: HERO, tag: "srd.species.human", bundle_id: "kavemouth" },
 		],
 		object_state: [
 			{
@@ -131,7 +131,7 @@ describe("diffManifests", () => {
 		const left = base();
 		const right = base();
 		right.entities = [
-			entity(HERO, { entity_def_id: "elven_mini/adventure/candidate" }),
+			entity(HERO, { entity_def_id: "kavemouth/adventure/candidate" }),
 			entity(SWORD),
 		];
 		const diff = diffManifests(left, right);
@@ -147,7 +147,7 @@ describe("diffManifests", () => {
 							{
 								field: "entity_def_id",
 								left: "srd/pregen/fighter",
-								right: "elven_mini/adventure/candidate",
+								right: "kavemouth/adventure/candidate",
 							},
 						],
 					},
@@ -159,9 +159,9 @@ describe("diffManifests", () => {
 	it("ignores the default snapshot/enrichment fields", () => {
 		const left = base();
 		const right = base();
-		right.entities = [entity(HERO, { place_node_id: "elven_mini/inn/common" }), entity(SWORD)];
+		right.entities = [entity(HERO, { place_node_id: "kavemouth/inn/common" }), entity(SWORD)];
 		right.actor_spatial_locations = [
-			{ entity_key: HERO, place_node_id: "elven_mini/inn/common", selection_path: "manifest" },
+			{ entity_key: HERO, place_node_id: "kavemouth/inn/common", selection_path: "manifest" },
 		];
 		right.actor_capabilities = [
 			{
@@ -169,7 +169,7 @@ describe("diffManifests", () => {
 				capability_id: "srd/skill/athletics",
 				elevation_class: "public",
 			},
-			{ actor_entity_key: HERO, capability_id: "elven_mini/party/sight", visibility: "Hidden" },
+			{ actor_entity_key: HERO, capability_id: "kavemouth/party/sight", visibility: "Hidden" },
 		];
 		right.object_state = [
 			{
@@ -177,7 +177,7 @@ describe("diffManifests", () => {
 				state_id: "srd/hp",
 				value_bool: false,
 				value_int: 12,
-				bundle_id: "elven_mini",
+				bundle_id: "kavemouth",
 				expires_at_tick: 99,
 			},
 		];
@@ -200,7 +200,7 @@ describe("diffManifests", () => {
 	it("merges extra ignoreFields and restricts by kinds", () => {
 		const left = base();
 		const right = base();
-		right.actors = [{ entity_key: HERO, name: "Created hero", bundle_id: "elven_mini" }];
+		right.actors = [{ entity_key: HERO, name: "Created hero", bundle_id: "kavemouth" }];
 		right.entities = [entity(HERO, { name: "Created hero" }), entity(SWORD)];
 		const all = diffManifests(left, right);
 		expect(all.kinds.map((entry) => entry.kind)).toEqual(["actors", "entities"]);
@@ -279,7 +279,7 @@ describe("flattenManifestDiff", () => {
 	});
 });
 
-const CANDIDATE = "elven_mini/adventure/candidate_1";
+const CANDIDATE = "kavemouth/adventure/candidate_1";
 function remapKeys(manifest: SchemaManifest, from: string, to: string): SchemaManifest {
 	const json = JSON.stringify(manifest);
 	return JSON.parse(json.split(from).join(to)) as SchemaManifest;
@@ -324,8 +324,8 @@ describe("mapKeys (sk-0m4.54)", () => {
 
 describe("parseSchemaManifestToml (sk-jay0.7.171.2)", () => {
 	const cell = (id: string) => `[[place_nodes]]
-bundle_id = "elven_mini"
-node_id = "elven_mini/hamlet/green"
+bundle_id = "kavemouth"
+node_id = "kavemouth/hamlet/green"
 cell_res10 = ${id}
 `;
 

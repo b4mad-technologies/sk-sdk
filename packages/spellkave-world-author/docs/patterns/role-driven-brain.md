@@ -36,12 +36,12 @@ I have many enemies in many encounters and need each to fight sensibly (archers 
 
 ## TOML example
 
-Copied from `packages/spellkave-adventure-elven-mini/fixtures/adventure/cast/monsters/storyline-encounters.toml`:
+Copied from `packages/spellkave-adventure-kavemouth/fixtures/adventure/cast/monsters/storyline-encounters.toml`:
 
 ```toml
 [[entity_tag]]
-bundle_id = "elven_mini"
-entity_key = "elven_mini/adventure/encounter/road_wolf_1"
+bundle_id = "kavemouth"
+entity_key = "kavemouth/adventure/encounter/road_wolf_1"
 source = "manifest"
 tag = "srd.creature.role.skirmisher"
 ```
@@ -57,7 +57,7 @@ Warden uses `role: "archer"` plus its hostile refusal line
 - `packages/spellkave-srd-cc/src/test/offline/creature-roles.test.ts`
   (every monster definition carries exactly one role; overrides win)
 - `packages/spellkave-srd-cc/src/test/live-self-seeding/mechanics/multi-role-fight.test.ts`
-- `packages/spellkave-adventure-elven-mini/npcs/__tests__/crypt-warden-brain.test.ts`
+- `packages/spellkave-adventure-kavemouth/npcs/__tests__/crypt-warden-brain.test.ts`
 
 ## Related
 
@@ -75,6 +75,6 @@ Warden uses `role: "archer"` plus its hostile refusal line
 
 ## SRD features that use this
 
-- Every `srd/creature/<slug>` definition; elven-mini §5 encounters, the
+- Every `srd/creature/<slug>` definition; kavemouth §5 encounters, the
   Crypt Warden, storyline villains. Role table and assignment heuristics:
   [`combat-roles.md`](../../../spellkave-srd-cc/docs/combat-roles.md).

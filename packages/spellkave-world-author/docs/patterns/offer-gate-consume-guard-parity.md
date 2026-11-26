@@ -93,7 +93,7 @@ behind a retry.
 
 ## SRD features that use this
 
-- Elven-mini character creation's confirm: a one-slot runtime offer on
+- Kavemouth character creation's confirm: a one-slot runtime offer on
   `dm/dialog/choice/1` (the seeded `dm/creation/confirm` action is gated
   `1 == 0`, `…/dm/creation/seed.ts:800-809`), committed by the draft guard
   (six fixed keys plus the kit's equipment picks). Guard and speech share

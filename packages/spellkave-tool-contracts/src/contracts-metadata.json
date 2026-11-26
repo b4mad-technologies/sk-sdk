@@ -3251,7 +3251,7 @@
 				"properties": {
 					"bundle": {
 						"type": "string",
-						"description": "bundle_id stamped on every generated entity_tag row. Omit to fall back to `context.defaultBundle` (#1968 smart default). NOTE: this is the bundle OWNING the new tag row(s), not necessarily the bundle that placed `entity_key` — a cross-bundle caller stamps ITS own bundle_id here (the elven-mini idiom this verb replaces: crypt-fight.ts/dm-npc.ts tag the hero placed in hero.ts, all three sharing one bundle in that fixture, but nothing requires it)."
+						"description": "bundle_id stamped on every generated entity_tag row. Omit to fall back to `context.defaultBundle` (#1968 smart default). NOTE: this is the bundle OWNING the new tag row(s), not necessarily the bundle that placed `entity_key` — a cross-bundle caller stamps ITS own bundle_id here (the kavemouth idiom this verb replaces: crypt-fight.ts/dm-npc.ts tag the hero placed in hero.ts, all three sharing one bundle in that fixture, but nothing requires it)."
 					},
 					"entity_key": {
 						"type": "string",
@@ -5671,7 +5671,7 @@
 				],
 				"examples": [
 					{
-						"command": "sk --live export elven_mini --actor elven_mini/adventure/hero_1 --out hero.toml",
+						"command": "sk --live export kavemouth --actor kavemouth/adventure/hero_1 --out hero.toml",
 						"description": "export the staged hero as a standalone TOML save"
 					}
 				]
@@ -5764,7 +5764,7 @@
 				],
 				"examples": [
 					{
-						"command": "sk diff packages/spellkave-adventure-elven-mini/fixtures/reference/renn.toml packages/spellkave-srd-cc/saves/<name>/elven_mini-adventure-candidate_1.toml --map-key elven_mini/adventure/candidate_1=elven_mini/adventure/hero_1",
+						"command": "sk diff packages/spellkave-adventure-kavemouth/fixtures/reference/renn.toml packages/spellkave-srd-cc/saves/<name>/kavemouth-adventure-candidate_1.toml --map-key kavemouth/adventure/candidate_1=kavemouth/adventure/hero_1",
 						"description": "compare a created candidate export to Renn without key-prefix noise"
 					}
 				]
@@ -6158,11 +6158,11 @@
 				],
 				"examples": [
 					{
-						"command": "sk get entities elven_mini/adventure/item/loft_chest_1",
+						"command": "sk get entities kavemouth/adventure/item/loft_chest_1",
 						"description": "read the loft chest by authored key"
 					},
 					{
-						"command": "sk get entities --bundle elven_mini",
+						"command": "sk get entities --bundle kavemouth",
 						"description": "list authored entities in the bundle"
 					}
 				]
@@ -6233,7 +6233,7 @@
 				],
 				"examples": [
 					{
-						"command": "sk describe entities elven_mini/adventure/item/loft_chest_1",
+						"command": "sk describe entities kavemouth/adventure/item/loft_chest_1",
 						"description": "describe the loft chest and its contents"
 					}
 				]

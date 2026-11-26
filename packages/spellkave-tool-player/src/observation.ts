@@ -103,7 +103,7 @@ export function describeSpawnedCreatures(spawned: SpawnedCreatureRef[]): string 
 /**
  * A node id's GRAPH-qualifying prefix is everything except its own trailing
  * local segment — NOT the leading segment, which live-verified building
- * this against the real elven-mini story is a constant bundle/proof
+ * this against the real kavemouth story is a constant bundle/proof
  * namespace shared by every node regardless of which place graph it's in
  * (`srd_playing_the_game_proof/inn/loft` and
  * `srd_playing_the_game_proof/hamlet/square` share that SAME leading
@@ -133,7 +133,7 @@ function crossesGraphBoundary(fromNodeId: string, toNodeId: string): boolean {
 /** Gap reason for `describeArrival`'s within-graph, undescribed-node case —
  * the observation content this same string used to BE before T5 (Gruppe A
  * follow-up, operator review 2026-08-04): repeating the graph blurb on every
- * within-graph hop was pure noise (T5 finding — the elven-mini story showed
+ * within-graph hop was pure noise (T5 finding — the kavemouth story showed
  * the identical "three creaking floors of timber..." line on ~17 consecutive
  * moves). Reused here, unchanged in wording, as the honest #1921 gap
  * explanation instead of a fabricated non-answer. */
@@ -149,7 +149,7 @@ export const ARRIVAL_NO_DESCRIPTION_GAP =
  *
  * T5 (Gruppe A follow-up, operator review 2026-08-04): a bare
  * `node_description` fallback to `graph_description` repeated the SAME
- * graph-level blurb on every single within-graph move (the elven-mini
+ * graph-level blurb on every single within-graph move (the kavemouth
  * story's own evidence: ~17 consecutive moves inside one graph, all
  * carrying the identical unhelpful line) — pure noise, since the actor
  * already knows which graph it's in. `graph_description` is now a fallback

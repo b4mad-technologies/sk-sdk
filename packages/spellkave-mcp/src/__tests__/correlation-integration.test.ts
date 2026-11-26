@@ -29,7 +29,7 @@ import { createRemoteMcpRunObserver, withRemoteMcpRequestContext } from "../obse
 
 const binding: SessionBinding = {
 	url: "http://127.0.0.1:3000",
-	db: "elven-mini",
+	db: "kavemouth",
 	identity: "private-identity",
 	actorId: "hero-1",
 };
@@ -99,7 +99,7 @@ describe("hosted MCP to reducer correlation", () => {
 			],
 		});
 		const gatewayObserver = createRemoteMcpRunObserver({
-			resolveActor: () => ({ actorId: "hero-1", worldSlug: "elven-mini" }),
+			resolveActor: () => ({ actorId: "hero-1", worldSlug: "kavemouth" }),
 			sinks: [gatewaySink],
 		});
 		const daemonClient = new SessionDaemonClient({ socketPath, spawned: false });
@@ -113,15 +113,15 @@ describe("hosted MCP to reducer correlation", () => {
 
 		expect(gatewaySink.events.find((event) => event.type === "tool_call")?.data).toMatchObject({
 			correlation_id: "corr-e2e",
-			world_slug: "elven-mini",
+			world_slug: "kavemouth",
 		});
 		expect(sessionSink.events.find((event) => event.type === "tool_call")?.data).toMatchObject({
 			correlation_id: "corr-e2e",
-			world_slug: "elven-mini",
+			world_slug: "kavemouth",
 		});
 		expect(reducerSpans[0]?.attributes).toMatchObject({
 			"spellkave.correlation_id": "corr-e2e",
-			"spellkave.world_slug": "elven-mini",
+			"spellkave.world_slug": "kavemouth",
 			"spellkave.action_id": "equip-creation-longsword",
 		});
 		expect(reducerSpans[0]?.events[0]?.attributes).toMatchObject({

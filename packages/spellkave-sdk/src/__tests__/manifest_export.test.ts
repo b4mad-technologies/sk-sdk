@@ -37,7 +37,7 @@ describe("manifest export view subscription", () => {
 			visibleManifestExportResult: {
 				iter: () => [
 					{
-						bundleId: "elven-mini",
+						bundleId: "kavemouth",
 						requestedAtTick: 4,
 						manifestJson: '{"bundles":[]}',
 						status: "complete",
@@ -47,8 +47,8 @@ describe("manifest export view subscription", () => {
 				],
 			},
 		};
-		expect(readManifestExport(db, "elven-mini")).toEqual({
-			bundleId: "elven-mini",
+		expect(readManifestExport(db, "kavemouth")).toEqual({
+			bundleId: "kavemouth",
 			requestedAtTick: 4,
 			manifestJson: '{"bundles":[]}',
 			status: "complete",

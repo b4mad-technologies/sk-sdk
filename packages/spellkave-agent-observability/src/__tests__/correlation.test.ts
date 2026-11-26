@@ -9,7 +9,7 @@ describe("world-actor causal context", () => {
 	it("retains bounded safe references and drops unknown or nested values", () => {
 		const context = normalizeWorldActorCausalContext({
 			correlation_id: " corr-1 ",
-			world_slug: "elven-mini",
+			world_slug: "kavemouth",
 			cause_kind: "visible_trace",
 			cause_id: "trace-9",
 			action_id: "equip",
@@ -18,7 +18,7 @@ describe("world-actor causal context", () => {
 		});
 		expect(context).toEqual({
 			correlation_id: "corr-1",
-			world_slug: "elven-mini",
+			world_slug: "kavemouth",
 			cause_kind: "visible_trace",
 			cause_id: "trace-9",
 			action_id: "equip",
@@ -26,7 +26,7 @@ describe("world-actor causal context", () => {
 		expect(worldActorCausalEventData(context)).toEqual(context);
 		expect(worldActorCausalAttributes(context)).toEqual({
 			"spellkave.correlation_id": "corr-1",
-			"spellkave.world_slug": "elven-mini",
+			"spellkave.world_slug": "kavemouth",
 			"spellkave.cause_kind": "visible_trace",
 			"spellkave.cause_id": "trace-9",
 			"spellkave.action_id": "equip",

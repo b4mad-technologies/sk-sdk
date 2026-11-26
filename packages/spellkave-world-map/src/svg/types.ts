@@ -206,7 +206,7 @@ export interface SpatialViewOptions {
 	 * Default true — the map tool's own `compose_parent` param is this
 	 * option's escape hatch, settable to `false` to force the grid-alone
 	 * single view. Has NO effect when `graphId` is not itself an ephemeral
-	 * instance (an ordinary authored nested graph, e.g. elven-mini's
+	 * instance (an ordinary authored nested graph, e.g. kavemouth's
 	 * `tomb`/`inn` under `hamlet`, never composes regardless of this flag —
 	 * see `isEphemeralInstanceGraph` in `compose.ts`), so existing non-grid
 	 * callers render byte-identically whether this is set or omitted.

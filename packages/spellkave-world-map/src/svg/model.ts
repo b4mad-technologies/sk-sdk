@@ -111,7 +111,7 @@ export function buildSpatialGraphModel(
 	// sk-pej D-2: compose an ephemeral session-grid graph over its parent's
 	// own topology by default (operator decision 2026-08-13 — "one picture,
 	// no mode switch"). Gated on is_ephemeral_instance (NOT merely a
-	// non-empty parent_graph_id) so ordinary authored nesting — elven-mini's
+	// non-empty parent_graph_id) so ordinary authored nesting — kavemouth's
 	// tomb/inn under hamlet, is_ephemeral_instance=false — never composes;
 	// see compose.ts's isEphemeralInstanceGraph doc for why that gate is
 	// load-bearing (committed elevation_band renders would otherwise move).

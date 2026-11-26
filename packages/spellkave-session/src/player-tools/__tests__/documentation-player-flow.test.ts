@@ -73,7 +73,7 @@ describe("PLAYER documentation flow", () => {
 
 	it("PLAYER-facing descriptions and examples do not leak worlds, slugs, or other surfaces", () => {
 		const forbidden: { name: string; pattern: RegExp }[] = [
-			{ name: "elven-mini campaign", pattern: /playing the elven-mini campaign/i },
+			{ name: "kavemouth campaign", pattern: /playing the kavemouth campaign/i },
 			{ name: "Aldwin", pattern: /\bAldwin\b/ },
 			{ name: "Renn", pattern: /\bRenn\b/ },
 			{ name: "place_node_set", pattern: /place_node_set:/ },

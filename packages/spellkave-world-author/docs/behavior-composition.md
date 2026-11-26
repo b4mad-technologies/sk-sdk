@@ -84,7 +84,7 @@ const strike: ActorBehavior = {
 
 Render it with `authorBehaviorFragment` from a driver run via
 a `just srd-cc-author-<driver>` recipe (e.g. `just srd-cc-author-dm`,
-`just srd-cc-author-elven-mini`; `just/authoring.just`) (freeze rule: prefer a data entry in an existing
+`just srd-cc-author-kavemouth`; `just/authoring.just`) (freeze rule: prefer a data entry in an existing
 driver over a new `author-*.ts` file — ADR-0072 D-3).
 
 ## Node-only

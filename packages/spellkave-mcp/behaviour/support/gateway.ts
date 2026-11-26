@@ -9,7 +9,7 @@
 // - SPELLKAVE_MCP_WORLD_URL is a closed port, so every seat probe fails at
 //   once and every player is a player without a hero (a seat needs a live
 //   SpacetimeDB subscription, which no offline fake can answer);
-// - the catalog holds one public world `elven-mini-1` and one private world
+// - the catalog holds one public world `kavemouth-1` and one private world
 //   `private-1`; the public one has a transcript on disk.
 // The listen port is ephemeral, which runtime.ts allows only for a loopback
 // canonical origin. Trust boundary `network-policy` lets the world URL point
@@ -41,7 +41,7 @@ const CLOSED_WORLD_URL = "http://127.0.0.1:9";
 const READY_WITHIN_MS = 15_000;
 /** The runtime stops in milliseconds; a hang gets a SIGKILL and a line in the log. */
 const STOP_WITHIN_MS = 5_000;
-export const PUBLIC_WORLD = "elven-mini-1";
+export const PUBLIC_WORLD = "kavemouth-1";
 export const PRIVATE_WORLD = "private-1";
 
 export interface Gateway {
@@ -72,7 +72,7 @@ function writeWorld(dir: string): { catalog: string; transcripts: string } {
 	const world = (slug: string, visibility: "public" | "private") => ({
 		slug,
 		display_name: slug,
-		adventure: "elven-mini",
+		adventure: "kavemouth",
 		db: `spellkave-${slug}`,
 		status: "running",
 		visibility,

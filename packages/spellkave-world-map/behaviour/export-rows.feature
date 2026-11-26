@@ -79,8 +79,8 @@ Feature: Export a world from its table rows
           { "node_id": "world/rubble", "place_graph_id": "world", "display_name": "Rubble Room", "extent_shape_id": "core/area/cube", "extent_params_json": "{\"extent_m\":6}", "pos_present": true, "pos_x": 20, "pos_y": 0 }
         ],
         "place_edges": [],
-        "spatial_niche_attachments": [{ "place_node_id": "world/pool", "niche_id": "elven_mini/niche/hazard_pool" }],
-        "niche_definitions": [{ "niche_id": "elven_mini/niche/hazard_pool", "display_name": "Slime Pool Hazard" }],
+        "spatial_niche_attachments": [{ "place_node_id": "world/pool", "niche_id": "kavemouth/niche/hazard_pool" }],
+        "niche_definitions": [{ "niche_id": "kavemouth/niche/hazard_pool", "display_name": "Slime Pool Hazard" }],
         "node_states": [{ "node_id": "world/rubble", "state_id": "srd/state/difficult_terrain", "value": 2 }]
       }
       """

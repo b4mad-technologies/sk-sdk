@@ -38,7 +38,7 @@
 		],
 		"examples": [
 			{
-				"command": "sk --live export elven_mini --actor elven_mini/adventure/hero_1 --out hero.toml",
+				"command": "sk --live export kavemouth --actor kavemouth/adventure/hero_1 --out hero.toml",
 				"description": "export the staged hero as a standalone TOML save"
 			}
 		]

@@ -40,7 +40,7 @@ use `expires_at_tick` to get this effect.
 ## TOML example
 
 Copied from `packages/spellkave-srd-cc/fixtures/base/playing-the-game/speech.toml`
-(event) and `packages/spellkave-adventure-elven-mini/fixtures/adventure/story/traces.toml`
+(event) and `packages/spellkave-adventure-kavemouth/fixtures/adventure/story/traces.toml`
 (standing mark):
 
 ```toml
@@ -52,9 +52,9 @@ perceptible_for_ticks = 0
 schema_json = '{"text":"string","addressee":"integer?"}'
 
 [[trace_kind_definitions]]
-bundle_id = "elven_mini"
+bundle_id = "kavemouth"
 description = "A glistening trail of translucent slime, still faintly wet — something crawled through here."
-kind_id = "elven_mini/adventure/trace/slime_trail"
+kind_id = "kavemouth/adventure/trace/slime_trail"
 location_kinds = "place_node"
 schema_json = "{}"
 # perceptible_for_ticks omitted → standing mark
@@ -123,7 +123,7 @@ fade on their own" (the decay-deletes warning in substrate terms),
 
 ## SRD features
 
-- `srd/speech` (event), the elven-mini slime trail (mark), utility spell
+- `srd/speech` (event), the kavemouth slime trail (mark), utility spell
   cast marks (mending / prestidigitation / alarm — srd-cc L12d `trace_cast`). Residue and the
   full lifetime note:
   [`speech-and-traces.md`](../../../spellkave-srd-cc/docs/speech-and-traces.md).

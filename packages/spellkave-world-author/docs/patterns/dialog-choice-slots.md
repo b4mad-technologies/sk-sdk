@@ -104,7 +104,7 @@ payload_json = '{"text":"","action_id":"dm/dialog/choice/1"}'
 ## Proof
 
 - `packages/spellkave-srd-cc/src/test/offline/dm-dialog-slots.test.ts`
-- `packages/spellkave-adventure-elven-mini/tests/offline/mira-talk.test.ts` (simple
+- `packages/spellkave-adventure-kavemouth/tests/offline/mira-talk.test.ts` (simple
   talk cycle: greet → open=3 → choice/2 → send-off → open=0)
 - `packages/spellkave-srd-cc/src/test/live-self-seeding/player/dm-creation/creation-flow.test.ts`
   (candidate sees `dm/dialog/choice/k` after the DM's first cycle)
@@ -131,6 +131,6 @@ speaker, `ActorSpatialRef` — `srd-cc fixtures/dm/manifest.toml:2364-2368`), [`
 ## SRD features that use this
 
 - Aldwin's character-creation wizard and level-up dialogue; Mira's bar talk;
-  every elven-mini quest giver's accept/decline slot. Ids, `.mdsl` dialog
+  every kavemouth quest giver's accept/decline slot. Ids, `.mdsl` dialog
   files and acceptance list:
   [`npc-dialog-choice-slots.md`](../../../spellkave-srd-cc/docs/npc-dialog-choice-slots.md).

@@ -31,7 +31,7 @@ describe("h3-layout + ADR-0029 composition", () => {
 	it("nests hamlet into region at portal and emits hex footprints", () => {
 		const nodes: SpatialGraphNode[] = [
 			{
-				id: "region/crossroads",
+				id: "region/waymeet",
 				label: "Crossroads",
 				graphId: "region",
 				x: 0,
@@ -84,7 +84,7 @@ describe("h3-layout + ADR-0029 composition", () => {
 				parentGraphId: "",
 				originCellRes10Hex: cellRes10ToHex(ORIGIN),
 				bearing: 0,
-				anchorNodeId: "region/crossroads",
+				anchorNodeId: "region/waymeet",
 			},
 			{
 				graphId: "hamlet",
@@ -133,7 +133,7 @@ describe("h3-layout + ADR-0029 composition", () => {
 						display_name: "Region",
 						origin_cell_res10: ORIGIN,
 						parent_graph_id: "",
-						anchor_node_id: "region/crossroads",
+						anchor_node_id: "region/waymeet",
 					},
 					{
 						place_graph_id: "hamlet",
@@ -148,7 +148,7 @@ describe("h3-layout + ADR-0029 composition", () => {
 				],
 				place_nodes: [
 					{
-						node_id: "region/crossroads",
+						node_id: "region/waymeet",
 						place_graph_id: "region",
 						display_name: "Crossroads",
 						substrate_id: "outdoor",

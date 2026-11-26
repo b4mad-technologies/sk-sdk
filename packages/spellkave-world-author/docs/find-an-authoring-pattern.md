@@ -23,7 +23,7 @@ bundle. The [Patternbook index](./patterns/index.md) covers other tasks.
 
 `sk docs examples/loft-chest-rows --full` retrieves the container pattern's exact
 source-backed fixture rows. Its title and summary identify it as an excerpt.
-It requires the `elven_mini` bundle, existing `elven_mini/inn/loft` node and SRD
+It requires the `kavemouth` bundle, existing `kavemouth/inn/loft` node and SRD
 chest/potion definitions in the dependency closure. Pickup additionally requires
 an admitted SRD creature and its action economy; this docs journey does not
 perform pickup. The [container pattern](./patterns/container-with-loot.md)

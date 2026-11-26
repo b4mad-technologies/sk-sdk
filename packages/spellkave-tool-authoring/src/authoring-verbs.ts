@@ -2117,7 +2117,7 @@ function collectSpatialToolRows(
 }
 
 // Raster width for output_type='jpg' map-art — same choice PLAYER's
-// spellkave_map (tools.ts, MAP_JPEG_WIDTH_PX) and elven-mini's renders.ts
+// spellkave_map (tools.ts, MAP_JPEG_WIDTH_PX) and kavemouth's renders.ts
 // make for their own "with-map" product views (git-friendly size, still
 // legible backdrop art).
 const AUTHOR_MAP_JPEG_WIDTH_PX = 900;
@@ -3444,7 +3444,7 @@ export const attachMapLayerToolDef = defineTool<
 	schema: ATTACH_MAP_LAYER_PARAMS,
 	requiredCapabilities: ["node"],
 	exampleParams: {
-		place_graph_id: "elven_mini/hamlet",
+		place_graph_id: "kavemouth/hamlet",
 		asset_module: "ccc3-maps",
 		asset_path: "maps/306 Fortified Hamlet.jpg",
 		map_id: "306",
@@ -3602,7 +3602,7 @@ export const annotatePlaceToolDef = defineTool({
 	schema: ANNOTATE_PLACE_PARAMS,
 	exampleParams: {
 		target_kind: "place_graph",
-		target_ref: "elven_mini/region",
+		target_ref: "kavemouth/region",
 		terrain: ["road", "crossroads", "wilderness"],
 		h3_origin_res10: 4242424242424,
 	},
@@ -7397,10 +7397,10 @@ export const defineTraceKindToolDef = defineTool({
 	contract: DEFINE_TRACE_KIND_TOOL,
 	schema: DEFINE_TRACE_KIND_PARAMS,
 	exampleParams: {
-		bundle: "elven_mini",
+		bundle: "kavemouth",
 		id: "adventure/trace/slime_trail",
 		description: "A glistening trail of translucent slime, still faintly wet.",
-		places: [{ node: "elven_mini/tomb/entrance" }],
+		places: [{ node: "kavemouth/tomb/entrance" }],
 	},
 	run: async (context: AuthorToolContext, params: Static<typeof DEFINE_TRACE_KIND_PARAMS>) => {
 		const bundle = resolveBundle(context, params.bundle, DEFINE_TRACE_KIND_TOOL);

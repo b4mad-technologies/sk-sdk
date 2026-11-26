@@ -247,7 +247,7 @@ never appear and a new runtime claim refuses `claim_not_offered`. Hosting such
 an NPC needs publisher provisioning or the separately scoped drive writer; the
 playable tag also grants SRD capabilities, so do not add it merely to bind a host. Read it with `spellkave seat list` (JSONL `seat` lines) or
 `readSeats` in `@spellkave/sdk`; the doctor check `seat_catalog_readable`
-proves the view is reachable. A seeded Elven-Mini currently offers only the
+proves the view is reachable. A seeded Kavemouth currently offers only the
 Creation Candidate — the pregen Renn body in `reference/` is not seeded.
 
 [claims]: ../data-model-concepts/claims.md

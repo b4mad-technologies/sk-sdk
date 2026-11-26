@@ -80,7 +80,7 @@ tag = "srd.creature"
 - `packages/spellkave-srd-cc/src/test/offline/character-identity-units.test.ts`
 - `packages/spellkave-srd-cc/src/test/offline/creature-units.test.ts`
   (vocal tag derived from the cached `Languages` line, 179 rows)
-- `packages/spellkave-adventure-elven-mini/tests/offline/elven-mini-actor-capabilities-no-dup.test.ts`
+- `packages/spellkave-adventure-kavemouth/tests/offline/kavemouth-actor-capabilities-no-dup.test.ts`
   (instances do not mirror tag-derived grants)
 
 ## Related

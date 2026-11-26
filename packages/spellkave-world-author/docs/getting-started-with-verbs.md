@@ -472,7 +472,7 @@ inside the writer's Bundle extents, with at least one owner (`042`). Listed
 state rows retain ordinary ownership checks. Do not restamp runtime state to
 make a scoped request pass; `.91` supplies ownership at its actual cause.
 
-Aldwin has a publisher-authored Bundle binding over `elven_mini`. Its regional
+Aldwin has a publisher-authored Bundle binding over `kavemouth`. Its regional
 binding admits placed edits and its Bundle binding admits own-adventure
 prompt definitions. The interim prompt consumer claims one explicit adventure
 bundle per prompt root, supports identical retry and retirement, and refuses

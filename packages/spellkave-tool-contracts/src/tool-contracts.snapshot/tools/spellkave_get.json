@@ -47,11 +47,11 @@
 		],
 		"examples": [
 			{
-				"command": "sk get entities elven_mini/adventure/item/loft_chest_1",
+				"command": "sk get entities kavemouth/adventure/item/loft_chest_1",
 				"description": "read the loft chest by authored key"
 			},
 			{
-				"command": "sk get entities --bundle elven_mini",
+				"command": "sk get entities --bundle kavemouth",
 				"description": "list authored entities in the bundle"
 			}
 		]

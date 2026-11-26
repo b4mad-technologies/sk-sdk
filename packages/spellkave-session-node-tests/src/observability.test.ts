@@ -298,11 +298,11 @@ describe("createSessionRunObserver", () => {
 				});
 				return "ok";
 			},
-			{ correlation_id: "corr-shared", world_slug: "elven-mini" },
+			{ correlation_id: "corr-shared", world_slug: "kavemouth" },
 		);
 		expect(starts[0]).toMatchObject({
 			"spellkave.correlation_id": "corr-shared",
-			"spellkave.world_slug": "elven-mini",
+			"spellkave.world_slug": "kavemouth",
 			"spellkave.action_id": "equip",
 		});
 	});

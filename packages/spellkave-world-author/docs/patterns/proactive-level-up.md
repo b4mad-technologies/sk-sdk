@@ -47,12 +47,12 @@ invitation and return location; the runtime does not embed a story's cast.
 
 ## Authored reach example
 
-The elven-mini publisher gives Aldwin the Party-scoped telepathy capability:
+The kavemouth publisher gives Aldwin the Party-scoped telepathy capability:
 
 ```toml
 [[actor_capabilities]]
-actor_entity_key = "elven_mini/adventure/npc/aldwin_1"
-bundle_id = "elven_mini"
+actor_entity_key = "kavemouth/adventure/npc/aldwin_1"
+bundle_id = "kavemouth"
 capability_id = "srd/action/communicate/telepathy"
 elevation_class = ""
 extent_kind_ref = "party"
@@ -69,7 +69,7 @@ change succeeded. The recorder must observe their actual receipts and effects.
   checks the away invitation and threshold watch.
 - `packages/spellkave-adventure-runtime/tests/live/seat-ceremony.live.test.ts`
   checks the autonomous menu-answer ceremony.
-- `packages/spellkave-adventure-elven-mini/npcs/__tests__/aldwin-xp-threshold.test.ts`
+- `packages/spellkave-adventure-kavemouth/npcs/__tests__/aldwin-xp-threshold.test.ts`
   checks the authored phase-opening plan.
 - `packages/spellkave-adventure-runtime/src/dm/level-up/grant-driver.test.ts`
   checks shared opening receipts, retries and later-level reopening.
@@ -95,5 +95,5 @@ change succeeded. The recorder must observe their actual receipts and effects.
 
 ## SRD features that use this
 
-Elven-mini Aldwin's levels 2–4 arc. Bundle IDs and recorder constraints:
+Kavemouth Aldwin's levels 2–4 arc. Bundle IDs and recorder constraints:
 [`proactive-level-up.md`](../../../spellkave-srd-cc/docs/proactive-level-up.md).

@@ -10,6 +10,6 @@ export const LAUNCHERS = {
 } as const;
 /** The bundle setup.ts builds once from the front door, started with plain node. */
 export const BUNDLE = join(PKG, "behaviour/.bin/world-map.mjs");
-/** The committed elven-mini adventure bundle (its manifest plus the files it includes). */
+/** The committed kavemouth adventure bundle (its manifest plus the files it includes). */
 /** Where `tsx` lives, for the launchers' `#!/usr/bin/env tsx` line. */
 export const TSX_BIN = join(PKG, "node_modules/.bin");

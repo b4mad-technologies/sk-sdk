@@ -74,8 +74,8 @@ guess (hotbar ordering, a hard-coded id, a display-name matcher).
 
 Two shipped shapes open occurrences.
 
-**Static authored prompt** (elven-mini quest offers,
-`packages/spellkave-adventure-elven-mini/author/adventure.ts:135-139`,
+**Static authored prompt** (kavemouth quest offers,
+`packages/spellkave-adventure-kavemouth/author/adventure.ts:135-139`,
 rows in `fixtures/adventure/mechanics/actions.toml`): the giver's shared
 answer set is disambiguated with the speaker's own bounded
 `dm/dialog/prompt` id — see [`dialog-choice-slots`](./dialog-choice-slots.md)'s
@@ -126,7 +126,7 @@ manifest writer.
   (locality/stratification, audience/response-action FK resolution).
 - the world API's `target_kinds_match_offline_validator_allowlist`
   (a `dialogue.prompt` label attaches to a `prompt_definition` row directly).
-- `packages/spellkave-adventure-elven-mini/tests/offline/quest-prompts.test.ts`
+- `packages/spellkave-adventure-kavemouth/tests/offline/quest-prompts.test.ts`
   (authored generic-offer definitions and presentation).
 - `packages/spellkave-srd-cc/src/test/live-preseeded/mechanics/prompt-creation.test.ts`
   (same-frame trace, immutable captured presentation, and authenticated CLI labels).
@@ -161,7 +161,7 @@ disambiguates), [`draft-then-confirm-wizard`](./draft-then-confirm-wizard.md)
 
 Aldwin's character-creation class/background/species/confirm questions as
 authored menu acts (`packages/spellkave-srd-cc/docs/character-creation.md`);
-elven-mini's quest accept/decline offers
-(`packages/spellkave-adventure-elven-mini/docs/elven-mini-quests.md`), whose
+kavemouth's quest accept/decline offers
+(`packages/spellkave-adventure-kavemouth/docs/kavemouth-quests.md`), whose
 cross-bundle `response_action_ids` resolve through the narrowed
 `action_definitions` reference-closure augmentation (sk-jay0.2.33.15.7).

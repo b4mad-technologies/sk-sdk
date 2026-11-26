@@ -20,7 +20,7 @@ One geometry, three outputs — so a new map artefact never means touching two p
 - `@spellkave/player-mcp` — OSM API / Overpass / MVT gateway
 - `@spellkave/tool-player` — `spellkave_map` / `spellkave_map_graph` tools
 - `@spellkave/cli` (`sk map-*`) — terminal + file map products
-- `@spellkave/srd-cc` — elven-mini render fixtures
+- `@spellkave/srd-cc` — kavemouth render fixtures
 - `apps/maps` — MapLibre SPA (tiles via gateway; local demo may import export)
 
 Import spatial products directly from `@spellkave/world-map/{svg,node}`. Terminal/TUI hosts that need pi-tui capability detection import `@spellkave/world-map/node/terminal` — never pull those helpers through `./node` (hosted PLAYER MCP loads `./node` under prod deploys without pi-tui).

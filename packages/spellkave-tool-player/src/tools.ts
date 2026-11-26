@@ -481,7 +481,7 @@ function stringify(value: unknown): string {
 }
 
 // ADR-0083 D-3.2 (Postscript, 2026-08-04) originally trimmed a move
-// receipt's FULL `actor_snapshot` resend (~40% of a typical elven-mini
+// receipt's FULL `actor_snapshot` resend (~40% of a typical kavemouth
 // transcript by token share) — state changes now travel exclusively through
 // the piggybacked `world_deltas` note (see the tool-registry wrapper below).
 // U2 (receipt-slimming, operator ruling 2026-08-10) widens that strip to the
@@ -1277,7 +1277,7 @@ const sceneToolDef = defineTool<SpellkaveToolContext, typeof SCENE_TARGETS_PARAM
 //
 // T2 (operator-review dry-run, 2026-08-04): an exit row also carries `to`,
 // the destination node id truncated by `truncateSceneNodePathPrefix`
-// (delta-tracker.ts) — elven-mini evidence: ~44/~90 story steps were the
+// (delta-tracker.ts) — kavemouth evidence: ~44/~90 story steps were the
 // scene -> scene_detail (per exit candidate, only to learn to_node_id) -> act
 // triplet, worst with duplicate exit labels (two "west" exits at one node).
 // `to_node_id` is not new disclosure — `spellkave_scene_detail` already

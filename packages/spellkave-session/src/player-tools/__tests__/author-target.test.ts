@@ -168,10 +168,10 @@ describe("createLiveAuthorTarget", () => {
 				fakeDb({
 					metadata_namespace_definition: [
 						{
-							key: "elven_mini:dialogue.prompt",
+							key: "kavemouth:dialogue.prompt",
 							namespace: "dialogue.prompt",
 							audience: "public",
-							bundleId: "elven_mini",
+							bundleId: "kavemouth",
 							description: "Prompt labels",
 							setAtTick: 1n,
 							onDemand: false,
@@ -183,7 +183,7 @@ describe("createLiveAuthorTarget", () => {
 			{
 				namespace: "dialogue.prompt",
 				audience: "public",
-				bundle_id: "elven_mini",
+				bundle_id: "kavemouth",
 				description: "Prompt labels",
 				on_demand: false,
 			},

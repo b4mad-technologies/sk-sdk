@@ -82,7 +82,7 @@ export function resolveMapLayerAssetPath(
  * asset as a base64 data URI instead. `null` when the asset can't be read
  * (missing file, permissions) — callers treat that the same as "no backdrop"
  * rather than failing the render. Same idea as
- * `packages/spellkave-srd-cc/src/author/elven-mini/renders.ts`'s own
+ * `packages/spellkave-srd-cc/src/author/kavemouth/renders.ts`'s own
  * `backdropDataHref` (kept there byte-for-byte, not consolidated, so this
  * addition never risks that file's own churn-guarded renders).
  */

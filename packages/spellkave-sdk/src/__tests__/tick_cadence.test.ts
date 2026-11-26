@@ -417,7 +417,7 @@ describe("lag warning — observeReducerAttempt", () => {
 			telemetry,
 			telemetryAttributes: {
 				"spellkave.correlation_id": "corr-safe",
-				"spellkave.world_slug": "elven-mini",
+				"spellkave.world_slug": "kavemouth",
 			},
 		});
 		await vi.runAllTimersAsync();

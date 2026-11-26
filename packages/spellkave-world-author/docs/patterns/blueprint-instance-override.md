@@ -48,45 +48,45 @@ at a node, each with its behavior-selecting instance tag
 
 ## TOML example
 
-Copied from `packages/spellkave-adventure-elven-mini/fixtures/adventure/cast/monsters/slime-scout.toml`
+Copied from `packages/spellkave-adventure-kavemouth/fixtures/adventure/cast/monsters/slime-scout.toml`
 (one HP override) and `…/cast/monsters/storyline-encounters.toml` (an
 encounter wolf with a role tag):
 
 ```toml
 [[entities]]
-bundle_id = "elven_mini"
+bundle_id = "kavemouth"
 entity_def_id = "srd/creature/gray-ooze"
-entity_key = "elven_mini/adventure/npc/slime_scout_1"
+entity_key = "kavemouth/adventure/npc/slime_scout_1"
 kind = "npc"
 name = "Slime Scout"
-place_node_id = "elven_mini/tomb/hall"
+place_node_id = "kavemouth/tomb/hall"
 
 [[object_state]]
-bundle_id = "elven_mini"
-entity_key = "elven_mini/adventure/npc/slime_scout_1"
+bundle_id = "kavemouth"
+entity_key = "kavemouth/adventure/npc/slime_scout_1"
 source_template_id = "manifest"
 state_id = "srd/hp"
 value_bool = true
 value_int = 3                       # definition seeds 22; tutorial pacing wants 3
 
 [[entities]]
-bundle_id = "elven_mini"
+bundle_id = "kavemouth"
 entity_def_id = "srd/creature/wolf"
-entity_key = "elven_mini/adventure/encounter/road_wolf_1"
+entity_key = "kavemouth/adventure/encounter/road_wolf_1"
 kind = "npc"
 name = "Road Wolf 1"
-place_node_id = "elven_mini/river_crossing/bridge_mid"
+place_node_id = "kavemouth/stonebridge/bridge_mid"
 
 [[entity_tag]]
-bundle_id = "elven_mini"
-entity_key = "elven_mini/adventure/encounter/road_wolf_1"
+bundle_id = "kavemouth"
+entity_key = "kavemouth/adventure/encounter/road_wolf_1"
 source = "manifest"
 tag = "srd.creature.role.skirmisher"
 ```
 
 ## Proof
 
-- `packages/spellkave-adventure-elven-mini/tests/offline/elven-mini-actor-capabilities-no-dup.test.ts`
+- `packages/spellkave-adventure-kavemouth/tests/offline/kavemouth-actor-capabilities-no-dup.test.ts`
   (instances do not duplicate the capabilities their definition seeds)
 - No test asserts an instance override (the slime's HP 3 over the
   definition's 22) directly; the fixture rows above are the evidence.

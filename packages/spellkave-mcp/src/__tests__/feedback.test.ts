@@ -78,7 +78,7 @@ describe("spellkave_feedback memory sink", () => {
 		const observer = createRemoteMcpRunObserver({
 			sinks: [eventsSink, runMemory],
 			eventsSink,
-			resolveActor: () => ({ actorId: "hero_42", worldSlug: "elven-mini" }),
+			resolveActor: () => ({ actorId: "hero_42", worldSlug: "kavemouth" }),
 			now: fixedClock(),
 		});
 
@@ -92,7 +92,7 @@ describe("spellkave_feedback memory sink", () => {
 				result: {
 					binding: {
 						url: "http://127.0.0.1:3000",
-						db: "spellkave-elven-mini",
+						db: "spellkave-kavemouth",
 						identity: "user_sub",
 						actorId: "hero_42",
 					},
@@ -120,7 +120,7 @@ describe("spellkave_feedback memory sink", () => {
 					{
 						sink,
 						rateLimiter,
-						resolveSeat: () => ({ actorId: "hero_42", worldSlug: "elven-mini" }),
+						resolveSeat: () => ({ actorId: "hero_42", worldSlug: "kavemouth" }),
 						now: fixedClock(),
 					},
 					observer,
@@ -153,7 +153,7 @@ describe("spellkave_feedback memory sink", () => {
 		expect(fb?.actor_id).toBe("hero_42");
 		expect(fb?.data.reference).toBe("local-feedback-test-1");
 		expect(fb?.data.category).toBe("bug");
-		expect(fb?.data.world_slug).toBe("elven-mini");
+		expect(fb?.data.world_slug).toBe("kavemouth");
 		expect(fb?.data.message_chars).toBe(
 			"The exit to the crypt looked walkable but move failed.".length,
 		);
@@ -200,7 +200,7 @@ describe("spellkave_feedback memory sink", () => {
 		const observer = createRemoteMcpRunObserver({
 			sinks: [eventsSink],
 			eventsSink,
-			resolveActor: () => ({ actorId: "hero_42", worldSlug: "elven-mini" }),
+			resolveActor: () => ({ actorId: "hero_42", worldSlug: "kavemouth" }),
 			now: fixedClock(),
 		});
 		const fine = async () => ({ content: [{ type: "text" as const, text: "ok" }] });
@@ -241,7 +241,7 @@ describe("spellkave_feedback memory sink", () => {
 						{
 							sink,
 							rateLimiter: createInMemoryFeedbackRateLimiter({ now: () => 1 }),
-							resolveSeat: () => ({ actorId: "hero_42", worldSlug: "elven-mini" }),
+							resolveSeat: () => ({ actorId: "hero_42", worldSlug: "kavemouth" }),
 							now: fixedClock(),
 						},
 						observer,
@@ -365,7 +365,7 @@ describe("spellkave_feedback memory sink", () => {
 		const observer = createRemoteMcpRunObserver({
 			sinks: [eventsSink, runMemory],
 			eventsSink,
-			resolveActor: () => ({ actorId: "hero_fail", worldSlug: "elven-mini" }),
+			resolveActor: () => ({ actorId: "hero_fail", worldSlug: "kavemouth" }),
 			now: fixedClock(),
 		});
 		const result = await withRemoteMcpRequestContext("corr-fb-fail", () =>
@@ -379,7 +379,7 @@ describe("spellkave_feedback memory sink", () => {
 								throw new Error("sink unavailable");
 							},
 						},
-						resolveSeat: () => ({ actorId: "hero_fail", worldSlug: "elven-mini" }),
+						resolveSeat: () => ({ actorId: "hero_fail", worldSlug: "kavemouth" }),
 						now: fixedClock(),
 					},
 					observer,

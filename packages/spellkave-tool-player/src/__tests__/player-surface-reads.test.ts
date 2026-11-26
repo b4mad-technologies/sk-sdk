@@ -23,7 +23,7 @@ const sceneDb = snapshotDbFromFixture({
 	visible_place_node: [
 		{ nodeId: "cellar", placeGraphId: "inn", description: "A dank cellar.", posPresent: false },
 	],
-	visible_place_graph_definition: [{ placeGraphId: "inn", description: "The Mountain View Inn." }],
+	visible_place_graph_definition: [{ placeGraphId: "inn", description: "The Lamp and Ladle." }],
 	visible_place_edge: [],
 	entity: [
 		{ entityId: 1n, name: "Hero", entityDefId: "hero", kind: "actor", quantity: 1n },

@@ -18,7 +18,7 @@ import { renderWorldEventLine } from "../world-events.ts";
 const base: TraceAddressedEvent = {
 	kind: "trace_addressed",
 	trace_id: "42",
-	trace_kind: "elven_mini/adventure/trace/companion_command",
+	trace_kind: "kavemouth/adventure/trace/companion_command",
 	payload: { command: "hold", addressee: 3, secret_note: "never rendered" },
 	inscribed_by: "7",
 	inscribed_by_name: "Aldwin",
@@ -36,22 +36,22 @@ const base: TraceAddressedEvent = {
 describe("renderWorldEventLine — trace_addressed", () => {
 	it("names a perceived inscriber and a perceived addressee", () => {
 		expect(renderWorldEventLine(base)).toBe(
-			"🌍 Aldwin signals Hesper (elven_mini/adventure/trace/companion_command).",
+			"🌍 Aldwin signals Hesper (kavemouth/adventure/trace/companion_command).",
 		);
 	});
 
 	it("keeps an unperceived addressee anonymous rather than fabricating a name", () => {
 		expect(renderWorldEventLine({ ...base, addressee_name: null })).toBe(
-			"🌍 Aldwin signals someone (elven_mini/adventure/trace/companion_command).",
+			"🌍 Aldwin signals someone (kavemouth/adventure/trace/companion_command).",
 		);
 	});
 
 	it("distinguishes an unseen inscriber from an ownerless one", () => {
 		expect(renderWorldEventLine({ ...base, inscribed_by_name: null })).toBe(
-			"🌍 An unseen figure signals Hesper (elven_mini/adventure/trace/companion_command).",
+			"🌍 An unseen figure signals Hesper (kavemouth/adventure/trace/companion_command).",
 		);
 		expect(renderWorldEventLine({ ...base, inscribed_by: null, inscribed_by_name: null })).toBe(
-			"🌍 Something signals Hesper (elven_mini/adventure/trace/companion_command).",
+			"🌍 Something signals Hesper (kavemouth/adventure/trace/companion_command).",
 		);
 	});
 
@@ -65,13 +65,13 @@ describe("renderWorldEventLine — trace_addressed", () => {
 describe("renderWorldEventLine — trace_addressed, addressed_at_self (sk-jay0.1.8.63.40)", () => {
 	it("renders 'you' instead of the addressee's own name when this actor IS the addressee", () => {
 		expect(renderWorldEventLine({ ...base, addressed_at_self: true })).toBe(
-			"🌍 Aldwin signals you (elven_mini/adventure/trace/companion_command).",
+			"🌍 Aldwin signals you (kavemouth/adventure/trace/companion_command).",
 		);
 	});
 
 	it("still reads addressee_name when addressed_at_self is false, even if a name is known", () => {
 		expect(renderWorldEventLine({ ...base, addressed_at_self: false })).toBe(
-			"🌍 Aldwin signals Hesper (elven_mini/adventure/trace/companion_command).",
+			"🌍 Aldwin signals Hesper (kavemouth/adventure/trace/companion_command).",
 		);
 	});
 });

@@ -56,7 +56,7 @@ export function projectPlaceTopology(
 		anchor_node_id: asString(g.anchorNodeId),
 		// Runtime-minted instance (session tactical grid) vs authored graph.
 		// `parent_graph_id` alone does NOT discriminate the two — authored
-		// graphs nest as well (elven-mini's tomb/inn under hamlet/region) —
+		// graphs nest as well (kavemouth's tomb/inn under hamlet/region) —
 		// so a consumer that must treat ephemeral instances differently needs
 		// this column, not the parent link. Projected for the companion's
 		// map composition gate (bead sk-pej D-2), which otherwise has to

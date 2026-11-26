@@ -53,7 +53,7 @@ describe("splitTileLayers", () => {
 					type: "Feature",
 					id: "n-ent",
 					properties: {
-						"spellkave:node_id": "cursed_crypt/entrance",
+						"spellkave:node_id": "bramble_crypt/entrance",
 						indoor: "room",
 						name: "Entrance",
 					},
@@ -63,7 +63,7 @@ describe("splitTileLayers", () => {
 					type: "Feature",
 					id: "w-ent",
 					properties: {
-						"spellkave:node_id": "cursed_crypt/entrance",
+						"spellkave:node_id": "bramble_crypt/entrance",
 						indoor: "room",
 						name: "Entrance",
 					},
@@ -85,11 +85,11 @@ describe("splitTileLayers", () => {
 		const layers = splitTileLayers(emptyDoc, geojson, []);
 		expect(layers.spellkave_node.features.map((f) => f.properties["spellkave:node_id"])).toEqual([
 			"hamlet/crypt_path",
-			"cursed_crypt/entrance",
+			"bramble_crypt/entrance",
 		]);
 		expect(layers.spellkave_room.features.map((f) => f.properties["spellkave:node_id"])).toEqual([
 			"hamlet/crypt_path",
-			"cursed_crypt/entrance",
+			"bramble_crypt/entrance",
 		]);
 	});
 });

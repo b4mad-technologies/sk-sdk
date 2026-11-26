@@ -1082,7 +1082,7 @@ export const TAG_ENTITY_PARAMS = Type.Object({
 				"bundle_id stamped on every generated entity_tag row. Omit to fall back to " +
 				"`context.defaultBundle` (#1968 smart default). NOTE: this is the bundle OWNING the new tag " +
 				"row(s), not necessarily the bundle that placed `entity_key` — a cross-bundle caller stamps ITS " +
-				"own bundle_id here (the elven-mini idiom this verb replaces: crypt-fight.ts/dm-npc.ts tag " +
+				"own bundle_id here (the kavemouth idiom this verb replaces: crypt-fight.ts/dm-npc.ts tag " +
 				"the hero placed in hero.ts, all three sharing one bundle in that fixture, but nothing requires it).",
 		}),
 	),

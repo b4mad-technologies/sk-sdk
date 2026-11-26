@@ -29,15 +29,15 @@ first exit.
 **Ordered follow under a companion policy** (Hesper, sk-jay0.1.23.12): the
 NPC runs the host's shared player runtime (the TypeScript `buildPlayerRuntimeSeat` was deleted). The quest
 terminal installs a `CompanionPolicy` (`createTerminalCompanionPolicySwitch`,
-elven-mini `npcs/quests/terminal-companion.ts`); from then on strategic
+kavemouth `npcs/quests/terminal-companion.ts`); from then on strategic
 direction belongs to the human, and only a live `follow` order moves her,
 routed through the leader-location reader and the perceived map. The
 follow brain's substring / first-exit fallback is not used on this path
 (`player-runtime-seat.ts:609-611`). The switch reads the durable terminal
 every cycle, so a restarted seat re-installs the policy from the world.
 
-Quest context: [`elven-mini-quests.md`](../../../spellkave-adventure-elven-mini/docs/elven-mini-quests.md),
-[`elven-mini-party.md`](../../../spellkave-adventure-elven-mini/docs/elven-mini-party.md).
+Quest context: [`kavemouth-quests.md`](../../../spellkave-adventure-kavemouth/docs/kavemouth-quests.md),
+[`kavemouth-party.md`](../../../spellkave-adventure-kavemouth/docs/kavemouth-party.md).
 
 ## TOML example
 
@@ -54,7 +54,7 @@ createFollowBrain({ readAllyNodeId, readSelfNodeId });
 ## Proof
 
 - Autonomous: the Rust host's companion engine tests (`crates/spellkave-npc-host`).
-- Ordered: elven-mini `npcs/__tests__/hesper-companion.test.ts`,
+- Ordered: kavemouth `npcs/__tests__/hesper-companion.test.ts`,
   `companion-commands.test.ts`, `terminal-companion.test.ts`.
 
 ## Related

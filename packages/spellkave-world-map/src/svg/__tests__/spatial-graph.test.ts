@@ -605,7 +605,7 @@ describe("explicit node extent marks (sk-evp)", () => {
 // sk-pej D-2: an ephemeral session tactical grid composes over its parent
 // location's own topology (and backdrop) by default. Gated strictly on
 // is_ephemeral_instance — NOT merely a non-empty parent_graph_id — so
-// elven-mini's already-live nested composition (tomb/inn under hamlet,
+// kavemouth's already-live nested composition (tomb/inn under hamlet,
 // is_ephemeral_instance=false) never moves; see compose.ts's
 // isEphemeralInstanceGraph doc.
 describe("session-grid composition over parent (sk-pej D-2)", () => {
@@ -761,13 +761,13 @@ describe("session-grid composition over parent (sk-pej D-2)", () => {
 			place_nodes: cryptRows.place_nodes.filter((row) => row.node_id !== "dungeon/crypt/pool"),
 			notable_anchor_nodes: pool === undefined ? [] : [pool],
 			visible_spatial_niche_attachments: [
-				{ niche_id: "elven-mini/acid_pool", place_node_id: "dungeon/crypt/pool" },
+				{ niche_id: "kavemouth/acid_pool", place_node_id: "dungeon/crypt/pool" },
 			],
 		};
 		const view = buildSpatialGraphView(rows, { graphId: "session_grid_9" });
 		expect(view.model.nodes.some((node) => node.id === "dungeon/crypt/pool")).toBe(false);
 		expect(view.inventory).toContain(
-			"session_grid_9/c_0_0  notable=[elven-mini/acid_pool@dungeon/crypt/pool]",
+			"session_grid_9/c_0_0  notable=[kavemouth/acid_pool@dungeon/crypt/pool]",
 		);
 		expect(view.inventory).not.toContain('dungeon/crypt/pool  "Acid Pool"');
 	});
@@ -865,7 +865,7 @@ describe("session-grid composition over parent (sk-pej D-2)", () => {
 	});
 
 	it("ordinary authored nesting (parent_graph_id set, is_ephemeral_instance=false) never composes", () => {
-		// Same shape as elven-mini's tomb/hamlet: a real authored composition,
+		// Same shape as kavemouth's tomb/hamlet: a real authored composition,
 		// explicitly NOT ephemeral. Must render exactly as a single graph
 		// always has, with composeParent left at its new default (true).
 		const rows = {
@@ -937,7 +937,7 @@ describe("session-grid composition over parent (sk-pej D-2)", () => {
 	});
 
 	it("prefers the parent's own map_layer.grid_distance_m over a stale/unmaintained place_graph_definition.metres_per_unit", () => {
-		// Same shape as the real elven-mini tomb/inn fixtures: the parent's
+		// Same shape as the real kavemouth tomb/inn fixtures: the parent's
 		// place_graph_definition.metres_per_unit is left at an unmaintained 1.0
 		// while its own [[map_layers]] row declares the REAL per-cell size
 		// (grid_distance_m=5ft=1.524m). The session grid's own metres_per_unit

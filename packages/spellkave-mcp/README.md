@@ -24,7 +24,7 @@ How it answers and fails, with real records, is in [the guide](docs/guide.md#how
 
 What `PLAYER MCP gateway` does is described and tested from the outside: 24 scenarios in [`behaviour/`](behaviour/) drive the real tool. The last run produced [`docs/guide.md`](docs/guide.md) (short, for people and agents) and [`docs/scenarios.md`](docs/scenarios.md) (every scenario with its transcripts).
 
-Run: commit `066659388d + local changes`, 2026-10-30T18:19Z, full suite — 40 verified.
+Run: commit `4b95508`, 2026-11-26T22:10Z, full suite — 40 verified.
 
 - **[How the PLAYER MCP gateway answers](docs/scenarios.md#how-the-player-mcp-gateway-answers)** — 2 scenarios
   - An MCP answer is one JSON-RPC message in a server-sent event.
@@ -93,7 +93,7 @@ The world it points at:
 - SPELLKAVE_MCP_WORLD_URL is a closed port, so every seat probe fails at
   once and every player is a player without a hero (a seat needs a live
   SpacetimeDB subscription, which no offline fake can answer);
-- the catalog holds one public world `elven-mini-1` and one private world
+- the catalog holds one public world `kavemouth-1` and one private world
   `private-1`; the public one has a transcript on disk.
 The listen port is ephemeral, which runtime.ts allows only for a loopback
 canonical origin. Trust boundary `network-policy` lets the world URL point

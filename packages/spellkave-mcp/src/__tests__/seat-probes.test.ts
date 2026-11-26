@@ -78,7 +78,7 @@ const catalog = parseWorldCatalog({
 			slug: "world",
 			db: "world",
 			display_name: "World",
-			adventure: "elven-mini",
+			adventure: "kavemouth",
 			status: "running",
 			visibility: "public",
 			owner: "owner",

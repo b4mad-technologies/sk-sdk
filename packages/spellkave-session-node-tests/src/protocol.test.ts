@@ -27,7 +27,7 @@ describe("isRequest", () => {
 				op: "invoke",
 				tool: "spellkave_scene",
 				args: {},
-				causal_context: { correlation_id: "corr-1", world_slug: "elven-mini" },
+				causal_context: { correlation_id: "corr-1", world_slug: "kavemouth" },
 			}),
 		).toBe(true);
 	});

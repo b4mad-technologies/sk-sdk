@@ -68,7 +68,7 @@ describe("remote MCP world-actor observability", () => {
 		const logs: Parameters<PlayerMcpOperationLogger>[0][] = [];
 		let milliseconds = 0;
 		const observer = createRemoteMcpRunObserver({
-			actorId: "elven_mini/adventure/hero_1",
+			actorId: "kavemouth/adventure/hero_1",
 			sinks: [sink],
 			logger: (event) => logs.push(event),
 			now: () => new Date(milliseconds++),
@@ -88,7 +88,7 @@ describe("remote MCP world-actor observability", () => {
 		expect(sink.events.map(({ type }) => type)).toEqual(["run_start", "tool_call", "run_end"]);
 		expect(sink.events.every(({ driver }) => driver === REMOTE_MCP_RUN_DRIVER)).toBe(true);
 		expect(sink.events.every(({ role }) => role === "PLAYER")).toBe(true);
-		expect(sink.events.every(({ actor_id }) => actor_id === "elven_mini/adventure/hero_1")).toBe(
+		expect(sink.events.every(({ actor_id }) => actor_id === "kavemouth/adventure/hero_1")).toBe(
 			true,
 		);
 		expect(sink.events.every(({ run_id }) => run_id === "mcp-request-123")).toBe(true);
@@ -314,7 +314,7 @@ describe("remote MCP world-actor observability", () => {
 		const sink = createMemorySink();
 		const observer = createRemoteMcpRunObserver({
 			actorId: "unresolved",
-			resolveActor: async () => ({ actorId: "99", worldSlug: "elven-mini-1" }),
+			resolveActor: async () => ({ actorId: "99", worldSlug: "kavemouth-1" }),
 			sinks: [sink],
 		});
 		const rawSubject = "user_oauth_sub_must_not_leak";
@@ -323,7 +323,7 @@ describe("remote MCP world-actor observability", () => {
 				observer.observeToolCall("spellkave_scene", async (context) => {
 					expect(context).toEqual({
 						correlation_id: "req-seat",
-						world_slug: "elven-mini-1",
+						world_slug: "kavemouth-1",
 					});
 					return {
 						content: [{ type: "text", text: "ok" }],
@@ -332,7 +332,7 @@ describe("remote MCP world-actor observability", () => {
 			),
 		);
 		expect(sink.events.every(({ actor_id }) => actor_id === "99")).toBe(true);
-		expect(sink.events.some((e) => e.data.world_slug === "elven-mini-1")).toBe(true);
+		expect(sink.events.some((e) => e.data.world_slug === "kavemouth-1")).toBe(true);
 		expect(sink.events.map(({ type }) => type)).toEqual(["run_start", "tool_call", "run_end"]);
 		const prefix = sink.events[0]?.data.subject_prefix;
 		expect(typeof prefix).toBe("string");
@@ -421,7 +421,7 @@ describe("remote MCP world-actor observability", () => {
 			}) as typeof fetch,
 		});
 		const observer = createRemoteMcpRunObserver({
-			resolveActor: () => ({ actorId: "hero-1", worldSlug: "elven-mini" }),
+			resolveActor: () => ({ actorId: "hero-1", worldSlug: "kavemouth" }),
 			sinks: [sink],
 		});
 		const token = "SECRET-OAUTH-TOKEN";
@@ -433,7 +433,7 @@ describe("remote MCP world-actor observability", () => {
 					observer.observeToolCall("spellkave_act", async (context) => {
 						expect(context).toEqual({
 							correlation_id: "corr-safe",
-							world_slug: "elven-mini",
+							world_slug: "kavemouth",
 						});
 						void toolArgs;
 						return { content: [{ type: "text", text: "SECRET-TOOL-RESULT" }] };
@@ -444,7 +444,7 @@ describe("remote MCP world-actor observability", () => {
 		await sink.close?.();
 		const serialized = JSON.stringify(requests);
 		expect(serialized).toContain("corr-safe");
-		expect(serialized).toContain("elven-mini");
+		expect(serialized).toContain("kavemouth");
 		// Hashed subject_prefix must reach OTLP so operators can split by player.
 		const prefixes = requests.flatMap((init) => {
 			const payload = JSON.parse(String(init.body)) as {
