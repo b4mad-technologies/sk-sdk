@@ -24,13 +24,13 @@ Status: **verified** · Code: [`loadPlayerMcpRuntimeConfig`](../src/runtime.ts)
   ```console
   $ SPELLKAVE_MCP_CANONICAL_ORIGIN=https://mcp.example.test spellkave-player-mcp
   [stderr]
-  file://~/src/durandom/spellkave/docs-kernel-live-inventory/packages/spellkave-mcp/behaviour/.bin/spellkave-player-mcp.mjs:129525
+  file://<repo>/packages/spellkave-mcp/behaviour/.bin/spellkave-player-mcp.mjs:129525
       throw new Error(`SPELLKAVE_MCP_LISTEN_PORT must remain ${PLAYER_MCP_DEFAULT_PORT}`);
             ^
   Error: SPELLKAVE_MCP_LISTEN_PORT must remain 8080
-      at loadPlayerMcpRuntimeConfig (file://~/src/durandom/spellkave/docs-kernel-live-inventory/packages/spellkave-mcp/behaviour/.bin/spellkave-player-mcp.mjs:129525:11)
-      at startPlayerMcpRuntime (file://~/src/durandom/spellkave/docs-kernel-live-inventory/packages/spellkave-mcp/behaviour/.bin/spellkave-player-mcp.mjs:129978:48)
-      at file://~/src/durandom/spellkave/docs-kernel-live-inventory/packages/spellkave-mcp/behaviour/.bin/spellkave-player-mcp.mjs:130058:21
+      at loadPlayerMcpRuntimeConfig (file://<repo>/packages/spellkave-mcp/behaviour/.bin/spellkave-player-mcp.mjs:129525:11)
+      at startPlayerMcpRuntime (file://<repo>/packages/spellkave-mcp/behaviour/.bin/spellkave-player-mcp.mjs:129978:48)
+      at file://<repo>/packages/spellkave-mcp/behaviour/.bin/spellkave-player-mcp.mjs:130058:21
       at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
       at async node:internal/modules/esm/loader:647:26
       at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
@@ -52,14 +52,14 @@ Status: **verified** · Code: [`loadPlayerMcpRuntimeConfig`](../src/runtime.ts)
   ```console
   $ SPELLKAVE_WORLD_CATALOG= spellkave-player-mcp
   [stderr]
-  file://~/src/durandom/spellkave/docs-kernel-live-inventory/packages/spellkave-mcp/behaviour/.bin/spellkave-player-mcp.mjs:129437
+  file://<repo>/packages/spellkave-mcp/behaviour/.bin/spellkave-player-mcp.mjs:129437
     if (value === void 0 || value === "") throw new Error(`${name} is required`);
                                                 ^
   Error: SPELLKAVE_WORLD_CATALOG is required
-      at requiredEnv (file://~/src/durandom/spellkave/docs-kernel-live-inventory/packages/spellkave-mcp/behaviour/.bin/spellkave-player-mcp.mjs:129437:47)
-      at loadPlayerMcpRuntimeConfig (file://~/src/durandom/spellkave/docs-kernel-live-inventory/packages/spellkave-mcp/behaviour/.bin/spellkave-player-mcp.mjs:129547:18)
-      at startPlayerMcpRuntime (file://~/src/durandom/spellkave/docs-kernel-live-inventory/packages/spellkave-mcp/behaviour/.bin/spellkave-player-mcp.mjs:129978:48)
-      at file://~/src/durandom/spellkave/docs-kernel-live-inventory/packages/spellkave-mcp/behaviour/.bin/spellkave-player-mcp.mjs:130058:21
+      at requiredEnv (file://<repo>/packages/spellkave-mcp/behaviour/.bin/spellkave-player-mcp.mjs:129437:47)
+      at loadPlayerMcpRuntimeConfig (file://<repo>/packages/spellkave-mcp/behaviour/.bin/spellkave-player-mcp.mjs:129547:18)
+      at startPlayerMcpRuntime (file://<repo>/packages/spellkave-mcp/behaviour/.bin/spellkave-player-mcp.mjs:129978:48)
+      at file://<repo>/packages/spellkave-mcp/behaviour/.bin/spellkave-player-mcp.mjs:130058:21
       at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
       at async node:internal/modules/esm/loader:647:26
       at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
