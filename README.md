@@ -35,7 +35,9 @@ copyright notice and third-party attribution.
 The release tag matches the version in the root `package.json` and selects
 one npm version for the content consumers and their runtime workspace
 dependencies. Published packages include compiled ESM and TypeScript
-declarations, including the generated authoring corpus.
+declarations, including the generated authoring corpus. `@spellkave/world-author`
+also ships its Markdown authoring docs, readable through the
+`@spellkave/world-author/docs/*` export.
 
 | Packages used directly by sk-content | Runtime dependencies shipped alongside them |
 | --- | --- |

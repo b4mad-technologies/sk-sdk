@@ -42,7 +42,7 @@ rolls its own `d20` save and its own `d6` damage from a distinct draw chunk.
 
 Both landed for AoE use via **CR-8 / ADR-0042** (the apply-path wiring) and the
 `MF-VAL-217` resource lint. Before that, an AoE damage row admitted but did
-nothing — the original motivation for [#266](https://github.com/b4arena/spellkave/issues/266).
+nothing — the original motivation for #266.
 
 ### The bindings that matter
 
@@ -82,7 +82,7 @@ without an explicit full-HP start, every `-7` clamps to 0 on first hit.
 
 This example is honest scaffolding. The AoE *selection* and flat *application*
 work; a faithful 5e spell still cannot be authored. Each gap below is a live
-[#266](https://github.com/b4arena/spellkave/issues/266) axis:
+#266 axis:
 
 | Axis | Status | Why |
 |---|---|---|

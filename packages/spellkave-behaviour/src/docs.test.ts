@@ -10,11 +10,24 @@ import { execFileSyncGit } from "./git-env.ts";
 import docs from "../behaviour/docs.config.ts";
 import { readmeDrift } from "./docs/checks.ts";
 import type { DocsConfig } from "./docs/config.ts";
-import { generateGuide } from "./docs/guide.ts";
+import { generateGuide, publishablePaths } from "./docs/guide.ts";
 
 // keep(K4): README drift gate
 it("README.md is what behaviour-docs readme writes", () => {
 	expect(readmeDrift(resolve(import.meta.dirname, ".."), docs)).toEqual([]);
+});
+
+// keep(K4): generated docs must not leak the checkout path after transcripts shortened home to ~
+it("published docs name the checkout <repo>, also when a transcript already shortened home to ~", () => {
+	const repo = "/home/dev/src/spellkave/feature-worktree";
+	const text = [
+		"file:///home/dev/src/spellkave/feature-worktree/bin/tool.mjs:1",
+		"file://~/src/spellkave/feature-worktree/bin/tool.mjs:2",
+		"/home/dev/.config/tool",
+	].join("\n");
+	expect(publishablePaths(text, repo, "/home/dev")).toBe(
+		["file://<repo>/bin/tool.mjs:1", "file://<repo>/bin/tool.mjs:2", "~/.config/tool"].join("\n"),
+	);
 });
 
 function withGuideFixture(

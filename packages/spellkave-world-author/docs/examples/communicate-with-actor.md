@@ -207,7 +207,7 @@ just sql "SELECT target_entity_id, target_ref, interaction_descriptor FROM affor
 The place-loop materialiser branches on the typed `communication_speech_act_id`
 descriptor (ADR-0021 content-neutrality) and treats co-located items and actors
 identically as candidate targets. The original
-[#655](https://github.com/b4arena/spellkave/issues/655) reading missed this on
+#655 reading missed this on
 three counts: the repro queried `action_id` (invisible to communicate rows), the
 NPC fixture lacked an `entity_definition` (dropped from candidates), and the
 player's cache was never recomputed after the NPC was seeded.

@@ -256,8 +256,8 @@ bundles contributing capabilities to it. A role definition alone grants no
 authority: an unbound caller's valid `sk apply -k <manifest>` attempt is refused
 with `MF-APPLY-015` and exit `2`.
 
-The [versioned local acceptance record](https://github.com/b4arena/spellkave/blob/864d5276958ec3584005debc8a646319bdaf694c/sandbox/roles-as-content/evidence/acceptance.json)
-and [captured installed CLI journey](https://github.com/b4arena/spellkave/blob/864d5276958ec3584005debc8a646319bdaf694c/sandbox/roles-as-content/evidence/installed.json)
+The versioned local acceptance record
+and captured installed CLI journey
 record the ordinary credential boundary, actual bundle contributions,
 files/live agreement and independent unchanged-catalog assertions after refusal.
 The installed artifact ran outside checkout with its declared peer explicitly

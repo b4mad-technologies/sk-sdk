@@ -63,11 +63,14 @@ try {
 		manifest.main = emittedPath(manifest.main);
 		manifest.types = emittedPath(manifest.types, ".d.ts");
 		manifest.exports = Object.fromEntries(Object.entries(manifest.exports).map(([entry, value]) => {
+			// Non-code exports such as "./docs/*" ship their source files unchanged.
+			if (isAssetExport(value)) return [entry, value];
 			const conditions = typeof value === "string" ? { types: value, default: value } : value;
 			return [entry, Object.fromEntries(Object.entries(conditions).map(([condition, path]) => [
 				condition, emittedPath(path, condition === "types" ? ".d.ts" : ".js"),
 			]))];
 		}));
+		const extraFiles = (manifest.files ?? []).filter((entry) => !["src", "bin", "README.md"].includes(entry));
 		manifest.files = ["dist"];
 		const dist = join(staged, "dist");
 		const buildOutput = join(source, "dist");
@@ -81,7 +84,13 @@ try {
 			},
 		});
 		prepareEsmDirectory(dist, manifest);
+		for (const entry of extraFiles) {
+			if (!existsSync(join(source, entry))) throw new Error(`${manifest.name} lists missing file ${entry}`);
+			cpSync(join(source, entry), join(staged, entry), { recursive: true });
+			manifest.files.push(entry);
+		}
 		for (const conditions of Object.values(manifest.exports)) {
+			if (isAssetExport(conditions)) continue;
 			for (const path of Object.values(conditions)) {
 				if (!existsSync(join(staged, path))) throw new Error(`Missing ${manifest.name} build output ${path}`);
 			}
@@ -119,6 +128,10 @@ try {
 }
 
 process.stdout.write(`${JSON.stringify(tarballs)}\n`);
+
+function isAssetExport(value) {
+	return typeof value === "string" && !value.startsWith("./src/");
+}
 
 function emittedPath(path, extension = ".js") {
 	if (!path.startsWith("./src/") || !path.endsWith(".ts")) {

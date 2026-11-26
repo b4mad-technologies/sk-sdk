@@ -1,6 +1,6 @@
 {
 	"name": "@spellkave/tool-contracts",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"private": true,
 	"description": "Browser-safe canonical contracts for every PLAYER, DM, and AUTHOR tool: names, labels, descriptions, TypeBox schemas, execution modes, prompt/CLI metadata, and role roster membership. Sole source; no SDK, SpacetimeDB, Node, Pi, MCP, filesystem, spatial shim, or runtime dependencies.",
 	"type": "module",

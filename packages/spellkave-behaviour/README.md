@@ -206,6 +206,7 @@ A unit test stays only for what the behaviour suite cannot reach. The line above
 |---|---|---|
 | all 2 tests in the file | [`cli.test.ts`](src/cli.test.ts) | K2: a tool that cannot start or never exits is an injected fault no suite meets on purpose. |
 | README.md is what behaviour-docs readme writes | [`docs.test.ts`](src/docs.test.ts) | K4: README drift gate |
+| published docs name the checkout <repo>, also when a transcript already shortened home to ~ | [`docs.test.ts`](src/docs.test.ts) | K4: generated docs must not leak the checkout path after transcripts shortened home to ~ |
 | shows author-declared constraints even when every scenario passed | [`docs.test.ts`](src/docs.test.ts) | K4: generated guide contract separates author declarations from executed evidence |
 | renders the existing all-pass guide identically for absent and empty known limits | [`docs.test.ts`](src/docs.test.ts) | K4: optional configuration must preserve existing generated documents byte for byte |
 | keeps long JSON and cursor commands intact while truncating long output lines | [`docs.test.ts`](src/docs.test.ts) | K4: published transcripts retain executable commands while bounding ordinary output |

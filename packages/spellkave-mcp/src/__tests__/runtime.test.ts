@@ -89,13 +89,13 @@ describe("hosted PLAYER MCP runtime", () => {
 			...validEnv(),
 			SPELLKAVE_MCP_TRUST_BOUNDARY: "network-policy",
 			SPELLKAVE_MCP_LISTEN_HOST: "0.0.0.0",
-			SPELLKAVE_MCP_WORLD_URL: "http://world.spellkave.svc:3000",
+			SPELLKAVE_MCP_WORLD_URL: "http://world.example.test:3000",
 		});
 		expect(config).toMatchObject({
 			trustBoundary: "network-policy",
 			listenHost: "0.0.0.0",
 			listenPort: 8080,
-			worldUrl: "http://world.spellkave.svc:3000",
+			worldUrl: "http://world.example.test:3000",
 		});
 	});
 
@@ -111,7 +111,7 @@ describe("hosted PLAYER MCP runtime", () => {
 			loadPlayerMcpRuntimeConfig({
 				...validEnv(),
 				SPELLKAVE_MCP_TRUST_BOUNDARY: "network-policy",
-				SPELLKAVE_MCP_WORLD_URL: "world.spellkave.svc:3000",
+				SPELLKAVE_MCP_WORLD_URL: "world.example.test:3000",
 			}),
 		).toThrow("must be an absolute http(s) URL");
 	});

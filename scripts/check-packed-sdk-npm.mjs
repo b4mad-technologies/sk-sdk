@@ -36,12 +36,17 @@ try {
 		const workspaceManifest = JSON.parse(readFileSync(
 			new URL(`../packages/spellkave-${shortName}/package.json`, import.meta.url), "utf8",
 		));
-		const entries = Object.keys(workspaceManifest.exports).map((entry) => name + entry.slice(1));
+		// Asset exports such as "./docs/*" are files, not modules to import.
+		const entries = Object.entries(workspaceManifest.exports)
+			.filter(([, value]) => typeof value !== "string" || value.startsWith("./src/"))
+			.map(([entry]) => name + entry.slice(1));
 		const consumer = join(fixture, shortName);
 		mkdirSync(consumer);
 		writeFileSync(join(consumer, ".npmrc"), `registry=https://registry.npmjs.org/\n@spellkave:registry=${url}\n`);
 		// npm resolves the package's own dependency closure from the tarball metadata.
 		await npmInstall(consumer, `${name}@${manifest.version}`);
+
+		if (name === "@spellkave/world-author") checkAuthoringDocs(consumer, tarballs, artifacts);
 
 		const terminalEntry = "@spellkave/world-map/node/terminal";
 		checkRuntime(consumer, entries.filter((entry) => entry !== terminalEntry), name);
@@ -73,6 +78,24 @@ validateManifestToml(123);
 } finally {
 	registry?.server.close();
 	rmSync(fixture, { recursive: true, force: true });
+}
+
+// The website renders the authoring docs, including the pattern catalogue,
+// from the installed package.
+function checkAuthoringDocs(consumer, tarballs, artifacts) {
+	const tarball = tarballs.find((file) => file.startsWith("spellkave-world-author-"));
+	const listed = execFileSync("tar", ["-tzf", join(artifacts, tarball)], { encoding: "utf8" }).split("\n");
+	const patterns = listed.filter((path) => /^package\/docs\/patterns\/[^/]+\.md$/.test(path));
+	if (patterns.length === 0) throw new Error(`${tarball} has no docs/patterns/*.md`);
+	const page = patterns[0].slice("package/docs/".length);
+	execFileSync(process.execPath, ["--input-type=module", "--eval", `
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+const path = fileURLToPath(import.meta.resolve("@spellkave/world-author/docs/${page}"));
+assert.ok(readFileSync(path, "utf8").length > 0);
+`], { cwd: consumer, stdio: "inherit" });
+	console.log(`@spellkave/world-author: ${patterns.length} docs/patterns pages packed and resolvable`);
 }
 
 function importStatements(entries) {

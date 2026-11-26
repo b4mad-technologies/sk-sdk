@@ -1232,7 +1232,7 @@ Dice damage and per-target saving throws are now authorable (ADR-0045), and
 ranged spell can act on a distant cell or entity within metric range, not only
 the caster's own node. What an AoE damage spell still **cannot** express —
 damage-type routing and level scaling — remains open under
-[#266](https://github.com/b4arena/spellkave/issues/266); per-caster range
+#266; per-caster range
 *modifiers* (folding a caster bonus into the authored `range_m` literal) are
 also still deferred.
 

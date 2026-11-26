@@ -68,14 +68,14 @@ describe("parseAppEnvFile + issue shaping", () => {
 		const parsed = parseAppEnvFile(
 			[
 				"# comment",
-				"export GITHUB_REPO=b4arena/spellkave",
+				"export GITHUB_REPO=example/repo",
 				"APP_ID=4683273",
 				"APP_INSTALLATION_ID=155718000",
 				'APP_PRIVATE_KEY_FILE="/credentials/feedback-gh-app.pem"',
 				"",
 			].join("\n"),
 		);
-		expect(parsed.GITHUB_REPO).toBe("b4arena/spellkave");
+		expect(parsed.GITHUB_REPO).toBe("example/repo");
 		expect(parsed.APP_ID).toBe("4683273");
 		expect(parsed.APP_PRIVATE_KEY_FILE).toBe("/credentials/feedback-gh-app.pem");
 	});
@@ -210,7 +210,7 @@ describe("GitHubFeedbackSink (fake fetch)", () => {
 				return new Response(
 					JSON.stringify({
 						number: 4242,
-						html_url: "https://github.com/b4arena/spellkave/issues/4242",
+						html_url: "https://github.com/example/repo/issues/4242",
 					}),
 					{ status: 201 },
 				);
@@ -220,7 +220,7 @@ describe("GitHubFeedbackSink (fake fetch)", () => {
 
 		const sink = createGitHubFeedbackSink({
 			config: {
-				repo: "b4arena/spellkave",
+				repo: "example/repo",
 				appId: "4683273",
 				installationId: "155718000",
 				privateKeyPem: TEST_PEM,
@@ -231,11 +231,11 @@ describe("GitHubFeedbackSink (fake fetch)", () => {
 		});
 
 		const result = await sink.submit(sampleSubmission());
-		expect(result.reference).toBe("https://github.com/b4arena/spellkave/issues/4242");
+		expect(result.reference).toBe("https://github.com/example/repo/issues/4242");
 		expect(sink.issuesCreated).toBe(1);
 		expect(calls).toHaveLength(2);
 		expect(calls[0]?.url).toContain("/app/installations/155718000/access_tokens");
-		expect(calls[1]?.url).toContain("/repos/b4arena/spellkave/issues");
+		expect(calls[1]?.url).toContain("/repos/example/repo/issues");
 
 		// Token must never appear in sink logs.
 		expect(logs.join("\n")).not.toContain(SAMPLE_TOKEN);
@@ -255,7 +255,7 @@ describe("GitHubFeedbackSink (fake fetch)", () => {
 				return new Response(
 					JSON.stringify({
 						number: 7,
-						html_url: "https://github.com/b4arena/spellkave/issues/7",
+						html_url: "https://github.com/example/repo/issues/7",
 					}),
 					{ status: 201 },
 				);
@@ -265,7 +265,7 @@ describe("GitHubFeedbackSink (fake fetch)", () => {
 		let t = 1_000;
 		const sink = createGitHubFeedbackSink({
 			config: {
-				repo: "b4arena/spellkave",
+				repo: "example/repo",
 				appId: "1",
 				installationId: "2",
 				privateKeyPem: TEST_PEM,
@@ -300,7 +300,7 @@ describe("GitHubFeedbackSink (fake fetch)", () => {
 				return new Response(
 					JSON.stringify({
 						number: 9,
-						html_url: "https://github.com/b4arena/spellkave/issues/9",
+						html_url: "https://github.com/example/repo/issues/9",
 					}),
 					{ status: 201 },
 				);
@@ -309,7 +309,7 @@ describe("GitHubFeedbackSink (fake fetch)", () => {
 		};
 		const sink = createGitHubFeedbackSink({
 			config: {
-				repo: "b4arena/spellkave",
+				repo: "example/repo",
 				appId: "1",
 				installationId: "2",
 				privateKeyPem: TEST_PEM,
@@ -325,7 +325,7 @@ describe("GitHubFeedbackSink (fake fetch)", () => {
 		const logs: string[] = [];
 		const sink = createGitHubFeedbackSink({
 			config: {
-				repo: "b4arena/spellkave",
+				repo: "example/repo",
 				appId: "1",
 				installationId: "2",
 				privateKeyPem: TEST_PEM,
@@ -367,7 +367,7 @@ describe("GitHubFeedbackSink (fake fetch)", () => {
 		await writeFile(
 			envPath,
 			[
-				"GITHUB_REPO=b4arena/spellkave",
+				"GITHUB_REPO=example/repo",
 				"APP_ID=4683273",
 				"APP_INSTALLATION_ID=155718000",
 				"APP_PRIVATE_KEY_FILE=/home/nope/.config/spellkave/player-mcp/feedback-gh-app.pem",
@@ -383,7 +383,7 @@ describe("GitHubFeedbackSink (fake fetch)", () => {
 			return new Response(
 				JSON.stringify({
 					number: 1,
-					html_url: "https://github.com/b4arena/spellkave/issues/1",
+					html_url: "https://github.com/example/repo/issues/1",
 				}),
 				{ status: 201 },
 			);
@@ -405,7 +405,7 @@ describe("GitHubFeedbackSink (fake fetch)", () => {
 		await writeFile(
 			envPath,
 			[
-				"GITHUB_REPO=b4arena/spellkave",
+				"GITHUB_REPO=example/repo",
 				"APP_ID=1",
 				"APP_INSTALLATION_ID=2",
 				`APP_PRIVATE_KEY_FILE=${pemPath}`,
@@ -424,7 +424,7 @@ describe("GitHubFeedbackSink (fake fetch)", () => {
 					}
 					return new Response(
 						JSON.stringify({
-							html_url: "https://github.com/b4arena/spellkave/issues/99",
+							html_url: "https://github.com/example/repo/issues/99",
 						}),
 						{ status: 201 },
 					);

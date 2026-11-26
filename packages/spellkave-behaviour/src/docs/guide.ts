@@ -183,6 +183,22 @@ export function refusalOf(body: string, answerExits: readonly number[] = []): st
 	return line?.slice(0, 200);
 }
 
+/**
+ * Replaces the checkout path with `<repo>` and the home directory with `~`.
+ * Transcripts are already home-shortened when captured (cliRunner), so the
+ * checkout can appear as `~/...` as well as absolute.
+ */
+export function publishablePaths(text: string, repo: string, home: string): string {
+	return text
+		.replaceAll(repo, "<repo>")
+		.replaceAll(homeShortened(repo, home), "<repo>")
+		.replaceAll(home, "~");
+}
+
+function homeShortened(path: string, home: string): string {
+	return path.startsWith(`${home}/`) ? `~${path.slice(home.length)}` : path;
+}
+
 export function generateGuide(
 	pkg: string,
 	config: DocsConfig,
@@ -746,7 +762,7 @@ export function generateGuide(
 	// Published docs must not carry this machine's paths: shorten what slipped
 	// through, and refuse to write if the home directory remains.
 	const repo = execSync("git rev-parse --show-toplevel", { cwd: pkg, encoding: "utf8" }).trim();
-	const publishable = (text: string) => text.replaceAll(repo, "<repo>").replaceAll(homedir(), "~");
+	const publishable = (text: string) => publishablePaths(text, repo, homedir());
 	const tidy = (text: string) => {
 		const lines = text.split("\n");
 		const commands = commandLines(lines);
@@ -762,6 +778,8 @@ export function generateGuide(
 		[EVIDENCE, scenariosText],
 	] as const) {
 		if (text.includes(homedir())) throw new Error(`${name} still contains ${homedir()}`);
+		const shortRepo = homeShortened(repo, homedir());
+		if (text.includes(shortRepo)) throw new Error(`${name} still contains ${shortRepo}`);
 	}
 	mkdirSync(docsDir, { recursive: true });
 	writeFileSync(join(docsDir, GUIDE), guideText);
