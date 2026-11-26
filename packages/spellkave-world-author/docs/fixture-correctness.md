@@ -143,9 +143,9 @@ lint protects. Do not fold `srd/` into a content bundle.
 Run `cargo test --manifest-path crates/Cargo.toml` from the checkout under
 review. Cargo supplies the runtime package directory that the native tests use
 to locate their fixtures, including the
-[validator conformance fixtures](https://github.com/b4arena/spellkave/blob/main/crates/spellkave-validate/tests/conformance.rs).
+validator conformance fixtures.
 A shared build cache can reuse the executable while it checks this checkout's
-files. See the [shared Cargo cache guidance](https://github.com/b4arena/spellkave/blob/main/docs/development.md#shell-format-and-shared-cache-footguns)
+files. See the shared Cargo cache guidance
 for isolated reproductions and recovery from older compiled fixture paths.
 
 When changing validator regression fixtures, also check every native test target
@@ -155,7 +155,7 @@ with the pinned Clippy toolchain:
 cargo clippy --manifest-path crates/Cargo.toml -p spellkave-validate -p spellkave-validate-wasm --all-targets -- -D warnings
 ```
 
-The [Rust crates CI lane](https://github.com/b4arena/spellkave/blob/main/scripts/ci/nx-projects/rust-crates-tests/project.json)
+The Rust crates CI lane
 runs this command alongside the native tests. Construct default-based fixtures
 with struct initializers for their authored fields; this keeps fixture setup
 lint-clean without suppressing warnings.

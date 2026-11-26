@@ -75,7 +75,7 @@ prose for the holder's existing instances; missing prose stays absent.
 The compact self summary retains its existing condition fields.
 
 Persistence and authorized-read proof:
-[`condition-descriptions.md`](https://github.com/b4arena/spellkave/blob/33eb5f1c0f4913a56fb38f8c9580db112b1dd87e/openspec/specs/player-tool-query-surface/demos/condition-descriptions.md)
+`condition-descriptions.md`
 (historical captured evidence at the linked revision).
 
 ## Related

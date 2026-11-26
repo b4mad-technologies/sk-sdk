@@ -124,7 +124,7 @@ coverage as unknown and complete teardown as false. There is no one-shot
 uninstall, automatic reset or recorded-proof replay in this workflow.
 
 The installed CLI and HTTP MCP caller-daemon scenarios are verified in the
-[AUTH-50-01/02 captures](https://github.com/b4arena/spellkave/pull/4015), with
+AUTH-50-01/02 captures, with
 [reproduction and limits](../../../sandbox/parameterized-scene-setups/README.md).
 Queued source drift, late player arrival and a real world reset have separate
 live proofs. CLI/MCP captures use synthetic local worlds; external client
